@@ -235,6 +235,11 @@
   //  CONFIG — แก้ตรงนี้อย่างเดียว
   // ─────────────────────────────────────────────
   const SHEETS_ID = '1_E7EMj_5HKgJ7hzQAVDnJfpiPv8Bo98wJUbPDzpsEuE';
+  const SHEET_GID = {
+    config:   '0',
+    grades:   '257840249',
+    specials: '1826613192',
+  };
 
   // ─────────────────────────────────────────────
   //  FALLBACK DATA (ใช้ตอน SHEETS_ID ยังไม่ได้ตั้ง)
@@ -275,7 +280,8 @@
   //  HELPERS
   // ─────────────────────────────────────────────
   function csvUrl(sheetName) {
-    return `https://docs.google.com/spreadsheets/d/${SHEETS_ID}/export?format=csv&sheet=${encodeURIComponent(sheetName)}`;
+    const gid = SHEET_GID[sheetName];
+    return `https://docs.google.com/spreadsheets/d/${SHEETS_ID}/export?format=csv&gid=${gid}`;
   }
 
   async function fetchCsv(sheetName) {
@@ -342,7 +348,7 @@
   function renderGrades(rows) {
     const grid = document.getElementById('gradeGrid');
     grid.innerHTML = '';
-    rows.filter(r => r.visible !== 'false').forEach(r => {
+    rows.filter(r => (r.visible || '').toUpperCase() !== 'FALSE').forEach(r => {
       const card = document.createElement('div');
       card.className = 'grade-card';
       card.innerHTML = `
@@ -356,7 +362,7 @@
   function renderSpecials(rows) {
     const grid = document.getElementById('specialGrid');
     grid.innerHTML = '';
-    rows.filter(r => r.visible !== 'false').forEach(r => {
+    rows.filter(r => (r.visible || '').toUpperCase() !== 'FALSE').forEach(r => {
       const card = document.createElement('div');
       card.className = 'special-card';
       card.innerHTML = `
@@ -391,6 +397,9 @@
         fetchCsv('grades'),
         fetchCsv('specials'),
       ]);
+
+      console.log('grades[0]:', JSON.stringify(gradeRows[0]));
+      console.log('specials[0]:', JSON.stringify(specialRows[0]));
 
       // config sheet เป็น key-value → แปลงเป็น object
       const cfg = {};
