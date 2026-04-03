@@ -10,13 +10,13 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --blue:    #378ADD;
-      --blue-dk: #185FA5;
-      --blue-xdk:#0C447C;
-      --green:   #1D9E75;
-      --green-dk:#0F6E56;
-      --amber:   #EF9F27;
-      --pink:    #D4537E;
+      --blue:     #378ADD;
+      --blue-dk:  #185FA5;
+      --blue-xdk: #0C447C;
+      --green:    #1D9E75;
+      --green-dk: #0F6E56;
+      --amber:    #EF9F27;
+      --pink:     #D4537E;
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
@@ -38,7 +38,7 @@
       display: flex; align-items: center; justify-content: space-between;
       position: sticky; top: 0; z-index: 100;
     }
-    .logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+    .logo { display: flex; align-items: center; gap: 9px; cursor: pointer; text-decoration: none; }
     .logo-box {
       width: 34px; height: 34px; border-radius: 10px;
       background: var(--blue);
@@ -49,15 +49,37 @@
     .logo-name { font-size: 14px; font-weight: 600; color: #1a1a1a; }
     .logo-name span { color: var(--blue); }
     .logo-sub { font-size: 11px; color: #888; }
+
     .topnav { display: flex; gap: 2px; }
-    .topnav button {
+    .nav-btn {
       background: none; border: none; padding: 6px 13px;
       font-size: 13px; color: #666; font-family: 'Sarabun', sans-serif;
-      border-radius: var(--radius-sm); cursor: pointer; transition: background 0.12s, color 0.12s;
+      border-radius: var(--radius-sm); cursor: pointer;
+      transition: background 0.12s, color 0.12s;
     }
-    .topnav button:hover, .topnav button.active { background: #f0f0ee; color: #1a1a1a; }
+    .nav-btn:hover { background: #f0f0ee; color: #1a1a1a; }
+    .nav-btn.active { background: #f0f0ee; color: #1a1a1a; font-weight: 600; }
 
-    /* ── HERO ── */
+    /* ── PAGES ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── LOADING BAR ── */
+    .loading-bar {
+      height: 3px; background: var(--blue);
+      position: fixed; top: 0; left: 0; z-index: 999;
+      width: 0; transition: width 0.3s;
+    }
+    .loading-bar.running { animation: loadpulse 1.2s ease-in-out infinite; }
+    @keyframes loadpulse {
+      0%   { width: 0%; opacity: 1; }
+      70%  { width: 85%; opacity: 1; }
+      100% { width: 100%; opacity: 0; }
+    }
+
+    /* ══════════════════════════════
+       PAGE: หน้าแรก
+    ══════════════════════════════ */
     .hero {
       background: #fff;
       border-bottom: 0.5px solid rgba(0,0,0,0.08);
@@ -66,112 +88,94 @@
       position: relative; overflow: hidden;
     }
     .hero-blobs { position: absolute; inset: 0; pointer-events: none; }
-    .hero-blobs span {
-      position: absolute; border-radius: 50%; opacity: 0.10;
-    }
-    .hero-title {
-      font-size: 28px; font-weight: 600; line-height: 1.3;
-      margin-bottom: 0.75rem; position: relative;
-    }
-    .hero-title .highlight {
-      display: inline-block; padding: 1px 10px;
-      border-radius: var(--radius-sm); color: #fff;
-      background: var(--blue);
-    }
-    .hero-desc {
-      font-size: 15px; color: #555;
-      max-width: 460px; margin: 0 auto 1.75rem;
-      line-height: 1.75; position: relative;
-    }
-    .pill-row {
-      display: flex; gap: 8px; justify-content: center;
-      flex-wrap: wrap; position: relative;
-    }
-    .pill {
-      display: flex; align-items: center; gap: 5px;
-      padding: 5px 13px; border-radius: 999px;
-      font-size: 12.5px; font-weight: 500;
-    }
+    .hero-blobs span { position: absolute; border-radius: 50%; opacity: 0.10; }
+    .hero-title { font-size: 28px; font-weight: 600; line-height: 1.3; margin-bottom: 0.75rem; position: relative; }
+    .hero-title .hl { display: inline-block; padding: 1px 10px; border-radius: var(--radius-sm); color: #fff; background: var(--blue); }
+    .hero-desc { font-size: 15px; color: #555; max-width: 460px; margin: 0 auto 1.75rem; line-height: 1.75; position: relative; }
+    .pill-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; position: relative; }
+    .pill { display: flex; align-items: center; gap: 5px; padding: 5px 13px; border-radius: 999px; font-size: 12.5px; font-weight: 500; }
 
-    /* ── MAIN ── */
-    .main { padding: 1.75rem 1.5rem 3rem; max-width: 900px; margin: 0 auto; }
-    .sec-label {
-      font-size: 11.5px; font-weight: 600; letter-spacing: 0.07em;
-      color: #999; text-transform: uppercase; margin-bottom: 0.85rem;
-    }
+    .home-main { padding: 1.75rem 1.5rem 3rem; max-width: 900px; margin: 0 auto; }
+    .sec-label { font-size: 11.5px; font-weight: 600; letter-spacing: 0.07em; color: #999; text-transform: uppercase; margin-bottom: 0.85rem; }
 
-    /* ── GRADE CARDS ── */
-    .grade-grid {
-      display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 8px; margin-bottom: 2rem;
-    }
+    .grade-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; margin-bottom: 2rem; }
     .grade-card {
-      background: #fff;
-      border: 0.5px solid rgba(0,0,0,0.08);
-      border-radius: var(--radius-md);
-      padding: 1rem 0.5rem;
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-md); padding: 1rem 0.5rem;
       text-align: center; cursor: pointer;
       transition: transform 0.13s, border-color 0.13s, box-shadow 0.13s;
     }
-    .grade-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(0,0,0,0.15);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.07);
-    }
+    .grade-card:hover { transform: translateY(-3px); border-color: rgba(0,0,0,0.15); box-shadow: 0 4px 12px rgba(0,0,0,0.07); }
     .grade-num { font-size: 18px; font-weight: 600; margin-bottom: 3px; }
     .grade-sub { font-size: 11px; color: #999; }
     .grade-bar { height: 4px; border-radius: 4px; margin: 10px auto 0; width: 55%; }
 
-    /* ── SPECIAL CARDS ── */
     .divider { height: 0.5px; background: rgba(0,0,0,0.07); margin: 1.75rem 0; }
-    .special-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-      gap: 10px;
-    }
+
+    .special-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
     .special-card {
-      background: #fff;
-      border: 0.5px solid rgba(0,0,0,0.08);
-      border-radius: var(--radius-lg);
-      padding: 1.25rem;
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-lg); padding: 1.25rem;
       cursor: pointer; display: flex; align-items: center; gap: 13px;
       transition: transform 0.13s, border-color 0.13s, box-shadow 0.13s;
     }
-    .special-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(0,0,0,0.15);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.07);
-    }
-    .special-icon {
-      width: 44px; height: 44px; border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px; flex-shrink: 0;
-    }
+    .special-card:hover { transform: translateY(-3px); border-color: rgba(0,0,0,0.15); box-shadow: 0 4px 12px rgba(0,0,0,0.07); }
+    .special-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
     .special-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
     .special-card p { font-size: 12px; color: #888; line-height: 1.5; }
 
-    /* ── LOADING / ERROR ── */
-    .loading-bar {
-      height: 3px; background: var(--blue);
-      position: fixed; top: 0; left: 0; z-index: 999;
-      animation: loading 1.2s ease-in-out infinite;
+    /* ══════════════════════════════
+       PAGE: เกี่ยวกับ
+    ══════════════════════════════ */
+    .about-main { max-width: 680px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+    .profile-card {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-lg); padding: 2rem;
+      display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.25rem;
     }
-    @keyframes loading {
-      0%   { width: 0%; opacity: 1; }
-      70%  { width: 85%; opacity: 1; }
-      100% { width: 100%; opacity: 0; }
+    .avatar {
+      width: 72px; height: 72px; border-radius: 50%; flex-shrink: 0;
+      background: #E6F1FB;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; font-weight: 600; color: var(--blue-xdk); overflow: hidden;
     }
-    .error-banner {
-      background: #fff3f3; border: 0.5px solid #f5c1c1;
-      color: #a33; padding: 10px 16px; border-radius: var(--radius-sm);
-      font-size: 13px; margin-bottom: 1rem; display: none;
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-info h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+    .profile-role { font-size: 13px; color: #666; background: #f0f0ee; display: inline-block; padding: 3px 10px; border-radius: 999px; }
+    .info-card { background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.25rem; }
+    .info-card .card-label { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; color: #999; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .info-card .card-body { font-size: 15px; line-height: 1.8; color: #333; }
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+    .contact-item {
+      display: flex; align-items: center; gap: 10px; padding: 0.75rem 1rem;
+      border: 0.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-md);
+      text-decoration: none; color: #1a1a1a; font-size: 13px; font-weight: 500;
+      transition: background 0.12s, transform 0.12s;
+    }
+    .contact-item:hover { background: #f5f5f3; transform: translateY(-1px); }
+    .contact-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+
+    /* ══════════════════════════════
+       PAGE: Placeholder (วิดีโอ, เอกสาร, ทำโจทย์)
+    ══════════════════════════════ */
+    .placeholder {
+      max-width: 480px; margin: 5rem auto; text-align: center; padding: 0 1.5rem;
+    }
+    .placeholder-icon { font-size: 48px; margin-bottom: 1rem; }
+    .placeholder h2 { font-size: 20px; font-weight: 600; margin-bottom: 0.5rem; }
+    .placeholder p { font-size: 14px; color: #888; line-height: 1.7; }
+    .placeholder-badge {
+      display: inline-block; margin-top: 1rem;
+      background: #FAEEDA; color: #633806;
+      font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 999px;
     }
 
+    /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
       .grade-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .topnav { display: none; }
       .hero-title { font-size: 22px; }
+      .profile-card { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
@@ -179,248 +183,380 @@
 
 <div class="loading-bar" id="loadingBar"></div>
 
-<!-- TOPBAR -->
+<!-- ── TOPBAR ── -->
 <header class="topbar">
-  <a class="logo" href="#">
+  <div class="logo" onclick="navigate('home')">
     <div class="logo-box">∑</div>
     <div class="logo-texts">
       <div class="logo-name">Summation <span>by Kru Haisam</span></div>
       <div class="logo-sub" id="logoSub">คลังโจทย์คณิตศาสตร์</div>
     </div>
-  </a>
-  <nav class="topnav" id="topnav">
-    <a href="index.html" class="active" style="text-decoration:none;font-family:'Sarabun',sans-serif;padding:6px 13px;font-size:13px;color:#1a1a1a;background:#f0f0ee;border-radius:8px;font-weight:600;">หน้าแรก</a>
-    <a href="#" style="text-decoration:none;font-family:'Sarabun',sans-serif;padding:6px 13px;font-size:13px;color:#666;border-radius:8px;">ทำโจทย์</a>
-    <a href="#" style="text-decoration:none;font-family:'Sarabun',sans-serif;padding:6px 13px;font-size:13px;color:#666;border-radius:8px;">วิดีโอ</a>
-    <a href="about.html" style="text-decoration:none;font-family:'Sarabun',sans-serif;padding:6px 13px;font-size:13px;color:#666;border-radius:8px;">เกี่ยวกับ</a>
+  </div>
+  <nav class="topnav">
+    <button class="nav-btn active" data-page="home"     onclick="navigate('home')">หน้าแรก</button>
+    <button class="nav-btn"        data-page="exercise" onclick="navigate('exercise')">แบบฝึกหัด</button>
+    <button class="nav-btn"        data-page="quiz"     onclick="navigate('quiz')">แบบทดสอบ</button>
+    <button class="nav-btn"        data-page="video"    onclick="navigate('video')">วิดีโอ</button>
+    <button class="nav-btn"        data-page="docs"     onclick="navigate('docs')">เอกสาร</button>
+    <button class="nav-btn"        data-page="about"    onclick="navigate('about')">เกี่ยวกับ</button>
   </nav>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-blobs">
-    <span style="width:100px;height:100px;background:#378ADD;top:-20px;left:-10px;"></span>
-    <span style="width:70px;height:70px;background:#1D9E75;bottom:-10px;left:15%;"></span>
-    <span style="width:80px;height:80px;background:#EF9F27;top:10px;right:12%;"></span>
-    <span style="width:90px;height:90px;background:#D4537E;bottom:-15px;right:-15px;"></span>
+<!-- ══════════════════════════════
+     PAGE: หน้าแรก
+══════════════════════════════ -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-blobs">
+      <span style="width:100px;height:100px;background:#378ADD;top:-20px;left:-10px;"></span>
+      <span style="width:70px;height:70px;background:#1D9E75;bottom:-10px;left:15%;"></span>
+      <span style="width:80px;height:80px;background:#EF9F27;top:10px;right:12%;"></span>
+      <span style="width:90px;height:90px;background:#D4537E;bottom:-15px;right:-15px;"></span>
+    </div>
+    <h1 class="hero-title" id="heroTitle">กำลังโหลด...</h1>
+    <p class="hero-desc" id="heroDesc"></p>
+    <div class="pill-row" id="pillRow"></div>
   </div>
-  <h1 class="hero-title" id="heroTitle">
-    กำลังโหลด...
-  </h1>
-  <p class="hero-desc" id="heroDesc"></p>
-  <div class="pill-row" id="pillRow"></div>
-</section>
-
-<!-- MAIN -->
-<main class="main">
-  <div class="error-banner" id="errorBanner">
-    ไม่สามารถโหลดข้อมูลจาก Google Sheets ได้ — กรุณาตรวจสอบ Sheets ID และการตั้งค่า Publish
+  <div class="home-main">
+    <div class="sec-label">เลือกระดับชั้น</div>
+    <div class="grade-grid" id="gradeGrid"></div>
+    <div class="divider"></div>
+    <div class="sec-label">หมวดพิเศษ</div>
+    <div class="special-grid" id="specialGrid"></div>
   </div>
+</div>
 
-  <div class="sec-label">เลือกระดับชั้น</div>
-  <div class="grade-grid" id="gradeGrid">
-    <!-- injected by JS -->
+<!-- ══════════════════════════════
+     PAGE: แบบฝึกหัด
+══════════════════════════════ -->
+<div class="page" id="page-exercise">
+  <div class="placeholder">
+    <div class="placeholder-icon">✏️</div>
+    <h2>แบบฝึกหัด</h2>
+    <p>รวมแบบฝึกหัดคณิตศาสตร์ทุกระดับชั้น<br>กำลังอยู่ระหว่างการพัฒนาครับ</p>
+    <span class="placeholder-badge">⚙️ กำลังพัฒนา</span>
   </div>
+</div>
 
-  <div class="divider"></div>
-
-  <div class="sec-label">หมวดพิเศษ</div>
-  <div class="special-grid" id="specialGrid">
-    <!-- injected by JS -->
+<!-- ══════════════════════════════
+     PAGE: แบบทดสอบ
+══════════════════════════════ -->
+<div class="page" id="page-quiz">
+  <div class="placeholder">
+    <div class="placeholder-icon">📝</div>
+    <h2>แบบทดสอบ</h2>
+    <p>หน้านี้กำลังอยู่ระหว่างการพัฒนา<br>จะเปิดให้ใช้งานเร็วๆ นี้ครับ</p>
+    <span class="placeholder-badge">⚙️ กำลังพัฒนา</span>
   </div>
-</main>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE: วิดีโอ
+══════════════════════════════ -->
+<div class="page" id="page-video">
+  <div class="placeholder">
+    <div class="placeholder-icon">🎬</div>
+    <h2>วิดีโอ</h2>
+    <p>รวมวิดีโอการสอนคณิตศาสตร์<br>กำลังอยู่ระหว่างการพัฒนาครับ</p>
+    <span class="placeholder-badge">⚙️ กำลังพัฒนา</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE: เอกสาร
+══════════════════════════════ -->
+<div class="page" id="page-docs">
+  <div class="placeholder">
+    <div class="placeholder-icon">📄</div>
+    <h2>เอกสาร</h2>
+    <p>รวมเอกสารและสื่อการเรียนรู้<br>กำลังอยู่ระหว่างการพัฒนาครับ</p>
+    <span class="placeholder-badge">⚙️ กำลังพัฒนา</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE: เกี่ยวกับ
+══════════════════════════════ -->
+<div class="page" id="page-about">
+  <div class="about-main">
+    <div class="profile-card">
+      <div class="avatar" id="avatar">HS</div>
+      <div class="profile-info">
+        <h1 id="profileName">กำลังโหลด...</h1>
+        <span class="profile-role" id="profileRole"></span>
+      </div>
+    </div>
+    <div class="info-card" id="bioCard" style="display:none">
+      <div class="card-label">เกี่ยวกับครู</div>
+      <div class="card-body" id="bioText"></div>
+    </div>
+    <div class="info-card" id="missionCard" style="display:none">
+      <div class="card-label">วัตถุประสงค์ของเว็บไซต์</div>
+      <div class="card-body" id="missionText"></div>
+    </div>
+    <div class="info-card" id="contactCard" style="display:none">
+      <div class="card-label">ช่องทางติดต่อ</div>
+      <div class="contact-grid" id="contactGrid"></div>
+    </div>
+  </div>
+</div>
 
 <script>
   // ─────────────────────────────────────────────
-  //  CONFIG — แก้ตรงนี้อย่างเดียว
+  //  CONFIG
   // ─────────────────────────────────────────────
   const SHEETS_ID = '1_E7EMj_5HKgJ7hzQAVDnJfpiPv8Bo98wJUbPDzpsEuE';
   const SHEET_GID = {
     config:   '0',
     grades:   '257840249',
     specials: '1826613192',
+    about:    '291876820',
   };
 
   // ─────────────────────────────────────────────
-  //  FALLBACK DATA (ใช้ตอน SHEETS_ID ยังไม่ได้ตั้ง)
+  //  FALLBACK DATA
   // ─────────────────────────────────────────────
   const FALLBACK = {
     config: {
-      hero_title:  'ฝึกคณิตศาสตร์ [ทุกระดับ] ทุกที่ ฟรี!',
-      hero_desc:   'คลังโจทย์คณิตศาสตร์ครบตั้งแต่ ม.1 ถึง ม.6 จนถึงโอลิมปิกและ A-level พร้อมเฉลยละเอียดทุกข้อ',
-      logo_sub:    'คลังโจทย์คณิตศาสตร์',
-      pill_1:      '📚 โจทย์ 500+ ข้อ',
-      pill_1_bg:   '#E6F1FB',
-      pill_1_color:'#0C447C',
-      pill_2:      '✓ เฉลยทุกข้อ',
-      pill_2_bg:   '#EAF3DE',
-      pill_2_color:'#27500A',
-      pill_3:      '⚡ ไม่ต้องสมัครสมาชิก',
-      pill_3_bg:   '#FAEEDA',
-      pill_3_color:'#633806',
+      hero_title:    'ฝึกคณิตศาสตร์ [ทุกระดับ] ทุกที่ ฟรี!',
+      hero_desc:     'คลังโจทย์คณิตศาสตร์ครบตั้งแต่ ม.1 ถึง ม.6 จนถึงโอลิมปิกและ A-level พร้อมเฉลยละเอียดทุกข้อ',
+      logo_sub:      'คลังโจทย์คณิตศาสตร์',
+      pill_1:        '📚 โจทย์ 500+ ข้อ',
+      pill_1_bg:     '#E6F1FB', pill_1_color: '#0C447C',
+      pill_2:        '✓ เฉลยทุกข้อ',
+      pill_2_bg:     '#EAF3DE', pill_2_color: '#27500A',
+      pill_3:        '⚡ ไม่ต้องสมัครสมาชิก',
+      pill_3_bg:     '#FAEEDA', pill_3_color: '#633806',
     },
     grades: [
-      { label:'ม.1', sublabel:'พื้นฐาน', color:'#1D9E75', bar:'#9FE1CB', visible:'true' },
-      { label:'ม.2', sublabel:'พื้นฐาน', color:'#0F6E56', bar:'#5DCAA5', visible:'true' },
-      { label:'ม.3', sublabel:'กลาง',    color:'#085041', bar:'#1D9E75', visible:'true' },
-      { label:'ม.4', sublabel:'กลาง',    color:'#185FA5', bar:'#85B7EB', visible:'true' },
-      { label:'ม.5', sublabel:'สูง',     color:'#0C447C', bar:'#378ADD', visible:'true' },
-      { label:'ม.6', sublabel:'สูง',     color:'#042C53', bar:'#185FA5', visible:'true' },
+      { label:'ม.1', sublabel:'พื้นฐาน', color:'#1D9E75', bar:'#9FE1CB', visible:'TRUE' },
+      { label:'ม.2', sublabel:'พื้นฐาน', color:'#0F6E56', bar:'#5DCAA5', visible:'TRUE' },
+      { label:'ม.3', sublabel:'กลาง',    color:'#085041', bar:'#1D9E75', visible:'TRUE' },
+      { label:'ม.4', sublabel:'กลาง',    color:'#185FA5', bar:'#85B7EB', visible:'TRUE' },
+      { label:'ม.5', sublabel:'สูง',     color:'#0C447C', bar:'#378ADD', visible:'TRUE' },
+      { label:'ม.6', sublabel:'สูง',     color:'#042C53', bar:'#185FA5', visible:'TRUE' },
     ],
     specials: [
-      { icon:'🏆', title:'Olympiad',       desc:'โจทย์ระดับโอลิมปิกวิชาการ',  bg:'#EEEDFE', visible:'true' },
-      { icon:'📐', title:'A-level',        desc:'เตรียมสอบ A-level คณิต',      bg:'#E6F1FB', visible:'true' },
-      { icon:'🎯', title:'แข่งขัน ม.ต้น', desc:'โจทย์สอบแข่งขันระดับ ม.ต้น', bg:'#EAF3DE', visible:'true' },
-      { icon:'📊', title:'แข่งขัน ม.ปลาย',desc:'โจทย์สอบแข่งขันระดับ ม.ปลาย',bg:'#FAEEDA', visible:'true' },
-      { icon:'📚', title:'อื่นๆ',          desc:'หมวดหมู่เพิ่มเติม',           bg:'#FBEAF0', visible:'true' },
-    ]
+      { icon:'🏆', title:'Olympiad',        desc:'โจทย์ระดับโอลิมปิกวิชาการ',   bg:'#EEEDFE', visible:'TRUE' },
+      { icon:'📐', title:'A-level',         desc:'เตรียมสอบ A-level คณิต',       bg:'#E6F1FB', visible:'TRUE' },
+      { icon:'🎯', title:'แข่งขัน ม.ต้น',  desc:'โจทย์สอบแข่งขันระดับ ม.ต้น',  bg:'#EAF3DE', visible:'TRUE' },
+      { icon:'📊', title:'แข่งขัน ม.ปลาย', desc:'โจทย์สอบแข่งขันระดับ ม.ปลาย', bg:'#FAEEDA', visible:'TRUE' },
+      { icon:'📚', title:'อื่นๆ',           desc:'หมวดหมู่เพิ่มเติม',            bg:'#FBEAF0', visible:'TRUE' },
+    ],
+    about: {
+      name: 'ครูไฮซัม แวอูมา',
+      role: 'ครูคณิตศาสตร์ โรงเรียนสาธิตวิทยาการอิสลาม มหาวิทยาลัยสงขลานครินทร์',
+      bio: 'เป็นครู เป็นพ่อลูกสาม',
+      mission: 'เผยแพร่ความรู้ฟรีๆ',
+      photo_url: '',
+      contact_facebook: '', contact_line: '',
+      contact_instagram: '', contact_email: 'zidnihuda@gmail.com',
+    },
   };
 
   // ─────────────────────────────────────────────
-  //  HELPERS
+  //  SHEETS HELPERS
   // ─────────────────────────────────────────────
-  function csvUrl(sheetName) {
-    const gid = SHEET_GID[sheetName];
-    return `https://docs.google.com/spreadsheets/d/${SHEETS_ID}/export?format=csv&gid=${gid}`;
-  }
+  const cache = {};
 
-  async function fetchCsv(sheetName) {
-    const res = await fetch(csvUrl(sheetName), { redirect: 'follow' });
+  async function fetchSheet(name) {
+    if (cache[name]) return cache[name];
+    const url = `https://docs.google.com/spreadsheets/d/${SHEETS_ID}/export?format=csv&gid=${SHEET_GID[name]}`;
+    const res = await fetch(url, { redirect: 'follow' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const text = await res.text();
-    return parseCsv(text);
+    const rows = parseCsv(await res.text());
+    cache[name] = rows;
+    return rows;
   }
 
   function parseCsv(text) {
     const lines = text.trim().split('\n');
-    const headers = splitCsvLine(lines[0]);
+    const headers = splitLine(lines[0]);
     return lines.slice(1).map(line => {
-      const vals = splitCsvLine(line);
+      const vals = splitLine(line);
       const obj = {};
       headers.forEach((h, i) => { obj[h.trim()] = (vals[i] || '').trim(); });
       return obj;
     });
   }
 
-  function splitCsvLine(line) {
-    const result = [];
-    let cur = '', inQ = false;
-    for (let i = 0; i < line.length; i++) {
-      const c = line[i];
-      if (c === '"') { inQ = !inQ; }
-      else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
-      else { cur += c; }
+  function splitLine(line) {
+    const r = []; let cur = '', inQ = false;
+    for (const c of line) {
+      if (c === '"') inQ = !inQ;
+      else if (c === ',' && !inQ) { r.push(cur); cur = ''; }
+      else cur += c;
     }
-    result.push(cur);
-    return result.map(s => s.replace(/^"|"$/g, ''));
+    r.push(cur);
+    return r.map(s => s.replace(/^"|"$/g, ''));
+  }
+
+  function toKV(rows) {
+    const obj = {};
+    rows.forEach(r => { if (r.key) obj[r.key] = r.value; });
+    return obj;
+  }
+
+  function isVisible(val) {
+    return (val || '').toUpperCase() !== 'FALSE';
   }
 
   // ─────────────────────────────────────────────
-  //  RENDER
+  //  NAVIGATION
   // ─────────────────────────────────────────────
-  function renderHero(cfg) {
+  const loaded = {};
+
+  function navigate(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.page === page);
+    });
+    document.getElementById(`page-${page}`).classList.add('active');
+    window.scrollTo(0, 0);
+
+    if (!loaded[page]) {
+      loaded[page] = true;
+      loadPage(page);
+    }
+  }
+
+  async function loadPage(page) {
+    const bar = document.getElementById('loadingBar');
+    bar.className = 'loading-bar running';
+    try {
+      if (page === 'home')  await loadHome();
+      if (page === 'about') await loadAbout();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      bar.className = 'loading-bar';
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  //  PAGE: หน้าแรก
+  // ─────────────────────────────────────────────
+  async function loadHome() {
+    let cfg, grades, specials;
+    try {
+      const [cfgRows, gradeRows, specialRows] = await Promise.all([
+        fetchSheet('config'), fetchSheet('grades'), fetchSheet('specials'),
+      ]);
+      cfg      = toKV(cfgRows);
+      grades   = gradeRows;
+      specials = specialRows;
+    } catch {
+      cfg      = FALLBACK.config;
+      grades   = FALLBACK.grades;
+      specials = FALLBACK.specials;
+    }
+
+    // logo sub
     document.getElementById('logoSub').textContent = cfg.logo_sub || 'คลังโจทย์คณิตศาสตร์';
 
-    // hero title — wrap [word] in highlight span
-    const raw = cfg.hero_title || '';
-    const titleHTML = raw.replace(/\[(.+?)\]/g,
-      '<span class="highlight">$1</span>');
-    document.getElementById('heroTitle').innerHTML = titleHTML;
+    // hero title
+    const titleHTML = (cfg.hero_title || '').replace(/\[(.+?)\]/g, '<span class="hl">$1</span>');
+    document.getElementById('heroTitle').innerHTML = titleHTML || 'Summation';
     document.getElementById('heroDesc').textContent = cfg.hero_desc || '';
 
     // pills
     const pillRow = document.getElementById('pillRow');
     pillRow.innerHTML = '';
-    [1, 2, 3].forEach(n => {
+    [1,2,3].forEach(n => {
       const text = cfg[`pill_${n}`];
       if (!text) return;
-      const bg    = cfg[`pill_${n}_bg`]    || '#f0f0ee';
-      const color = cfg[`pill_${n}_color`] || '#444';
       const pill = document.createElement('div');
       pill.className = 'pill';
-      pill.style.background = bg;
-      pill.style.color = color;
+      pill.style.background = cfg[`pill_${n}_bg`] || '#f0f0ee';
+      pill.style.color = cfg[`pill_${n}_color`] || '#444';
       pill.textContent = text;
       pillRow.appendChild(pill);
     });
-  }
 
-  function renderGrades(rows) {
-    const grid = document.getElementById('gradeGrid');
-    grid.innerHTML = '';
-    rows.filter(r => (r.visible || '').toUpperCase() !== 'FALSE').forEach(r => {
+    // grades
+    const gradeGrid = document.getElementById('gradeGrid');
+    gradeGrid.innerHTML = '';
+    grades.filter(r => isVisible(r.visible)).forEach(r => {
       const card = document.createElement('div');
       card.className = 'grade-card';
       card.innerHTML = `
         <div class="grade-num" style="color:${r.color}">${r.label}</div>
         <div class="grade-sub">${r.sublabel}</div>
         <div class="grade-bar" style="background:${r.bar || r.color}"></div>`;
-      grid.appendChild(card);
+      gradeGrid.appendChild(card);
     });
-  }
 
-  function renderSpecials(rows) {
-    const grid = document.getElementById('specialGrid');
-    grid.innerHTML = '';
-    rows.filter(r => (r.visible || '').toUpperCase() !== 'FALSE').forEach(r => {
+    // specials
+    const specialGrid = document.getElementById('specialGrid');
+    specialGrid.innerHTML = '';
+    specials.filter(r => isVisible(r.visible)).forEach(r => {
       const card = document.createElement('div');
       card.className = 'special-card';
       card.innerHTML = `
         <div class="special-icon" style="background:${r.bg}">${r.icon}</div>
-        <div>
-          <h3>${r.title}</h3>
-          <p>${r.desc}</p>
-        </div>`;
-      grid.appendChild(card);
+        <div><h3>${r.title}</h3><p>${r.desc}</p></div>`;
+      specialGrid.appendChild(card);
     });
+  }
+
+  // ─────────────────────────────────────────────
+  //  PAGE: เกี่ยวกับ
+  // ─────────────────────────────────────────────
+  async function loadAbout() {
+    let d;
+    try {
+      const rows = await fetchSheet('about');
+      d = toKV(rows);
+      if (!d.name) d = FALLBACK.about;
+    } catch {
+      d = FALLBACK.about;
+    }
+
+    // avatar
+    const avatar = document.getElementById('avatar');
+    if (d.photo_url) {
+      avatar.innerHTML = `<img src="${d.photo_url}" alt="${d.name}" />`;
+    } else {
+      avatar.textContent = (d.name || 'KH').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+    }
+
+    document.getElementById('profileName').textContent = d.name || '';
+    document.getElementById('profileRole').textContent = d.role || '';
+
+    if (d.bio) {
+      document.getElementById('bioText').textContent = d.bio;
+      document.getElementById('bioCard').style.display = 'block';
+    }
+    if (d.mission) {
+      document.getElementById('missionText').textContent = d.mission;
+      document.getElementById('missionCard').style.display = 'block';
+    }
+
+    function hasContact(val) {
+      return val && val.trim() !== '' && val.trim() !== 'ไม่มี' && val.trim().toLowerCase() !== 'none';
+    }
+    const contacts = [
+      { key:'contact_facebook',  label:'Facebook',  icon:'📘', bg:'#E6F1FB', href: d.contact_facebook },
+      { key:'contact_line',      label:'LINE',       icon:'💬', bg:'#EAF3DE', href: hasContact(d.contact_line) ? `https://line.me/ti/p/${d.contact_line}` : '' },
+      { key:'contact_instagram', label:'Instagram',  icon:'📷', bg:'#FBEAF0', href: d.contact_instagram },
+      { key:'contact_email',     label:'Email',      icon:'✉️', bg:'#FAEEDA', href: hasContact(d.contact_email) ? `mailto:${d.contact_email}` : '' },
+    ].filter(c => hasContact(d[c.key]));
+
+    if (contacts.length > 0) {
+      document.getElementById('contactGrid').innerHTML = contacts.map(c =>
+        `<a class="contact-item" href="${c.href}" target="_blank" rel="noopener">
+          <div class="contact-icon" style="background:${c.bg}">${c.icon}</div>
+          <span>${c.label}</span>
+        </a>`).join('');
+      document.getElementById('contactCard').style.display = 'block';
+    }
   }
 
   // ─────────────────────────────────────────────
   //  INIT
   // ─────────────────────────────────────────────
-  async function init() {
-    const bar = document.getElementById('loadingBar');
-
-    // ถ้ายังไม่ได้ตั้ง SHEETS_ID → ใช้ fallback
-    if (SHEETS_ID === 'YOUR_SHEETS_ID_HERE') {
-      const cfg = FALLBACK.config;
-      renderHero(cfg);
-      renderGrades(FALLBACK.grades);
-      renderSpecials(FALLBACK.specials);
-      bar.style.display = 'none';
-      return;
-    }
-
-    try {
-      const [cfgRows, gradeRows, specialRows] = await Promise.all([
-        fetchCsv('config'),
-        fetchCsv('grades'),
-        fetchCsv('specials'),
-      ]);
-
-      console.log('grades[0]:', JSON.stringify(gradeRows[0]));
-      console.log('specials[0]:', JSON.stringify(specialRows[0]));
-
-      // config sheet เป็น key-value → แปลงเป็น object
-      const cfg = {};
-      cfgRows.forEach(r => { if (r.key) cfg[r.key] = r.value; });
-
-      renderHero(cfg);
-      renderGrades(gradeRows);
-      renderSpecials(specialRows);
-    } catch (err) {
-      console.error(err);
-      document.getElementById('errorBanner').style.display = 'block';
-      // fallback
-      renderHero(FALLBACK.config);
-      renderGrades(FALLBACK.grades);
-      renderSpecials(FALLBACK.specials);
-    } finally {
-      bar.style.display = 'none';
-    }
-  }
-
-  init();
+  loaded['home'] = true;
+  loadPage('home');
 </script>
 </body>
 </html>
