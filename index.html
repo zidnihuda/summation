@@ -36,7 +36,7 @@
       padding: 0 1.5rem;
       height: 56px;
       display: flex; align-items: center; justify-content: space-between;
-      position: sticky; top: 0; z-index: 100;
+      position: sticky; top: 0; z-index: 200;
     }
     .logo { display: flex; align-items: center; gap: 9px; cursor: pointer; text-decoration: none; }
     .logo-box {
@@ -59,6 +59,34 @@
     }
     .nav-btn:hover { background: #f0f0ee; color: #1a1a1a; }
     .nav-btn.active { background: #f0f0ee; color: #1a1a1a; font-weight: 600; }
+
+    /* ── HAMBURGER ── */
+    .hamburger {
+      display: none; flex-direction: column; justify-content: center; gap: 5px;
+      width: 36px; height: 36px; border: none; background: none; cursor: pointer;
+      border-radius: var(--radius-sm); padding: 6px;
+    }
+    .hamburger span { display: block; height: 2px; background: #1a1a1a; border-radius: 2px; transition: transform 0.2s, opacity 0.2s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ── SIDEBAR ── */
+    .sidebar-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35);
+      z-index: 300; backdrop-filter: blur(2px);
+    }
+    .sidebar-overlay.open { display: block; }
+    .sidebar {
+      position: fixed; top: 0; right: -260px; width: 240px; height: 100vh;
+      background: #fff; z-index: 400; padding: 1.25rem 1rem;
+      transition: right 0.25s cubic-bezier(0.19,1,0.22,1);
+      display: flex; flex-direction: column; gap: 4px;
+      box-shadow: -4px 0 24px rgba(0,0,0,0.1);
+    }
+    .sidebar.open { right: 0; }
+    .sidebar-logo { display: flex; align-items: center; gap: 9px; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 0.5px solid #f0f0ee; }
+    .sidebar .nav-btn { width: 100%; text-align: left; padding: 10px 14px; font-size: 14px; border-radius: var(--radius-md); }
 
     /* ── PAGES ── */
     .page { display: none; }
@@ -155,6 +183,92 @@
     .contact-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
     .contact-label { font-size: 11px; color: #999; font-weight: 500; }
     .contact-value { font-size: 13px; color: #1a1a1a; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* ══════════════════════════════
+       PAGE: แบบทดสอบ — setup
+    ══════════════════════════════ */
+    .quiz-setup-wrap { max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    .setup-heading { font-size: 20px; font-weight: 600; margin-bottom: 1.5rem; }
+    .setup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.25rem; }
+    .setup-field { display: flex; flex-direction: column; gap: 6px; }
+    .setup-label { font-size: 12px; font-weight: 600; color: #888; letter-spacing: 0.05em; text-transform: uppercase; }
+    .setup-select {
+      padding: 10px 14px; border: 1.5px solid rgba(0,0,0,0.1); border-radius: var(--radius-md);
+      font-size: 14px; font-family: 'Sarabun', sans-serif; background: #fff; cursor: pointer;
+      outline: none; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center;
+      padding-right: 32px;
+    }
+    .setup-select:focus { border-color: var(--blue); }
+    .setup-info { background: #E6F1FB; border-radius: var(--radius-md); padding: 0.85rem 1rem; font-size: 13px; color: var(--blue-xdk); margin-bottom: 1.25rem; }
+    .setup-start-btn {
+      width: 100%; padding: 1rem; border: none; border-radius: var(--radius-md);
+      background: var(--blue); color: #fff; font-size: 16px; font-weight: 600;
+      font-family: 'Sarabun', sans-serif; cursor: pointer; transition: background 0.12s;
+    }
+    .setup-start-btn:hover:not(:disabled) { background: var(--blue-dk); }
+    .setup-start-btn:disabled { background: #ccc; cursor: default; }
+
+    /* ══════════════════════════════
+       PAGE: แบบทดสอบ — player & result
+    ══════════════════════════════ */
+    .quiz-player-wrap { max-width: 680px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
+    .quiz-q-card { background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-lg); padding: 1.75rem; margin-bottom: 1rem; }
+    .quiz-q-num { font-size: 11px; color: #aaa; margin-bottom: 6px; }
+    .quiz-q-text { font-size: 15px; font-weight: 500; line-height: 1.75; margin-bottom: 1.25rem; }
+    .quiz-choices { display: flex; flex-direction: column; gap: 9px; }
+    .quiz-choice {
+      display: flex; align-items: center; gap: 12px; padding: 0.8rem 1rem;
+      border: 1.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-md);
+      cursor: pointer; transition: border-color 0.12s, background 0.12s; font-size: 14px;
+    }
+    .quiz-choice:hover { border-color: var(--blue); background: #F0F7FF; }
+    .quiz-choice.selected { border-color: var(--blue); background: #E6F1FB; }
+    .quiz-choice.correct  { border-color: var(--green); background: #EAF3DE; }
+    .quiz-choice.wrong    { border-color: var(--pink);  background: #FBEAF0; }
+    .quiz-choice.reveal   { border-color: var(--green); background: #EAF3DE; }
+    .quiz-choice-key { width: 28px; height: 28px; border-radius: 8px; background: #f0f0ee; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+    .quiz-sa-input { width: 100%; padding: 0.75rem 1rem; border: 1.5px solid rgba(0,0,0,0.1); border-radius: var(--radius-md); font-size: 15px; font-family: 'Sarabun', sans-serif; outline: none; }
+    .quiz-sa-input:focus { border-color: var(--blue); }
+    .quiz-submit-all {
+      width: 100%; padding: 1rem; border: none; border-radius: var(--radius-md);
+      background: var(--green); color: #fff; font-size: 16px; font-weight: 600;
+      font-family: 'Sarabun', sans-serif; cursor: pointer; margin-top: 0.5rem;
+      transition: background 0.12s;
+    }
+    .quiz-submit-all:hover { background: var(--green-dk); }
+
+    /* Result */
+    .result-summary { background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-lg); padding: 2rem; margin-bottom: 1.25rem; text-align: center; }
+    .result-score { font-size: 52px; font-weight: 600; color: var(--green); line-height: 1; }
+    .result-of { font-size: 15px; color: #999; margin-bottom: 0.5rem; }
+    .result-pct { font-size: 22px; font-weight: 600; margin-bottom: 0.75rem; }
+    .result-msg { font-size: 14px; color: #666; line-height: 1.7; }
+    .result-chapter-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin-bottom: 1.25rem; }
+    .result-chapter-card { background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-md); padding: 1rem; }
+    .result-chapter-name { font-size: 12px; color: #888; margin-bottom: 4px; }
+    .result-chapter-score { font-size: 18px; font-weight: 600; color: var(--blue-dk); }
+    .result-chapter-bar { height: 4px; border-radius: 4px; background: #f0f0ee; margin-top: 8px; }
+    .result-chapter-bar-fill { height: 100%; border-radius: 4px; background: var(--blue); }
+    .result-answers { margin-bottom: 1.25rem; }
+    .result-answer-item { background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-md); margin-bottom: 8px; overflow: hidden; }
+    .result-answer-header { display: flex; align-items: center; gap: 10px; padding: 0.85rem 1rem; cursor: pointer; }
+    .result-answer-header:hover { background: #f9f9f8; }
+    .result-answer-status { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+    .result-answer-status.correct { background: #EAF3DE; }
+    .result-answer-status.wrong   { background: #FBEAF0; }
+    .result-answer-q { font-size: 13.5px; flex: 1; line-height: 1.5; }
+    .result-answer-body { padding: 0 1rem 1rem; font-size: 13px; color: #555; line-height: 1.7; border-top: 0.5px solid #f0f0ee; display: none; }
+    .result-answer-body.open { display: block; }
+    .result-answer-your { margin-top: 0.5rem; }
+    .result-answer-correct-val { color: var(--green); font-weight: 600; }
+    .result-answer-wrong-val   { color: var(--pink);  font-weight: 600; }
+    .result-btns { display: flex; gap: 10px; }
+    .result-btn-retry { flex: 1; padding: 0.9rem; border: none; border-radius: var(--radius-md); background: var(--blue); color: #fff; font-size: 15px; font-weight: 600; font-family: 'Sarabun', sans-serif; cursor: pointer; }
+    .result-btn-retry:hover { background: var(--blue-dk); }
+    .result-btn-back  { flex: 1; padding: 0.9rem; border: 1.5px solid rgba(0,0,0,0.1); border-radius: var(--radius-md); background: #fff; font-size: 15px; font-weight: 600; font-family: 'Sarabun', sans-serif; cursor: pointer; }
+    .result-btn-back:hover { background: #f5f5f3; }
 
     /* ══════════════════════════════
        PAGE: แบบฝึกหัด — browser
@@ -368,17 +482,62 @@
     }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 600px) {
-      .grade-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    @media (max-width: 768px) {
       .topnav { display: none; }
+      .hamburger { display: flex; }
+      .grade-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .hero-title { font-size: 22px; }
       .profile-card { flex-direction: column; text-align: center; }
+      .home-main { padding: 1.25rem 1rem 2rem; }
+      .about-main { padding: 1.5rem 1rem 3rem; }
+      .docs-main { padding: 1.5rem 1rem 3rem; }
+      .video-main { padding: 1.5rem 1rem 3rem; }
+      .exercise-main { padding: 1.5rem 1rem 3rem; }
+      .quiz-setup-wrap { padding: 1.5rem 1rem 3rem; }
+      .quiz-player-wrap { padding: 1rem 1rem 3rem; }
+      .player-wrap { padding: 1rem 1rem 3rem; }
+      .special-grid { grid-template-columns: 1fr 1fr; }
+      .docs-grid { grid-template-columns: 1fr; }
+      .video-grid { grid-template-columns: 1fr; }
+      .ex-unit-grid { grid-template-columns: 1fr 1fr; }
+      .result-chapter-grid { grid-template-columns: 1fr 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .setup-grid { grid-template-columns: 1fr 1fr; }
+      .quiz-q-card { padding: 1.25rem; }
+      .summary-card { padding: 1.5rem; }
+      .result-summary { padding: 1.5rem; }
+    }
+    @media (max-width: 420px) {
+      .grade-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .special-grid { grid-template-columns: 1fr; }
+      .ex-unit-grid { grid-template-columns: 1fr; }
+      .result-chapter-grid { grid-template-columns: 1fr; }
+      .result-btns { flex-direction: column; }
+      .hero { padding: 2rem 1rem 1.75rem; }
+      .logo-sub { display: none; }
     }
   </style>
 </head>
 <body>
 
 <div class="loading-bar" id="loadingBar"></div>
+
+<!-- ── SIDEBAR OVERLAY ── -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-box">∑</div>
+    <div class="logo-texts">
+      <div class="logo-name">Summation <span>by Kru Haisam</span></div>
+    </div>
+  </div>
+  <button class="nav-btn" data-page="home"     onclick="navigate('home');closeSidebar()">🏠 หน้าแรก</button>
+  <button class="nav-btn" data-page="exercise" onclick="navigate('exercise');closeSidebar()">✏️ แบบฝึกหัด</button>
+  <button class="nav-btn" data-page="quiz"     onclick="navigate('quiz');closeSidebar()">📝 แบบทดสอบ</button>
+  <button class="nav-btn" data-page="video"    onclick="navigate('video');closeSidebar()">🎬 วิดีโอ</button>
+  <button class="nav-btn" data-page="docs"     onclick="navigate('docs');closeSidebar()">📄 เอกสาร</button>
+  <button class="nav-btn" data-page="about"    onclick="navigate('about');closeSidebar()">👤 เกี่ยวกับ</button>
+</div>
 
 <!-- ── TOPBAR ── -->
 <header class="topbar">
@@ -397,6 +556,9 @@
     <button class="nav-btn"        data-page="docs"     onclick="navigate('docs')">เอกสาร</button>
     <button class="nav-btn"        data-page="about"    onclick="navigate('about')">เกี่ยวกับ</button>
   </nav>
+  <button class="hamburger" id="hamburger" onclick="toggleSidebar()">
+    <span></span><span></span><span></span>
+  </button>
 </header>
 
 <!-- ══════════════════════════════
@@ -453,11 +615,82 @@
      PAGE: แบบทดสอบ
 ══════════════════════════════ -->
 <div class="page" id="page-quiz">
-  <div class="placeholder">
-    <div class="placeholder-icon">📝</div>
-    <h2>แบบทดสอบ</h2>
-    <p>หน้านี้กำลังอยู่ระหว่างการพัฒนา<br>จะเปิดให้ใช้งานเร็วๆ นี้ครับ</p>
-    <span class="placeholder-badge">⚙️ กำลังพัฒนา</span>
+  <!-- ขั้นตอนตั้งค่า -->
+  <div id="quizSetup">
+    <div class="quiz-setup-wrap">
+      <h1 class="setup-heading">⚙️ ตั้งค่าแบบทดสอบ</h1>
+      <div class="setup-grid">
+        <div class="setup-field">
+          <label class="setup-label">ประเภทข้อสอบ</label>
+          <select class="setup-select" id="selExamType" onchange="quizConfig.examType=this.value;checkSetupReady()">
+            <option value="">— เลือก —</option>
+            <option value="ทั้งหมด">ทั้งหมด</option>
+            <option value="สอวน.">🏆 สอวน.</option>
+            <option value="เตรียมสอบเข้า ม.4">📚 เตรียมสอบเข้า ม.4</option>
+            <option value="A-level">📐 A-level</option>
+            <option value="เตรียมสอบชิงทุน">🎯 เตรียมสอบชิงทุน</option>
+          </select>
+        </div>
+        <div class="setup-field">
+          <label class="setup-label">รูปแบบข้อ</label>
+          <select class="setup-select" id="selQType" onchange="quizConfig.qType=this.value;checkSetupReady()">
+            <option value="">— เลือก —</option>
+            <option value="mc">📝 เลือกตอบ</option>
+            <option value="sa">✏️ เติมคำตอบ</option>
+            <option value="mixed">🔀 ผสม</option>
+          </select>
+        </div>
+        <div class="setup-field">
+          <label class="setup-label">จำนวนข้อ</label>
+          <select class="setup-select" id="selQCount" onchange="quizConfig.qCount=this.value;checkSetupReady()">
+            <option value="">— เลือก —</option>
+            <option value="5">5 ข้อ</option>
+            <option value="10">10 ข้อ</option>
+            <option value="15">15 ข้อ</option>
+            <option value="20">20 ข้อ</option>
+            <option value="25">25 ข้อ</option>
+            <option value="30">30 ข้อ</option>
+          </select>
+        </div>
+        <div class="setup-field">
+          <label class="setup-label">ระดับความยาก</label>
+          <select class="setup-select" id="selDifficulty" onchange="quizConfig.difficulty=this.value;checkSetupReady()">
+            <option value="">— เลือก —</option>
+            <option value="1">⭐ ง่ายมาก</option>
+            <option value="2">⭐⭐ ง่าย</option>
+            <option value="3">⭐⭐⭐ ปานกลาง</option>
+            <option value="4">⭐⭐⭐⭐ ยาก</option>
+            <option value="5">⭐⭐⭐⭐⭐ ยากมาก</option>
+          </select>
+        </div>
+      </div>
+      <div class="setup-info" id="setupInfo" style="display:none"></div>
+      <button class="setup-start-btn" id="setupStartBtn" onclick="startQuiz()" disabled>เริ่มทำแบบทดสอบ →</button>
+    </div>
+  </div>
+
+  <!-- หน้าทำข้อสอบ -->
+  <div id="quizPlayer" style="display:none">
+    <div class="quiz-player-wrap">
+      <div class="player-topbar">
+        <button class="player-back" onclick="closeQuiz()">← ตั้งค่าใหม่</button>
+        <div class="player-title" id="quizPlayerTitle"></div>
+        <div class="player-progress" id="quizProgress">0/0</div>
+      </div>
+      <div class="player-score-bar"><div class="player-score-fill" id="quizScoreFill"></div></div>
+      <div id="quizBody"></div>
+    </div>
+  </div>
+
+  <!-- หน้าสรุปผล -->
+  <div id="quizResult" style="display:none">
+    <div class="quiz-player-wrap">
+      <div class="player-topbar">
+        <button class="player-back" onclick="closeQuiz()">← ตั้งค่าใหม่</button>
+        <div class="player-title">ผลการทดสอบ</div>
+      </div>
+      <div id="quizResultBody"></div>
+    </div>
   </div>
 </div>
 
@@ -525,6 +758,7 @@
     documents: '2115382289',
     videos:    '1639206366',
     exercise:  '2099448885',
+    quiz:      '523092849',
   };
 
   // ─────────────────────────────────────────────
@@ -569,6 +803,7 @@
     documents: [],
     videos: [],
     exercise: [],
+    quiz: [],
   };
 
   // ─────────────────────────────────────────────
@@ -618,6 +853,67 @@
     return (val || '').toUpperCase() !== 'FALSE';
   }
 
+  function toggleSidebar() {
+    const sb = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const hb = document.getElementById('hamburger');
+    sb.classList.toggle('open');
+    overlay.classList.toggle('open');
+    hb.classList.toggle('open');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+  }
+
+  function navigateToExercise(grade) {
+    navigate('exercise');
+    // รอให้ loadExercise เสร็จก่อนแล้วค่อย toggle เปิด grade นั้น
+    const tryOpen = (attempts) => {
+      // หา grade header ที่ตรงกัน
+      const headers = document.querySelectorAll('.ex-grade-header');
+      let found = false;
+      headers.forEach(h => {
+        const h2 = h.querySelector('h2');
+        if (h2 && h2.textContent.trim() === grade) {
+          // เลื่อน scroll ไปที่การ์ด และ toggle เปิดถ้ายังปิดอยู่
+          const bodyId = h.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+          if (bodyId) {
+            const body = document.getElementById(bodyId);
+            if (body && body.style.display === 'none') toggleSection(bodyId, h);
+          }
+          h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          found = true;
+        }
+      });
+      if (!found && attempts > 0) setTimeout(() => tryOpen(attempts - 1), 200);
+    };
+    setTimeout(() => tryOpen(10), 100);
+  }
+
+  function navigateToQuiz(examType) {
+    navigate('quiz');
+    // รอให้ loadQuiz เสร็จก่อนแล้วค่อย preset dropdown
+    const trySet = (attempts) => {
+      const sel = document.getElementById('selExamType');
+      if (sel) {
+        // หา option ที่ value ตรงหรือใกล้เคียง
+        const match = Array.from(sel.options).find(o =>
+          o.value === examType || examType.includes(o.value) || o.value.includes(examType)
+        );
+        if (match) {
+          sel.value = match.value;
+          quizConfig.examType = match.value;
+          checkSetupReady();
+        }
+      } else if (attempts > 0) {
+        setTimeout(() => trySet(attempts - 1), 200);
+      }
+    };
+    setTimeout(() => trySet(10), 100);
+  }
+
   // ─────────────────────────────────────────────
   //  NAVIGATION
   // ─────────────────────────────────────────────
@@ -625,7 +921,7 @@
 
   function navigate(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => {
+    document.querySelectorAll('.nav-btn[data-page]').forEach(b => {
       b.classList.toggle('active', b.dataset.page === page);
     });
     document.getElementById(`page-${page}`).classList.add('active');
@@ -646,6 +942,7 @@
       if (page === 'docs')     await loadDocs();
       if (page === 'video')    await loadVideo();
       if (page === 'exercise') await loadExercise();
+      if (page === 'quiz')     await loadQuiz();
     } catch (e) {
       console.error(e);
     } finally {
@@ -703,6 +1000,7 @@
         <div class="grade-num" style="color:${r.color}">${r.label}</div>
         <div class="grade-sub">${r.sublabel}</div>
         <div class="grade-bar" style="background:${r.bar || r.color}"></div>`;
+      card.onclick = () => navigateToExercise(r.label);
       gradeGrid.appendChild(card);
     });
 
@@ -715,6 +1013,7 @@
       card.innerHTML = `
         <div class="special-icon" style="background:${r.bg}">${r.icon}</div>
         <div><h3>${r.title}</h3><p>${r.desc}</p></div>`;
+      card.onclick = () => navigateToQuiz(r.title);
       specialGrid.appendChild(card);
     });
   }
@@ -773,6 +1072,232 @@
         </a>`).join('');
       document.getElementById('contactCard').style.display = 'block';
     }
+  }
+
+  // ─────────────────────────────────────────────
+  //  PAGE: แบบทดสอบ
+  // ─────────────────────────────────────────────
+  let quizAllRows = [];
+  let quizConfig = { examType: null, qType: null, qCount: null, difficulty: null };
+  let quizSession = { questions: [], answers: [] };
+
+  async function loadQuiz() {
+    try { quizAllRows = await fetchSheet('quiz'); }
+    catch { quizAllRows = FALLBACK.quiz; }
+    checkSetupReady();
+  }
+
+  function checkSetupReady() {
+    const { examType, qType, qCount, difficulty } = quizConfig;
+    const ready = examType && qType && qCount && difficulty;
+    document.getElementById('setupStartBtn').disabled = !ready;
+    if (ready) {
+      const pool = buildPool();
+      const info = document.getElementById('setupInfo');
+      info.style.display = 'block';
+      info.textContent = `📦 พบข้อสอบในคลัง ${pool.length} ข้อ • จะสุ่มมา ${Math.min(pool.length, parseInt(qCount))} ข้อ`;
+    }
+  }
+
+  function buildPool() {
+    const { examType, qType } = quizConfig;
+    return quizAllRows.filter(r => {
+      if (!isVisible(r.visible)) return false;
+      if (examType !== 'ทั้งหมด' && r.exam_type !== examType) return false;
+      if (qType === 'mc' && (r.type||'').toLowerCase() !== 'mc') return false;
+      if (qType === 'sa' && (r.type||'').toLowerCase() !== 'sa') return false;
+      return true;
+    });
+  }
+
+  // สัดส่วนตามดาว easy:medium:hard
+  const DIFF_RATIO = {
+    '1': [4,1,1], '2': [3,2,1], '3': [2,2,1], '4': [1,2,1], '5': [1,2,2]
+  };
+
+  function pickWithRatio(pool, total, ratioKey) {
+    const ratio = DIFF_RATIO[ratioKey] || [1,1,1];
+    const sum = ratio.reduce((a,b) => a+b, 0);
+    const easy   = pool.filter(r => r.difficulty === 'easy').sort(() => Math.random()-.5);
+    const medium = pool.filter(r => r.difficulty === 'medium').sort(() => Math.random()-.5);
+    const hard   = pool.filter(r => r.difficulty === 'hard').sort(() => Math.random()-.5);
+
+    let [ne, nm, nh] = ratio.map((r,i) => Math.floor(total * r / sum));
+    let leftover = total - ne - nm - nh;
+    // แจกเศษให้ medium ก่อน แล้ว easy
+    if (leftover > 0 && nm < medium.length) { nm++; leftover--; }
+    if (leftover > 0 && ne < easy.length)   { ne++; leftover--; }
+    if (leftover > 0 && nh < hard.length)   { nh++; leftover--; }
+
+    return [
+      ...easy.slice(0, ne),
+      ...medium.slice(0, nm),
+      ...hard.slice(0, nh),
+    ].sort(() => Math.random()-.5);
+  }
+
+  function startQuiz() {
+    const { qCount, difficulty } = quizConfig;
+    const pool = buildPool();
+    const total = Math.min(pool.length, parseInt(qCount));
+    const questions = pickWithRatio(pool, total, difficulty);
+
+    if (questions.length === 0) {
+      alert('ไม่พบข้อสอบในคลังที่ตรงกับเงื่อนไขที่เลือกครับ'); return;
+    }
+
+    quizSession = { questions, answers: new Array(questions.length).fill(null) };
+    document.getElementById('quizSetup').style.display = 'none';
+    document.getElementById('quizResult').style.display = 'none';
+    document.getElementById('quizPlayer').style.display = 'block';
+    document.getElementById('quizPlayerTitle').textContent = `แบบทดสอบ ${questions.length} ข้อ`;
+    document.getElementById('quizProgress').textContent = `0/${questions.length}`;
+    document.getElementById('quizScoreFill').style.width = '0%';
+    renderQuizAll();
+  }
+
+  function renderQuizAll() {
+    const { questions } = quizSession;
+    const keys = ['a','b','c','d'];
+    const labels = ['ก','ข','ค','ง'];
+
+    document.getElementById('quizBody').innerHTML = questions.map((q, qi) => {
+      const isMC = (q.type||'mc').toLowerCase() === 'mc';
+      let inputHTML = '';
+      if (isMC) {
+        inputHTML = `<div class="quiz-choices">` + keys.map((k,i) => {
+          const val = q[`choice_${k}`];
+          if (!val) return '';
+          return `<div class="quiz-choice" data-qi="${qi}" data-key="${k}" onclick="quizSelectChoice(this,${qi},'${k}')">
+            <div class="quiz-choice-key">${labels[i]}</div><span>${val}</span>
+          </div>`;
+        }).join('') + `</div>`;
+      } else {
+        inputHTML = `<input class="quiz-sa-input" id="qsa-${qi}" type="text" placeholder="พิมพ์คำตอบ..." oninput="quizSaInput(${qi},this.value)" />`;
+      }
+      return `<div class="quiz-q-card" id="qcard-${qi}">
+        <div class="quiz-q-num">ข้อที่ ${qi+1} จาก ${questions.length} • ${isMC ? 'ปรนัย' : 'เติมคำตอบ'} • ${q.difficulty||''}</div>
+        <div class="quiz-q-text">${q.question}</div>
+        ${inputHTML}
+      </div>`;
+    }).join('') + `<button class="quiz-submit-all" onclick="submitQuizAll()">✅ ส่งคำตอบและดูผล</button>`;
+
+    // update progress as user answers
+    updateQuizProgress();
+  }
+
+  function quizSelectChoice(el, qi, key) {
+    document.querySelectorAll(`[data-qi="${qi}"]`).forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    quizSession.answers[qi] = key;
+    updateQuizProgress();
+  }
+
+  function quizSaInput(qi, val) {
+    quizSession.answers[qi] = val.trim() || null;
+    updateQuizProgress();
+  }
+
+  function updateQuizProgress() {
+    const answered = quizSession.answers.filter(a => a !== null && a !== '').length;
+    const total = quizSession.questions.length;
+    document.getElementById('quizProgress').textContent = `${answered}/${total}`;
+    document.getElementById('quizScoreFill').style.width = `${(answered/total)*100}%`;
+  }
+
+  function submitQuizAll() {
+    const { questions, answers } = quizSession;
+    const results = questions.map((q, qi) => {
+      const correct = (q.answer||'').trim().toLowerCase();
+      const userAns = (answers[qi]||'').trim().toLowerCase();
+      return { q, userAns: answers[qi]||'', correct: q.answer||'', isCorrect: userAns === correct };
+    });
+
+    // คำนวณคะแนนรวม
+    const score = results.filter(r => r.isCorrect).length;
+    const total = results.length;
+    const pct = Math.round((score/total)*100);
+
+    // คำนวณคะแนนแต่ละ chapter
+    const chapterMap = {};
+    results.forEach(r => {
+      const ch = r.q.chapter || 'อื่นๆ';
+      if (!chapterMap[ch]) chapterMap[ch] = { score: 0, total: 0 };
+      chapterMap[ch].total++;
+      if (r.isCorrect) chapterMap[ch].score++;
+    });
+
+    const msg = pct === 100 ? '🎉 เยี่ยมมาก! ทำได้สมบูรณ์แบบ!' :
+                pct >= 80  ? '👍 ดีมากเลย! เกือบสมบูรณ์แบบ' :
+                pct >= 60  ? '😊 ผ่านแล้ว! ยังมีจุดที่ปรับปรุงได้นะครับ' :
+                             '💪 ยังไม่ผ่าน ลองทบทวนแล้วทำใหม่นะครับ';
+
+    const chapterHTML = Object.entries(chapterMap).map(([ch, val]) => {
+      const cpct = Math.round((val.score/val.total)*100);
+      return `<div class="result-chapter-card">
+        <div class="result-chapter-name">${ch}</div>
+        <div class="result-chapter-score">${val.score}/${val.total} <span style="font-size:13px;color:#aaa;font-weight:400">(${cpct}%)</span></div>
+        <div class="result-chapter-bar"><div class="result-chapter-bar-fill" style="width:${cpct}%"></div></div>
+      </div>`;
+    }).join('');
+
+    const answerHTML = results.map((r, qi) => {
+      const isMC = (r.q.type||'mc').toLowerCase() === 'mc';
+      const keys = ['a','b','c','d'];
+      const labels = ['ก','ข','ค','ง'];
+      let userLabel = r.userAns;
+      let correctLabel = r.correct;
+      if (isMC) {
+        const idx = keys.indexOf(r.userAns.toLowerCase());
+        const cidx = keys.indexOf(r.correct.toLowerCase());
+        userLabel = idx >= 0 ? `${labels[idx]}. ${r.q[`choice_${r.userAns.toLowerCase()}`]||r.userAns}` : '(ไม่ได้ตอบ)';
+        correctLabel = cidx >= 0 ? `${labels[cidx]}. ${r.q[`choice_${r.correct.toLowerCase()}`]||r.correct}` : r.correct;
+      }
+      return `<div class="result-answer-item">
+        <div class="result-answer-header" onclick="toggleResultAnswer(this)">
+          <div class="result-answer-status ${r.isCorrect ? 'correct' : 'wrong'}">${r.isCorrect ? '✅' : '❌'}</div>
+          <div class="result-answer-q">ข้อ ${qi+1}: ${r.q.question}</div>
+          <span style="font-size:11px;color:#bbb;">▾</span>
+        </div>
+        <div class="result-answer-body">
+          <div class="result-answer-your">
+            คำตอบของคุณ: <span class="${r.isCorrect ? 'result-answer-correct-val' : 'result-answer-wrong-val'}">${userLabel||'(ไม่ได้ตอบ)'}</span>
+          </div>
+          ${!r.isCorrect ? `<div>เฉลย: <span class="result-answer-correct-val">${correctLabel}</span></div>` : ''}
+          ${r.q.explanation ? `<div style="margin-top:6px;padding-top:6px;border-top:0.5px solid #f0f0ee;color:#555">${r.q.explanation}</div>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+
+    document.getElementById('quizPlayer').style.display = 'none';
+    document.getElementById('quizResult').style.display = 'block';
+    document.getElementById('quizResultBody').innerHTML = `
+      <div class="result-summary">
+        <div class="result-score">${score}</div>
+        <div class="result-of">จาก ${total} ข้อ</div>
+        <div class="result-pct">${pct}%</div>
+        <div class="result-msg">${msg}</div>
+      </div>
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.06em;color:#999;text-transform:uppercase;margin-bottom:0.75rem;">คะแนนแต่ละบท</div>
+      <div class="result-chapter-grid">${chapterHTML}</div>
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.06em;color:#999;text-transform:uppercase;margin:1.25rem 0 0.75rem;">เฉลยทุกข้อ</div>
+      <div class="result-answers">${answerHTML}</div>
+      <div class="result-btns">
+        <button class="result-btn-retry" onclick="startQuiz()">🔄 ทำใหม่</button>
+        <button class="result-btn-back" onclick="closeQuiz()">← ตั้งค่าใหม่</button>
+      </div>`;
+  }
+
+  function toggleResultAnswer(el) {
+    const body = el.nextElementSibling;
+    body.classList.toggle('open');
+    el.querySelector('span:last-child').style.transform = body.classList.contains('open') ? 'rotate(180deg)' : '';
+  }
+
+  function closeQuiz() {
+    document.getElementById('quizPlayer').style.display = 'none';
+    document.getElementById('quizResult').style.display = 'none';
+    document.getElementById('quizSetup').style.display = 'block';
   }
 
   // ─────────────────────────────────────────────
