@@ -157,6 +157,122 @@
     .contact-value { font-size: 13px; color: #1a1a1a; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* ══════════════════════════════
+       PAGE: แบบฝึกหัด — browser
+    ══════════════════════════════ */
+    .exercise-main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    .ex-grade { margin-bottom: 2.5rem; }
+    .ex-grade-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 0.75rem 1rem; margin-bottom: 1.25rem;
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-md); cursor: pointer; user-select: none;
+    }
+    .ex-grade-header:hover { background: #f5f5f3; }
+    .ex-grade-header h2 { font-size: 16px; font-weight: 600; flex: 1; }
+    .ex-grade-header span { font-size: 12px; color: #999; }
+    .ex-chapter { margin-bottom: 1.5rem; padding-left: 0.5rem; }
+    .ex-chapter-title {
+      font-size: 13px; font-weight: 600; color: #555;
+      margin-bottom: 0.75rem; padding-left: 0.5rem;
+      border-left: 3px solid var(--green); cursor: pointer; user-select: none;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .ex-chapter-title:hover { color: #1a1a1a; }
+    .ex-unit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+    .ex-unit-card {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-md); padding: 1rem 1.1rem;
+      cursor: pointer; transition: transform 0.13s, box-shadow 0.13s, border-color 0.13s;
+    }
+    .ex-unit-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-color: var(--green); }
+    .ex-unit-icon { font-size: 22px; margin-bottom: 8px; }
+    .ex-unit-name { font-size: 13.5px; font-weight: 600; margin-bottom: 4px; }
+    .ex-unit-count { font-size: 11.5px; color: #999; }
+    .ex-unit-badge {
+      display: inline-block; margin-top: 8px;
+      font-size: 11px; font-weight: 500; padding: 2px 9px; border-radius: 999px;
+      background: #EAF3DE; color: #27500A;
+    }
+
+    /* ══════════════════════════════
+       PAGE: แบบฝึกหัด — player
+    ══════════════════════════════ */
+    .player-wrap { max-width: 680px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
+    .player-topbar {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 1rem;
+    }
+    .player-back {
+      background: none; border: 0.5px solid rgba(0,0,0,0.12); border-radius: var(--radius-sm);
+      padding: 6px 12px; font-size: 13px; cursor: pointer; font-family: 'Sarabun', sans-serif;
+      color: #555; transition: background 0.12s;
+    }
+    .player-back:hover { background: #f0f0ee; }
+    .player-title { font-size: 15px; font-weight: 600; flex: 1; }
+    .player-progress { font-size: 13px; color: #888; white-space: nowrap; }
+    .player-score-bar {
+      height: 4px; background: #f0f0ee; border-radius: 4px; margin-bottom: 1.5rem; overflow: hidden;
+    }
+    .player-score-fill { height: 100%; background: var(--green); border-radius: 4px; width: 0; transition: width 0.4s; }
+
+    .q-card { background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-lg); padding: 1.75rem; }
+    .q-meta { font-size: 11px; color: #aaa; margin-bottom: 0.75rem; }
+    .q-text { font-size: 16px; font-weight: 500; line-height: 1.7; margin-bottom: 1.5rem; }
+    .q-choices { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.25rem; }
+    .q-choice {
+      display: flex; align-items: center; gap: 12px; padding: 0.85rem 1rem;
+      border: 1.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-md);
+      cursor: pointer; transition: border-color 0.12s, background 0.12s; font-size: 14px;
+    }
+    .q-choice:hover { border-color: var(--blue); background: #F0F7FF; }
+    .q-choice.selected { border-color: var(--blue); background: #E6F1FB; }
+    .q-choice.correct  { border-color: var(--green); background: #EAF3DE; pointer-events: none; }
+    .q-choice.wrong    { border-color: var(--pink);  background: #FBEAF0; pointer-events: none; }
+    .q-choice.reveal   { border-color: var(--green); background: #EAF3DE; pointer-events: none; }
+    .q-choice-key { width: 28px; height: 28px; border-radius: 8px; background: #f0f0ee; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+    .q-sa-input { width: 100%; padding: 0.75rem 1rem; border: 1.5px solid rgba(0,0,0,0.1); border-radius: var(--radius-md); font-size: 15px; font-family: 'Sarabun', sans-serif; outline: none; margin-bottom: 1.25rem; }
+    .q-sa-input:focus { border-color: var(--blue); }
+    .q-sa-input.correct { border-color: var(--green); background: #EAF3DE; }
+    .q-sa-input.wrong   { border-color: var(--pink);  background: #FBEAF0; }
+
+    .q-submit-btn {
+      width: 100%; padding: 0.85rem; border: none; border-radius: var(--radius-md);
+      background: var(--blue); color: #fff; font-size: 15px; font-weight: 600;
+      font-family: 'Sarabun', sans-serif; cursor: pointer; transition: background 0.12s;
+    }
+    .q-submit-btn:hover { background: var(--blue-dk); }
+    .q-submit-btn:disabled { background: #ccc; cursor: default; }
+
+    .q-feedback { margin-top: 1rem; padding: 1rem; border-radius: var(--radius-md); font-size: 14px; line-height: 1.7; }
+    .q-feedback.correct { background: #EAF3DE; color: #1a4a1a; border-left: 4px solid var(--green); }
+    .q-feedback.wrong   { background: #FBEAF0; color: #4a1a2a; border-left: 4px solid var(--pink); }
+    .q-feedback-title { font-weight: 600; margin-bottom: 4px; }
+
+    .q-next-btn {
+      width: 100%; margin-top: 1rem; padding: 0.85rem; border: none; border-radius: var(--radius-md);
+      background: var(--green); color: #fff; font-size: 15px; font-weight: 600;
+      font-family: 'Sarabun', sans-serif; cursor: pointer; transition: background 0.12s;
+    }
+    .q-next-btn:hover { background: var(--green-dk); }
+
+    /* Summary */
+    .summary-card { background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-lg); padding: 2.5rem; text-align: center; }
+    .summary-score { font-size: 56px; font-weight: 600; color: var(--green); line-height: 1; }
+    .summary-of { font-size: 16px; color: #999; margin-bottom: 1rem; }
+    .summary-msg { font-size: 15px; color: #555; margin-bottom: 2rem; line-height: 1.7; }
+    .summary-retry {
+      padding: 0.85rem 2rem; border: none; border-radius: var(--radius-md);
+      background: var(--blue); color: #fff; font-size: 15px; font-weight: 600;
+      font-family: 'Sarabun', sans-serif; cursor: pointer; margin-right: 10px;
+    }
+    .summary-retry:hover { background: var(--blue-dk); }
+    .summary-back {
+      padding: 0.85rem 2rem; border: 1.5px solid rgba(0,0,0,0.1); border-radius: var(--radius-md);
+      background: #fff; font-size: 15px; font-weight: 600;
+      font-family: 'Sarabun', sans-serif; cursor: pointer;
+    }
+    .summary-back:hover { background: #f5f5f3; }
+
+    /* ══════════════════════════════
        PAGE: วิดีโอ
     ══════════════════════════════ */
     .video-main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
@@ -311,11 +427,25 @@
      PAGE: แบบฝึกหัด
 ══════════════════════════════ -->
 <div class="page" id="page-exercise">
-  <div class="placeholder">
-    <div class="placeholder-icon">✏️</div>
-    <h2>แบบฝึกหัด</h2>
-    <p>รวมแบบฝึกหัดคณิตศาสตร์ทุกระดับชั้น<br>กำลังอยู่ระหว่างการพัฒนาครับ</p>
-    <span class="placeholder-badge">⚙️ กำลังพัฒนา</span>
+  <!-- หน้าเลือกหน่วย -->
+  <div id="exerciseBrowser">
+    <div class="exercise-main" id="exerciseMain">
+      <div class="placeholder"><div class="placeholder-icon">✏️</div><h2>กำลังโหลด...</h2></div>
+    </div>
+  </div>
+  <!-- หน้าทำโจทย์ -->
+  <div id="exercisePlayer" style="display:none">
+    <div class="player-wrap">
+      <div class="player-topbar">
+        <button class="player-back" onclick="closeExercise()">← กลับ</button>
+        <div class="player-title" id="playerTitle"></div>
+        <div class="player-progress" id="playerProgress">0/10</div>
+      </div>
+      <div class="player-score-bar">
+        <div class="player-score-fill" id="playerScoreFill"></div>
+      </div>
+      <div class="player-body" id="playerBody"></div>
+    </div>
   </div>
 </div>
 
@@ -394,6 +524,7 @@
     about:     '291876820',
     documents: '2115382289',
     videos:    '1639206366',
+    exercise:  '2099448885',
   };
 
   // ─────────────────────────────────────────────
@@ -437,6 +568,7 @@
     },
     documents: [],
     videos: [],
+    exercise: [],
   };
 
   // ─────────────────────────────────────────────
@@ -509,10 +641,11 @@
     const bar = document.getElementById('loadingBar');
     bar.className = 'loading-bar running';
     try {
-      if (page === 'home')  await loadHome();
-      if (page === 'about') await loadAbout();
-      if (page === 'docs')  await loadDocs();
-      if (page === 'video') await loadVideo();
+      if (page === 'home')     await loadHome();
+      if (page === 'about')    await loadAbout();
+      if (page === 'docs')     await loadDocs();
+      if (page === 'video')    await loadVideo();
+      if (page === 'exercise') await loadExercise();
     } catch (e) {
       console.error(e);
     } finally {
@@ -640,6 +773,219 @@
         </a>`).join('');
       document.getElementById('contactCard').style.display = 'block';
     }
+  }
+
+  // ─────────────────────────────────────────────
+  //  PAGE: แบบฝึกหัด — browser
+  // ─────────────────────────────────────────────
+  let exAllRows = [];
+
+  async function loadExercise() {
+    const container = document.getElementById('exerciseMain');
+    try { exAllRows = await fetchSheet('exercise'); }
+    catch { exAllRows = FALLBACK.exercise; }
+
+    const visible = exAllRows.filter(r => isVisible(r.visible));
+    if (visible.length === 0) {
+      container.innerHTML = `<div class="placeholder"><div class="placeholder-icon">✏️</div><h2>ยังไม่มีแบบฝึกหัด</h2></div>`;
+      return;
+    }
+
+    // grade → chapter → unit → rows
+    const tree = {};
+    visible.forEach(r => {
+      const g = r.grade || 'อื่นๆ';
+      const c = r.chapter || 'ทั่วไป';
+      const u = r.unit || 'ทั่วไป';
+      if (!tree[g]) tree[g] = {};
+      if (!tree[g][c]) tree[g][c] = {};
+      if (!tree[g][c][u]) tree[g][c][u] = [];
+      tree[g][c][u].push(r);
+    });
+
+    const sortedGrades = Object.keys(tree).sort((a,b) => a.localeCompare(b,'th'));
+    container.innerHTML = sortedGrades.map((grade, gi) => {
+      const chapters = Object.keys(tree[grade]).sort((a,b) => a.localeCompare(b,'th'));
+      const totalQ = chapters.reduce((s,c) => s + Object.values(tree[grade][c]).reduce((s2,u) => s2+u.length, 0), 0);
+      const gradeBodyId = `exgrade-${gi}`;
+
+      const chapHTML = chapters.map((chap, ci) => {
+        const units = Object.keys(tree[grade][chap]).sort((a,b) => a.localeCompare(b,'th'));
+        const chapBodyId = `exchap-${gi}-${ci}`;
+        const unitHTML = units.map(unit => {
+          const rows = tree[grade][chap][unit];
+          const count = rows.length;
+          return `<div class="ex-unit-card" onclick="startExercise('${grade}','${chap}','${unit}')">
+            <div class="ex-unit-icon">📘</div>
+            <div class="ex-unit-name">${unit}</div>
+            <div class="ex-unit-count">${count} ข้อในคลัง</div>
+            <span class="ex-unit-badge">▶ เริ่มทำ 10 ข้อ</span>
+          </div>`;
+        }).join('');
+        return `<div class="ex-chapter">
+          <div class="ex-chapter-title toggle-topic" onclick="toggleSection('${chapBodyId}',this)">
+            <span class="toggle-arrow">▾</span>${chap}
+            <span class="topic-count">${units.length} หน่วย</span>
+          </div>
+          <div class="ex-unit-grid" id="${chapBodyId}">${unitHTML}</div>
+        </div>`;
+      }).join('');
+
+      return `<div class="ex-grade">
+        <div class="ex-grade-header toggle-grade" onclick="toggleSection('${gradeBodyId}',this)">
+          <span class="toggle-arrow">▾</span>
+          <h2>${grade}</h2>
+          <span>${totalQ} ข้อ</span>
+        </div>
+        <div id="${gradeBodyId}">${chapHTML}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // ─────────────────────────────────────────────
+  //  PAGE: แบบฝึกหัด — player
+  // ─────────────────────────────────────────────
+  let exSession = { questions:[], current:0, score:0, unit:'', answered:false };
+
+  function startExercise(grade, chap, unit) {
+    const pool = exAllRows.filter(r =>
+      isVisible(r.visible) && r.grade===grade && r.chapter===chap && r.unit===unit
+    );
+    const shuffled = pool.sort(() => Math.random()-0.5).slice(0, 10);
+    exSession = { questions: shuffled, current: 0, score: 0, unit, answered: false };
+
+    document.getElementById('exerciseBrowser').style.display = 'none';
+    document.getElementById('exercisePlayer').style.display = 'block';
+    document.getElementById('playerTitle').textContent = unit;
+    renderQuestion();
+  }
+
+  function closeExercise() {
+    document.getElementById('exercisePlayer').style.display = 'none';
+    document.getElementById('exerciseBrowser').style.display = 'block';
+  }
+
+  function renderQuestion() {
+    const { questions, current, score } = exSession;
+    const total = questions.length;
+    document.getElementById('playerProgress').textContent = `${current+1}/${total}`;
+    document.getElementById('playerScoreFill').style.width = `${(current/total)*100}%`;
+
+    const q = questions[current];
+    const isMC = (q.type||'mc').toLowerCase() === 'mc';
+    const keys = ['a','b','c','d'];
+    const labels = ['ก','ข','ค','ง'];
+
+    let choicesHTML = '';
+    if (isMC) {
+      choicesHTML = `<div class="q-choices">` + keys.map((k,i) => {
+        const val = q[`choice_${k}`];
+        if (!val) return '';
+        return `<div class="q-choice" data-key="${k}" onclick="selectChoice(this,'${k}')">
+          <div class="q-choice-key">${labels[i]}</div>
+          <span>${val}</span>
+        </div>`;
+      }).join('') + `</div>`;
+    } else {
+      choicesHTML = `<input class="q-sa-input" id="saInput" type="text" placeholder="พิมพ์คำตอบ..." />`;
+    }
+
+    document.getElementById('playerBody').innerHTML = `
+      <div class="q-card">
+        <div class="q-meta">ข้อที่ ${current+1} จาก ${total} • ${isMC ? 'ปรนัย' : 'เติมคำตอบ'}</div>
+        <div class="q-text">${q.question}</div>
+        ${choicesHTML}
+        <button class="q-submit-btn" id="submitBtn" onclick="submitAnswer()">ตรวจคำตอบ</button>
+        <div id="feedbackArea"></div>
+      </div>`;
+    exSession.answered = false;
+    if (!isMC) document.getElementById('saInput')?.addEventListener('keydown', e => { if (e.key==='Enter') submitAnswer(); });
+  }
+
+  function selectChoice(el, key) {
+    if (exSession.answered) return;
+    document.querySelectorAll('.q-choice').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    exSession.selectedKey = key;
+  }
+
+  function submitAnswer() {
+    if (exSession.answered) return;
+    const q = exSession.questions[exSession.current];
+    const isMC = (q.type||'mc').toLowerCase() === 'mc';
+    const correct = (q.answer||'').trim().toLowerCase();
+    let isCorrect = false;
+
+    if (isMC) {
+      const sel = exSession.selectedKey;
+      if (!sel) return;
+      isCorrect = sel === correct;
+      document.querySelectorAll('.q-choice').forEach(c => {
+        const k = c.dataset.key;
+        if (k === correct) c.classList.add('reveal');
+        else if (k === sel && !isCorrect) c.classList.add('wrong');
+        c.style.pointerEvents = 'none';
+      });
+    } else {
+      const input = document.getElementById('saInput');
+      const userVal = (input?.value||'').trim();
+      if (!userVal) return;
+      isCorrect = userVal === correct;
+      input.classList.add(isCorrect ? 'correct' : 'wrong');
+      input.disabled = true;
+    }
+
+    if (isCorrect) exSession.score++;
+    exSession.answered = true;
+
+    const fb = document.getElementById('feedbackArea');
+    fb.className = `q-feedback ${isCorrect ? 'correct' : 'wrong'}`;
+    fb.innerHTML = `<div class="q-feedback-title">${isCorrect ? '✅ ถูกต้อง!' : '❌ ผิด'}</div>
+      ${q.explanation ? `<div>${q.explanation}</div>` : ''}`;
+
+    document.getElementById('submitBtn').style.display = 'none';
+
+    const isLast = exSession.current >= exSession.questions.length - 1;
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'q-next-btn';
+    nextBtn.textContent = isLast ? '🏁 ดูผลสรุป' : 'ข้อถัดไป →';
+    nextBtn.onclick = isLast ? showSummary : nextQuestion;
+    fb.after(nextBtn);
+  }
+
+  function nextQuestion() {
+    exSession.current++;
+    renderQuestion();
+  }
+
+  function showSummary() {
+    const { score, questions, unit } = exSession;
+    const total = questions.length;
+    const pct = Math.round((score/total)*100);
+    const msg = pct === 100 ? '🎉 เยี่ยมมาก! ทำได้ถูกทุกข้อเลย!' :
+                pct >= 80  ? '👍 ดีมาก! เกือบสมบูรณ์แบบแล้ว' :
+                pct >= 60  ? '😊 ผ่านแล้ว! ลองทำอีกรอบนะครับ' :
+                             '💪 ยังไม่ผ่าน ลองทบทวนแล้วทำใหม่นะครับ';
+    document.getElementById('playerScoreFill').style.width = '100%';
+    document.getElementById('playerBody').innerHTML = `
+      <div class="summary-card">
+        <div class="summary-score">${score}</div>
+        <div class="summary-of">จาก ${total} ข้อ (${pct}%)</div>
+        <div class="summary-msg">${msg}</div>
+        <button class="summary-retry" onclick="retryExercise()">🔄 ทำใหม่</button>
+        <button class="summary-back" onclick="closeExercise()">← กลับเลือกหน่วย</button>
+      </div>`;
+  }
+
+  function retryExercise() {
+    const { questions } = exSession;
+    const unit = exSession.unit;
+    // re-shuffle same pool
+    const pool = exAllRows.filter(r => isVisible(r.visible) && r.unit === unit);
+    const shuffled = pool.sort(() => Math.random()-0.5).slice(0, 10);
+    exSession = { questions: shuffled, current: 0, score: 0, unit, answered: false };
+    document.getElementById('playerTitle').textContent = unit;
+    renderQuestion();
   }
 
   // ─────────────────────────────────────────────
