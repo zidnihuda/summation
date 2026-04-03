@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>เกี่ยวกับ — Summation by Kru Haisam</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:    #378ADD;
+      --blue-dk: #185FA5;
+      --blue-xdk:#0C447C;
+      --green:   #1D9E75;
+      --amber:   #EF9F27;
+      --pink:    #D4537E;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+    }
+
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background: #f5f5f3;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      background: #fff;
+      border-bottom: 0.5px solid rgba(0,0,0,0.08);
+      padding: 0 1.5rem;
+      height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+    .logo-box {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 19px; color: #fff; font-weight: 600; line-height: 1;
+    }
+    .logo-texts { display: flex; flex-direction: column; line-height: 1.2; }
+    .logo-name { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+    .logo-name span { color: var(--blue); }
+    .logo-sub { font-size: 11px; color: #888; }
+    .topnav { display: flex; gap: 2px; }
+    .topnav a {
+      background: none; border: none; padding: 6px 13px;
+      font-size: 13px; color: #666; font-family: 'Sarabun', sans-serif;
+      border-radius: var(--radius-sm); cursor: pointer;
+      text-decoration: none; transition: background 0.12s, color 0.12s;
+    }
+    .topnav a:hover { background: #f0f0ee; color: #1a1a1a; }
+    .topnav a.active { background: #f0f0ee; color: #1a1a1a; font-weight: 600; }
+
+    /* ── MAIN ── */
+    .main {
+      max-width: 680px; margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    /* ── PROFILE CARD ── */
+    .profile-card {
+      background: #fff;
+      border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      display: flex; align-items: center; gap: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .avatar {
+      width: 72px; height: 72px; border-radius: 50%; flex-shrink: 0;
+      background: #E6F1FB;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; font-weight: 600; color: var(--blue-xdk);
+      overflow: hidden;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-info h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+    .profile-info .role {
+      font-size: 13px; color: #666;
+      background: #f0f0ee; display: inline-block;
+      padding: 3px 10px; border-radius: 999px;
+    }
+
+    /* ── CONTENT CARDS ── */
+    .card {
+      background: #fff;
+      border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .card-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.07em;
+      color: #999; text-transform: uppercase; margin-bottom: 0.75rem;
+    }
+    .card-body {
+      font-size: 15px; line-height: 1.8; color: #333;
+    }
+
+    /* ── CONTACT ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px;
+    }
+    .contact-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 0.75rem 1rem;
+      border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-md);
+      text-decoration: none; color: #1a1a1a;
+      font-size: 13px; font-weight: 500;
+      transition: background 0.12s, transform 0.12s;
+    }
+    .contact-item:hover { background: #f5f5f3; transform: translateY(-1px); }
+    .contact-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+
+    /* ── LOADING ── */
+    .loading-bar {
+      height: 3px; background: var(--blue);
+      position: fixed; top: 0; left: 0; z-index: 999;
+      animation: loading 1.2s ease-in-out infinite;
+    }
+    @keyframes loading {
+      0%   { width: 0%; opacity: 1; }
+      70%  { width: 85%; opacity: 1; }
+      100% { width: 100%; opacity: 0; }
+    }
+
+    @media (max-width: 500px) {
+      .profile-card { flex-direction: column; text-align: center; }
+      .topnav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="loading-bar" id="loadingBar"></div>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <a class="logo" href="index.html">
+    <div class="logo-box">∑</div>
+    <div class="logo-texts">
+      <div class="logo-name">Summation <span>by Kru Haisam</span></div>
+      <div class="logo-sub">คลังโจทย์คณิตศาสตร์</div>
+    </div>
+  </a>
+  <nav class="topnav">
+    <a href="index.html">หน้าแรก</a>
+    <a href="#">ทำโจทย์</a>
+    <a href="#">วิดีโอ</a>
+    <a href="about.html" class="active">เกี่ยวกับ</a>
+  </nav>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- Profile -->
+  <div class="profile-card">
+    <div class="avatar" id="avatar">HS</div>
+    <div class="profile-info">
+      <h1 id="profileName">กำลังโหลด...</h1>
+      <span class="role" id="profileRole"></span>
+    </div>
+  </div>
+
+  <!-- Bio -->
+  <div class="card" id="bioCard" style="display:none">
+    <div class="card-label">เกี่ยวกับครู</div>
+    <div class="card-body" id="bioText"></div>
+  </div>
+
+  <!-- Mission -->
+  <div class="card" id="missionCard" style="display:none">
+    <div class="card-label">วัตถุประสงค์ของเว็บไซต์</div>
+    <div class="card-body" id="missionText"></div>
+  </div>
+
+  <!-- Contact -->
+  <div class="card" id="contactCard" style="display:none">
+    <div class="card-label">ช่องทางติดต่อ</div>
+    <div class="contact-grid" id="contactGrid"></div>
+  </div>
+
+</main>
+
+<script>
+  const SHEETS_ID = '1_E7EMj_5HKgJ7hzQAVDnJfpiPv8Bo98wJUbPDzpsEuE';
+  const SHEET_GID = {
+    about: '291876820',
+  };
+
+  // ── FALLBACK ──
+  const FALLBACK = {
+    name:              'Kru Haisam',
+    role:              'ครูคณิตศาสตร์',
+    bio:               'ครูผู้สอนวิชาคณิตศาสตร์ มีความมุ่งมั่นในการพัฒนาสื่อการเรียนรู้ที่เข้าถึงได้ง่ายสำหรับนักเรียนทุกระดับ',
+    mission:           'เว็บไซต์นี้จัดทำขึ้นเพื่อเป็นคลังโจทย์คณิตศาสตร์ฟรีสำหรับนักเรียนทุกคน ตั้งแต่ระดับมัธยมต้นจนถึงการสอบแข่งขัน',
+    photo_url:         '',
+    contact_facebook:  '',
+    contact_line:      '',
+    contact_instagram: '',
+    contact_email:     '',
+  };
+
+  // ── HELPERS ──
+  function csvUrl(sheetName) {
+    return `https://docs.google.com/spreadsheets/d/${SHEETS_ID}/export?format=csv&gid=${SHEET_GID[sheetName]}`;
+  }
+
+  async function fetchCsv(sheetName) {
+    const res = await fetch(csvUrl(sheetName), { redirect: 'follow' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const text = await res.text();
+    return parseCsv(text);
+  }
+
+  function parseCsv(text) {
+    const lines = text.trim().split('\n');
+    const headers = splitCsvLine(lines[0]);
+    return lines.slice(1).map(line => {
+      const vals = splitCsvLine(line);
+      const obj = {};
+      headers.forEach((h, i) => { obj[h.trim()] = (vals[i] || '').trim(); });
+      return obj;
+    });
+  }
+
+  function splitCsvLine(line) {
+    const result = [];
+    let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
+      else { cur += c; }
+    }
+    result.push(cur);
+    return result.map(s => s.replace(/^"|"$/g, ''));
+  }
+
+  // ── RENDER ──
+  function render(d) {
+    // Avatar
+    const avatar = document.getElementById('avatar');
+    if (d.photo_url) {
+      avatar.innerHTML = `<img src="${d.photo_url}" alt="${d.name}" />`;
+    } else {
+      // ใช้ตัวอักษร 2 ตัวแรกของชื่อ
+      const initials = (d.name || 'KH').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+      avatar.textContent = initials;
+    }
+
+    document.getElementById('profileName').textContent = d.name || '';
+    document.getElementById('profileRole').textContent = d.role || '';
+
+    if (d.bio) {
+      document.getElementById('bioText').textContent = d.bio;
+      document.getElementById('bioCard').style.display = 'block';
+    }
+
+    if (d.mission) {
+      document.getElementById('missionText').textContent = d.mission;
+      document.getElementById('missionCard').style.display = 'block';
+    }
+
+    // Contact
+    const contacts = [
+      { key: 'contact_facebook',  label: 'Facebook',  icon: '📘', bg: '#E6F1FB', href: d.contact_facebook },
+      { key: 'contact_line',      label: 'LINE',       icon: '💬', bg: '#EAF3DE', href: d.contact_line ? `https://line.me/ti/p/${d.contact_line}` : '' },
+      { key: 'contact_instagram', label: 'Instagram',  icon: '📷', bg: '#FBEAF0', href: d.contact_instagram },
+      { key: 'contact_email',     label: 'Email',      icon: '✉️', bg: '#FAEEDA', href: d.contact_email ? `mailto:${d.contact_email}` : '' },
+    ].filter(c => d[c.key]);
+
+    if (contacts.length > 0) {
+      const grid = document.getElementById('contactGrid');
+      grid.innerHTML = contacts.map(c => `
+        <a class="contact-item" href="${c.href}" target="_blank" rel="noopener">
+          <div class="contact-icon" style="background:${c.bg}">${c.icon}</div>
+          <span>${c.label}</span>
+        </a>`).join('');
+      document.getElementById('contactCard').style.display = 'block';
+    }
+  }
+
+  // ── INIT ──
+  async function init() {
+    const bar = document.getElementById('loadingBar');
+    try {
+      const rows = await fetchCsv('about');
+      const d = {};
+      rows.forEach(r => { if (r.key) d[r.key] = r.value; });
+      render(Object.keys(d).length > 0 ? d : FALLBACK);
+    } catch (err) {
+      console.error(err);
+      render(FALLBACK);
+    } finally {
+      bar.style.display = 'none';
+    }
+  }
+
+  init();
+</script>
+</body>
+</html>
