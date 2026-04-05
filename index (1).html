@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Summation by Kru Haisam</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:     #378ADD;
+      --blue-dk:  #185FA5;
+      --blue-xdk: #0C447C;
+      --green:    #1D9E75;
+      --green-dk: #0F6E56;
+      --amber:    #EF9F27;
+      --pink:     #D4537E;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+    }
+
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background: #f5f5f3;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      background: #fff;
+      border-bottom: 0.5px solid rgba(0,0,0,0.08);
+      padding: 0 1.5rem;
+      height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 200;
+    }
+    .logo { display: flex; align-items: center; gap: 9px; cursor: pointer; text-decoration: none; }
+    .logo-box {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 19px; color: #fff; font-weight: 600; line-height: 1;
+    }
+    .logo-texts { display: flex; flex-direction: column; line-height: 1.2; }
+    .logo-name { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+    .logo-name span { color: var(--blue); }
+    .logo-sub { font-size: 11px; color: #888; }
+
+    .topnav { display: flex; gap: 2px; }
+    .nav-btn {
+      background: none; border: none; padding: 6px 13px;
+      font-size: 13px; color: #666; font-family: 'Sarabun', sans-serif;
+      border-radius: var(--radius-sm); cursor: pointer;
+      transition: background 0.12s, color 0.12s;
+    }
+    .nav-btn:hover { background: #f0f0ee; color: #1a1a1a; }
+    .nav-btn.active { background: #f0f0ee; color: #1a1a1a; font-weight: 600; }
+
+    /* ── HAMBURGER ── */
+    .hamburger {
+      display: none; flex-direction: column; justify-content: center; gap: 5px;
+      width: 36px; height: 36px; border: none; background: none; cursor: pointer;
+      border-radius: var(--radius-sm); padding: 6px;
+    }
+    .hamburger span { display: block; height: 2px; background: #1a1a1a; border-radius: 2px; transition: transform 0.2s, opacity 0.2s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ── SIDEBAR ── */
+    .sidebar-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35);
+      z-index: 300; backdrop-filter: blur(2px);
+    }
+    .sidebar-overlay.open { display: block; }
+    .sidebar {
+      position: fixed; top: 0; right: -260px; width: 240px; height: 100vh;
+      background: #fff; z-index: 400; padding: 1.25rem 1rem;
+      transition: right 0.25s cubic-bezier(0.19,1,0.22,1);
+      display: flex; flex-direction: column; gap: 4px;
+      box-shadow: -4px 0 24px rgba(0,0,0,0.1);
+    }
+    .sidebar.open { right: 0; }
+    .sidebar-logo { display: flex; align-items: center; gap: 9px; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 0.5px solid #f0f0ee; }
+    .sidebar .nav-btn { width: 100%; text-align: left; padding: 10px 14px; font-size: 14px; border-radius: var(--radius-md); }
+
+    /* ── PAGES ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── LOADING BAR ── */
+    .loading-bar {
+      height: 3px; background: var(--blue);
+      position: fixed; top: 0; left: 0; z-index: 999;
+      width: 0; transition: width 0.3s;
+    }
+    .loading-bar.running { animation: loadpulse 1.2s ease-in-out infinite; }
+    @keyframes loadpulse {
+      0%   { width: 0%; opacity: 1; }
+      70%  { width: 85%; opacity: 1; }
+      100% { width: 100%; opacity: 0; }
+    }
+
+    /* ══════════════════════════════
+       PAGE: หน้าแรก
+    ══════════════════════════════ */
+    .hero {
+      background: #fff;
+      border-bottom: 0.5px solid rgba(0,0,0,0.08);
+      padding: 2.75rem 1.5rem 2.25rem;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .hero-blobs { position: absolute; inset: 0; pointer-events: none; }
+    .hero-blobs span { position: absolute; border-radius: 50%; opacity: 0.10; }
+    .hero-title { font-size: 28px; font-weight: 600; line-height: 1.3; margin-bottom: 0.75rem; position: relative; }
+    .hero-title .hl { display: inline-block; padding: 1px 10px; border-radius: var(--radius-sm); color: #fff; background: var(--blue); }
+    .hero-desc { font-size: 15px; color: #555; max-width: 460px; margin: 0 auto 1.75rem; line-height: 1.75; position: relative; }
+    .pill-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; position: relative; }
+    .pill { display: flex; align-items: center; gap: 5px; padding: 5px 13px; border-radius: 999px; font-size: 12.5px; font-weight: 500; }
+
+    .home-main { padding: 1.75rem 1.5rem 3rem; max-width: 900px; margin: 0 auto; }
+    .sec-label { font-size: 11.5px; font-weight: 600; letter-spacing: 0.07em; color: #999; text-transform: uppercase; margin-bottom: 0.85rem; }
+
+    .grade-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; margin-bottom: 2rem; }
+    .grade-card {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-md); padding: 1rem 0.5rem;
+      text-align: center; cursor: pointer;
+      transition: transform 0.13s, border-color 0.13s, box-shadow 0.13s;
+    }
+    .grade-card:hover { transform: translateY(-3px); border-color: rgba(0,0,0,0.15); box-shadow: 0 4px 12px rgba(0,0,0,0.07); }
+    .grade-num { font-size: 18px; font-weight: 600; margin-bottom: 3px; }
+    .grade-sub { font-size: 11px; color: #999; }
+    .grade-bar { height: 4px; border-radius: 4px; margin: 10px auto 0; width: 55%; }
+
+    .divider { height: 0.5px; background: rgba(0,0,0,0.07); margin: 1.75rem 0; }
+
+    .special-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+    .special-card {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-lg); padding: 1.25rem;
+      cursor: pointer; display: flex; align-items: center; gap: 13px;
+      transition: transform 0.13s, border-color 0.13s, box-shadow 0.13s;
+    }
+    .special-card:hover { transform: translateY(-3px); border-color: rgba(0,0,0,0.15); box-shadow: 0 4px 12px rgba(0,0,0,0.07); }
+    .special-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .special-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+    .special-card p { font-size: 12px; color: #888; line-height: 1.5; }
+
+    /* ══════════════════════════════
+       PAGE: เกี่ยวกับ
+    ══════════════════════════════ */
+    .about-main { max-width: 680px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+    .profile-card {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-lg); padding: 2rem;
+      display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.25rem;
+    }
+    .avatar {
+      width: 72px; height: 72px; border-radius: 50%; flex-shrink: 0;
+      background: #E6F1FB;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; font-weight: 600; color: var(--blue-xdk); overflow: hidden;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-info h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+    .profile-role { font-size: 13px; color: #666; background: #f0f0ee; display: inline-block; padding: 3px 10px; border-radius: 999px; }
+    .info-card { background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.25rem; }
+    .info-card .card-label { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; color: #999; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .info-card .card-body { font-size: 15px; line-height: 1.8; color: #333; }
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+    .contact-item { display: flex; align-items: center; gap: 10px; padding: 0.75rem 1rem;
+      border: 0.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-md);
+      text-decoration: none; color: #1a1a1a; font-size: 13px; font-weight: 500;
+      transition: background 0.12s, transform 0.12s; }
+    .contact-item:hover { background: #f5f5f3; transform: translateY(-1px); }
+    .contact-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .contact-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+    .contact-label { font-size: 11px; color: #999; font-weight: 500; }
+    .contact-value { font-size: 13px; color: #1a1a1a; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* ══════════════════════════════
+       PAGE: แบบทดสอบ — setup
+    ══════════════════════════════ */
+    .quiz-setup-wrap { max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    .setup-heading { font-size: 20px; font-weight: 600; margin-bottom: 1.5rem; }
+    .setup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.25rem; }
+    .setup-field { display: flex; flex-direction: column; gap: 6px; }
+    .setup-label { font-size: 12px; font-weight: 600; color: #888; letter-spacing: 0.05em; text-transform: uppercase; }
+    .setup-select {
+      padding: 10px 14px; border: 1.5px solid rgba(0,0,0,0.1); border-radius: var(--radius-md);
+      font-size: 14px; font-family: 'Sarabun', sans-serif; background: #fff; cursor: pointer;
+      outline: none; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center;
+      padding-right: 32px;
+    }
+    .setup-select:focus { border-color: var(--blue); }
+    .setup-info { background: #E6F1FB; border-radius: var(--radius-md); padding: 0.85rem 1rem; font-size: 13px; color: var(--blue-xdk); margin-bottom: 1.25rem; }
+    .setup-start-btn {
+      width: 100%; padding: 1rem; border: none; border-radius: var(--radius-md);
+      background: var(--blue); color: #fff; font-size: 16px; font-weight: 600;
+      font-family: 'Sarabun', sans-serif; cursor: pointer; transition: background 0.12s;
+    }
+    .setup-start-btn:hover:not(:disabled) { background: var(--blue-dk); }
+    .setup-start-btn:disabled { background: #ccc; cursor: default; }
+
+    /* ══════════════════════════════
+       PAGE: แบบทดสอบ — player & result
+    ══════════════════════════════ */
+    .quiz-player-wrap { max-width: 680px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
+    .quiz-q-card { background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-lg); padding: 1.75rem; margin-bottom: 1rem; }
+    .quiz-q-num { font-size: 11px; color: #aaa; margin-bottom: 6px; }
+    .quiz-q-text { font-size: 15px; font-weight: 500; line-height: 1.75; margin-bottom: 1.25rem; }
+    .quiz-choices { display: flex; flex-direction: column; gap: 9px; }
+    .quiz-choice {
+      display: flex; align-items: center; gap: 12px; padding: 0.8rem 1rem;
+      border: 1.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-md);
+      cursor: pointer; transition: border-color 0.12s, background 0.12s; font-size: 14px;
+    }
+    .quiz-choice:hover { border-color: var(--blue); background: #F0F7FF; }
+    .quiz-choice.selected { border-color: var(--blue); background: #E6F1FB; }
+    .quiz-choice.correct  { border-color: var(--green); background: #EAF3DE; }
+    .quiz-choice.wrong    { border-color: var(--pink);  background: #FBEAF0; }
+    .quiz-choice.reveal   { border-color: var(--green); background: #EAF3DE; }
+    .quiz-choice-key { width: 28px; height: 28px; border-radius: 8px; background: #f0f0ee; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+    .quiz-sa-input { width: 100%; padding: 0.75rem 1rem; border: 1.5px solid rgba(0,0,0,0.1); border-radius: var(--radius-md); font-size: 15px; font-family: 'Sarabun', sans-serif; outline: none; }
+    .quiz-sa-input:focus { border-color: var(--blue); }
+    .quiz-submit-all {
+      width: 100%; padding: 1rem; border: none; border-radius: var(--radius-md);
+      background: var(--green); color: #fff; font-size: 16px; font-weight: 600;
+      font-family: 'Sarabun', sans-serif; cursor: pointer; margin-top: 0.5rem;
+      transition: background 0.12s;
+    }
+    .quiz-submit-all:hover { background: var(--green-dk); }
+
+    /* Result */
+    .result-summary { background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-lg); padding: 2rem; margin-bottom: 1.25rem; text-align: center; }
+    .result-score { font-size: 52px; font-weight: 600; color: var(--green); line-height: 1; }
+    .result-of { font-size: 15px; color: #999; margin-bottom: 0.5rem; }
+    .result-pct { font-size: 22px; font-weight: 600; margin-bottom: 0.75rem; }
+    .result-msg { font-size: 14px; color: #666; line-height: 1.7; }
+    .result-chapter-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin-bottom: 1.25rem; }
+    .result-chapter-card { background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-md); padding: 1rem; }
+    .result-chapter-name { font-size: 12px; color: #888; margin-bottom: 4px; }
+    .result-chapter-score { font-size: 18px; font-weight: 600; color: var(--blue-dk); }
+    .result-chapter-bar { height: 4px; border-radius: 4px; background: #f0f0ee; margin-top: 8px; }
+    .result-chapter-bar-fill { height: 100%; border-radius: 4px; background: var(--blue); }
+    .result-answers { margin-bottom: 1.25rem; }
+    .result-answer-item { background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-md); margin-bottom: 8px; overflow: hidden; }
+    .result-answer-header { display: flex; align-items: center; gap: 10px; padding: 0.85rem 1rem; cursor: pointer; }
+    .result-answer-header:hover { background: #f9f9f8; }
+    .result-answer-status { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+    .result-answer-status.correct { background: #EAF3DE; }
+    .result-answer-status.wrong   { background: #FBEAF0; }
+    .result-answer-q { font-size: 13.5px; flex: 1; line-height: 1.5; }
+    .result-answer-body { padding: 0 1rem 1rem; font-size: 13px; color: #555; line-height: 1.7; border-top: 0.5px solid #f0f0ee; display: none; }
+    .result-answer-body.open { display: block; }
+    .result-answer-your { margin-top: 0.5rem; }
+    .result-answer-correct-val { color: var(--green); font-weight: 600; }
+    .result-answer-wrong-val   { color: var(--pink);  font-weight: 600; }
+    .result-btns { display: flex; gap: 10px; }
+    .result-btn-retry { flex: 1; padding: 0.9rem; border: none; border-radius: var(--radius-md); background: var(--blue); color: #fff; font-size: 15px; font-weight: 600; font-family: 'Sarabun', sans-serif; cursor: pointer; }
+    .result-btn-retry:hover { background: var(--blue-dk); }
+    .result-btn-back  { flex: 1; padding: 0.9rem; border: 1.5px solid rgba(0,0,0,0.1); border-radius: var(--radius-md); background: #fff; font-size: 15px; font-weight: 600; font-family: 'Sarabun', sans-serif; cursor: pointer; }
+    .result-btn-back:hover { background: #f5f5f3; }
+
+    /* ══════════════════════════════
+       PAGE: แบบฝึกหัด — browser
+    ══════════════════════════════ */
+    .exercise-main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    .ex-grade { margin-bottom: 2.5rem; }
+    .ex-grade-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 0.75rem 1rem; margin-bottom: 1.25rem;
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-md); cursor: pointer; user-select: none;
+    }
+    .ex-grade-header:hover { background: #f5f5f3; }
+    .ex-grade-header h2 { font-size: 16px; font-weight: 600; flex: 1; }
+    .ex-grade-header span { font-size: 12px; color: #999; }
+    .ex-chapter { margin-bottom: 1.5rem; padding-left: 0.5rem; }
+    .ex-chapter-title {
+      font-size: 13px; font-weight: 600; color: #555;
+      margin-bottom: 0.75rem; padding-left: 0.5rem;
+      border-left: 3px solid var(--green); cursor: pointer; user-select: none;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .ex-chapter-title:hover { color: #1a1a1a; }
+    .ex-unit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+    .ex-unit-card {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-md); padding: 1rem 1.1rem;
+      cursor: pointer; transition: transform 0.13s, box-shadow 0.13s, border-color 0.13s;
+    }
+    .ex-unit-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-color: var(--green); }
+    .ex-unit-icon { font-size: 22px; margin-bottom: 8px; }
+    .ex-unit-name { font-size: 13.5px; font-weight: 600; margin-bottom: 4px; }
+    .ex-unit-count { font-size: 11.5px; color: #999; }
+    .ex-unit-badge {
+      display: inline-block; margin-top: 8px;
+      font-size: 11px; font-weight: 500; padding: 2px 9px; border-radius: 999px;
+      background: #EAF3DE; color: #27500A;
+    }
+
+    /* ══════════════════════════════
+       PAGE: แบบฝึกหัด — player
+    ══════════════════════════════ */
+    .player-wrap { max-width: 680px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
+    .player-topbar {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 1rem;
+    }
+    .player-back {
+      background: none; border: 0.5px solid rgba(0,0,0,0.12); border-radius: var(--radius-sm);
+      padding: 6px 12px; font-size: 13px; cursor: pointer; font-family: 'Sarabun', sans-serif;
+      color: #555; transition: background 0.12s;
+    }
+    .player-back:hover { background: #f0f0ee; }
+    .player-title { font-size: 15px; font-weight: 600; flex: 1; }
+    .player-progress { font-size: 13px; color: #888; white-space: nowrap; }
+    .player-score-bar {
+      height: 4px; background: #f0f0ee; border-radius: 4px; margin-bottom: 1.5rem; overflow: hidden;
+    }
+    .player-score-fill { height: 100%; background: var(--green); border-radius: 4px; width: 0; transition: width 0.4s; }
+
+    .q-card { background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-lg); padding: 1.75rem; }
+    .q-meta { font-size: 11px; color: #aaa; margin-bottom: 0.75rem; }
+    .q-text { font-size: 16px; font-weight: 500; line-height: 1.7; margin-bottom: 1.5rem; }
+    .q-choices { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.25rem; }
+    .q-choice {
+      display: flex; align-items: center; gap: 12px; padding: 0.85rem 1rem;
+      border: 1.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-md);
+      cursor: pointer; transition: border-color 0.12s, background 0.12s; font-size: 14px;
+    }
+    .q-choice:hover { border-color: var(--blue); background: #F0F7FF; }
+    .q-choice.selected { border-color: var(--blue); background: #E6F1FB; }
+    .q-choice.correct  { border-color: var(--green); background: #EAF3DE; pointer-events: none; }
+    .q-choice.wrong    { border-color: var(--pink);  background: #FBEAF0; pointer-events: none; }
+    .q-choice.reveal   { border-color: var(--green); background: #EAF3DE; pointer-events: none; }
+    .q-choice-key { width: 28px; height: 28px; border-radius: 8px; background: #f0f0ee; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+    .q-sa-input { width: 100%; padding: 0.75rem 1rem; border: 1.5px solid rgba(0,0,0,0.1); border-radius: var(--radius-md); font-size: 15px; font-family: 'Sarabun', sans-serif; outline: none; margin-bottom: 1.25rem; }
+    .q-sa-input:focus { border-color: var(--blue); }
+    .q-sa-input.correct { border-color: var(--green); background: #EAF3DE; }
+    .q-sa-input.wrong   { border-color: var(--pink);  background: #FBEAF0; }
+
+    .q-submit-btn {
+      width: 100%; padding: 0.85rem; border: none; border-radius: var(--radius-md);
+      background: var(--blue); color: #fff; font-size: 15px; font-weight: 600;
+      font-family: 'Sarabun', sans-serif; cursor: pointer; transition: background 0.12s;
+    }
+    .q-submit-btn:hover { background: var(--blue-dk); }
+    .q-submit-btn:disabled { background: #ccc; cursor: default; }
+
+    .q-feedback { margin-top: 1rem; padding: 1rem; border-radius: var(--radius-md); font-size: 14px; line-height: 1.7; }
+    .q-feedback.correct { background: #EAF3DE; color: #1a4a1a; border-left: 4px solid var(--green); }
+    .q-feedback.wrong   { background: #FBEAF0; color: #4a1a2a; border-left: 4px solid var(--pink); }
+    .q-feedback-title { font-weight: 600; margin-bottom: 4px; }
+
+    .q-next-btn {
+      width: 100%; margin-top: 1rem; padding: 0.85rem; border: none; border-radius: var(--radius-md);
+      background: var(--green); color: #fff; font-size: 15px; font-weight: 600;
+      font-family: 'Sarabun', sans-serif; cursor: pointer; transition: background 0.12s;
+    }
+    .q-next-btn:hover { background: var(--green-dk); }
+
+    /* Summary */
+    .summary-card { background: #fff; border: 0.5px solid rgba(0,0,0,0.08); border-radius: var(--radius-lg); padding: 2.5rem; text-align: center; }
+    .summary-score { font-size: 56px; font-weight: 600; color: var(--green); line-height: 1; }
+    .summary-of { font-size: 16px; color: #999; margin-bottom: 1rem; }
+    .summary-msg { font-size: 15px; color: #555; margin-bottom: 2rem; line-height: 1.7; }
+    .summary-retry {
+      padding: 0.85rem 2rem; border: none; border-radius: var(--radius-md);
+      background: var(--blue); color: #fff; font-size: 15px; font-weight: 600;
+      font-family: 'Sarabun', sans-serif; cursor: pointer; margin-right: 10px;
+    }
+    .summary-retry:hover { background: var(--blue-dk); }
+    .summary-back {
+      padding: 0.85rem 2rem; border: 1.5px solid rgba(0,0,0,0.1); border-radius: var(--radius-md);
+      background: #fff; font-size: 15px; font-weight: 600;
+      font-family: 'Sarabun', sans-serif; cursor: pointer;
+    }
+    .summary-back:hover { background: #f5f5f3; }
+
+    /* ══════════════════════════════
+       PAGE: วิดีโอ
+    ══════════════════════════════ */
+    .video-main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    .video-grade { margin-bottom: 2.5rem; }
+    .video-grade-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 1.25rem; padding: 0.75rem 1rem;
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-md);
+    }
+    .video-grade-header h2 { font-size: 16px; font-weight: 600; flex: 1; }
+    .video-grade-header span { font-size: 12px; color: #999; }
+
+    .video-topic { margin-bottom: 1.5rem; padding-left: 0.5rem; }
+    .video-topic-title {
+      font-size: 13px; font-weight: 600; color: #555;
+      margin-bottom: 0.75rem; padding-left: 0.5rem;
+      border-left: 3px solid var(--blue); 
+    }
+    .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+    .video-card {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-md); padding: 1rem;
+      display: flex; align-items: flex-start; gap: 11px;
+      text-decoration: none; color: #1a1a1a;
+      transition: transform 0.13s, box-shadow 0.13s, border-color 0.13s;
+    }
+    .video-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-color: rgba(0,0,0,0.15); }
+    .video-thumb {
+      width: 42px; height: 42px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .video-thumb.youtube { background: #FFE8E8; }
+    .video-thumb.drive   { background: #E6F1FB; }
+    .video-info { min-width: 0; }
+    .video-title { font-size: 13.5px; font-weight: 600; margin-bottom: 3px; line-height: 1.4; }
+    .video-desc  { font-size: 12px; color: #888; line-height: 1.5; margin-bottom: 6px; }
+    .video-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 999px;
+    }
+    .video-badge.youtube { color: #c0392b; background: #FFE8E8; }
+    .video-badge.drive   { color: var(--blue-dk); background: #E6F1FB; }
+
+    .toggle-grade { cursor: pointer; user-select: none; }
+    .toggle-grade:hover { background: #f5f5f3; }
+    .toggle-topic { cursor: pointer; user-select: none; display: flex; align-items: center; gap: 6px; }
+    .toggle-topic:hover { color: #1a1a1a; }
+    .toggle-arrow { display: inline-block; transition: transform 0.2s; font-style: normal; font-size: 13px; color: #aaa; }
+    .topic-count { margin-left: auto; font-size: 11px; color: #bbb; font-weight: 400; }
+
+    /* ══════════════════════════════
+       PAGE: เอกสาร
+    ══════════════════════════════ */
+    .docs-main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    .docs-category { margin-bottom: 2.25rem; }
+    .docs-category-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 1rem; padding-bottom: 0.6rem;
+      border-bottom: 2px solid #f0f0ee;
+    }
+    .docs-category-header h2 { font-size: 16px; font-weight: 600; color: #1a1a1a; }
+    .docs-category-header span { font-size: 12px; color: #999; }
+    .docs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+    .doc-card {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-md); padding: 1rem 1.1rem;
+      display: flex; align-items: flex-start; gap: 12px;
+      text-decoration: none; color: #1a1a1a;
+      transition: transform 0.13s, box-shadow 0.13s, border-color 0.13s;
+    }
+    .doc-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-color: rgba(0,0,0,0.15); }
+    .doc-icon { width: 38px; height: 38px; border-radius: 10px; background: #E6F1FB; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .doc-info { min-width: 0; }
+    .doc-title { font-size: 13.5px; font-weight: 600; margin-bottom: 3px; line-height: 1.4; }
+    .doc-desc { font-size: 12px; color: #888; line-height: 1.5; }
+    .doc-badge { display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; font-size: 11px; color: var(--blue-dk); background: #E6F1FB; padding: 2px 8px; border-radius: 999px; font-weight: 500; }
+
+    /* ══════════════════════════════
+       PAGE: Placeholder (วิดีโอ, ทำโจทย์)
+    ══════════════════════════════ */
+    .placeholder {
+      max-width: 480px; margin: 5rem auto; text-align: center; padding: 0 1.5rem;
+    }
+    .placeholder-icon { font-size: 48px; margin-bottom: 1rem; }
+    .placeholder h2 { font-size: 20px; font-weight: 600; margin-bottom: 0.5rem; }
+    .placeholder p { font-size: 14px; color: #888; line-height: 1.7; }
+    .placeholder-badge {
+      display: inline-block; margin-top: 1rem;
+      background: #FAEEDA; color: #633806;
+      font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 999px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .topnav { display: none; }
+      .hamburger { display: flex; }
+      .grade-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .hero-title { font-size: 22px; }
+      .profile-card { flex-direction: column; text-align: center; }
+      .home-main { padding: 1.25rem 1rem 2rem; }
+      .about-main { padding: 1.5rem 1rem 3rem; }
+      .docs-main { padding: 1.5rem 1rem 3rem; }
+      .video-main { padding: 1.5rem 1rem 3rem; }
+      .exercise-main { padding: 1.5rem 1rem 3rem; }
+      .quiz-setup-wrap { padding: 1.5rem 1rem 3rem; }
+      .quiz-player-wrap { padding: 1rem 1rem 3rem; }
+      .player-wrap { padding: 1rem 1rem 3rem; }
+      .special-grid { grid-template-columns: 1fr 1fr; }
+      .docs-grid { grid-template-columns: 1fr; }
+      .video-grid { grid-template-columns: 1fr; }
+      .ex-unit-grid { grid-template-columns: 1fr 1fr; }
+      .result-chapter-grid { grid-template-columns: 1fr 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .setup-grid { grid-template-columns: 1fr 1fr; }
+      .quiz-q-card { padding: 1.25rem; }
+      .summary-card { padding: 1.5rem; }
+      .result-summary { padding: 1.5rem; }
+    }
+    @media (max-width: 420px) {
+      .grade-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .special-grid { grid-template-columns: 1fr; }
+      .ex-unit-grid { grid-template-columns: 1fr; }
+      .result-chapter-grid { grid-template-columns: 1fr; }
+      .result-btns { flex-direction: column; }
+      .hero { padding: 2rem 1rem 1.75rem; }
+      .logo-sub { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="loading-bar" id="loadingBar"></div>
+
+<!-- ── SIDEBAR OVERLAY ── -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-box">∑</div>
+    <div class="logo-texts">
+      <div class="logo-name">Summation <span>by Kru Haisam</span></div>
+    </div>
+  </div>
+  <button class="nav-btn" data-page="home"     onclick="navigate('home');closeSidebar()">🏠 หน้าแรก</button>
+  <button class="nav-btn" data-page="exercise" onclick="navigate('exercise');closeSidebar()">✏️ แบบฝึกหัด</button>
+  <button class="nav-btn" data-page="quiz"     onclick="navigate('quiz');closeSidebar()">📝 แบบทดสอบ</button>
+  <button class="nav-btn" data-page="video"    onclick="navigate('video');closeSidebar()">🎬 วิดีโอ</button>
+  <button class="nav-btn" data-page="docs"     onclick="navigate('docs');closeSidebar()">📄 เอกสาร</button>
+  <button class="nav-btn" data-page="about"    onclick="navigate('about');closeSidebar()">👤 เกี่ยวกับ</button>
+</div>
+
+<!-- ── TOPBAR ── -->
+<header class="topbar">
+  <div class="logo" onclick="navigate('home')">
+    <div class="logo-box">∑</div>
+    <div class="logo-texts">
+      <div class="logo-name">Summation <span>by Kru Haisam</span></div>
+      <div class="logo-sub" id="logoSub">คลังโจทย์คณิตศาสตร์</div>
+    </div>
+  </div>
+  <nav class="topnav">
+    <button class="nav-btn active" data-page="home"     onclick="navigate('home')">หน้าแรก</button>
+    <button class="nav-btn"        data-page="exercise" onclick="navigate('exercise')">แบบฝึกหัด</button>
+    <button class="nav-btn"        data-page="quiz"     onclick="navigate('quiz')">แบบทดสอบ</button>
+    <button class="nav-btn"        data-page="video"    onclick="navigate('video')">วิดีโอ</button>
+    <button class="nav-btn"        data-page="docs"     onclick="navigate('docs')">เอกสาร</button>
+    <button class="nav-btn"        data-page="about"    onclick="navigate('about')">เกี่ยวกับ</button>
+  </nav>
+  <button class="hamburger" id="hamburger" onclick="toggleSidebar()">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- ══════════════════════════════
+     PAGE: หน้าแรก
+══════════════════════════════ -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-blobs">
+      <span style="width:100px;height:100px;background:#378ADD;top:-20px;left:-10px;"></span>
+      <span style="width:70px;height:70px;background:#1D9E75;bottom:-10px;left:15%;"></span>
+      <span style="width:80px;height:80px;background:#EF9F27;top:10px;right:12%;"></span>
+      <span style="width:90px;height:90px;background:#D4537E;bottom:-15px;right:-15px;"></span>
+    </div>
+    <h1 class="hero-title" id="heroTitle">กำลังโหลด...</h1>
+    <p class="hero-desc" id="heroDesc"></p>
+    <div class="pill-row" id="pillRow"></div>
+  </div>
+  <div class="home-main">
+    <div class="sec-label">เลือกระดับชั้น</div>
+    <div class="grade-grid" id="gradeGrid"></div>
+    <div class="divider"></div>
+    <div class="sec-label">หมวดพิเศษ</div>
+    <div class="special-grid" id="specialGrid"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE: แบบฝึกหัด
+══════════════════════════════ -->
+<div class="page" id="page-exercise">
+  <!-- หน้าเลือกหน่วย -->
+  <div id="exerciseBrowser">
+    <div class="exercise-main" id="exerciseMain">
+      <div class="placeholder"><div class="placeholder-icon">✏️</div><h2>กำลังโหลด...</h2></div>
+    </div>
+  </div>
+  <!-- หน้าทำโจทย์ -->
+  <div id="exercisePlayer" style="display:none">
+    <div class="player-wrap">
+      <div class="player-topbar">
+        <button class="player-back" onclick="closeExercise()">← กลับ</button>
+        <div class="player-title" id="playerTitle"></div>
+        <div class="player-progress" id="playerProgress">0/10</div>
+      </div>
+      <div class="player-score-bar">
+        <div class="player-score-fill" id="playerScoreFill"></div>
+      </div>
+      <div class="player-body" id="playerBody"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE: แบบทดสอบ
+══════════════════════════════ -->
+<div class="page" id="page-quiz">
+  <!-- ขั้นตอนตั้งค่า -->
+  <div id="quizSetup">
+    <div class="quiz-setup-wrap">
+      <h1 class="setup-heading">⚙️ ตั้งค่าแบบทดสอบ</h1>
+      <div class="setup-grid">
+        <div class="setup-field">
+          <label class="setup-label">ประเภทข้อสอบ</label>
+          <select class="setup-select" id="selExamType" onchange="quizConfig.examType=this.value;checkSetupReady()">
+            <option value="">— เลือก —</option>
+            <option value="ทั้งหมด">ทั้งหมด</option>
+            <option value="สอวน.">🏆 สอวน.</option>
+            <option value="เตรียมสอบเข้า ม.4">📚 เตรียมสอบเข้า ม.4</option>
+            <option value="A-level">📐 A-level</option>
+            <option value="เตรียมสอบชิงทุน">🎯 เตรียมสอบชิงทุน</option>
+          </select>
+        </div>
+        <div class="setup-field">
+          <label class="setup-label">รูปแบบข้อ</label>
+          <select class="setup-select" id="selQType" onchange="quizConfig.qType=this.value;checkSetupReady()">
+            <option value="">— เลือก —</option>
+            <option value="mc">📝 เลือกตอบ</option>
+            <option value="sa">✏️ เติมคำตอบ</option>
+            <option value="mixed">🔀 ผสม</option>
+          </select>
+        </div>
+        <div class="setup-field">
+          <label class="setup-label">จำนวนข้อ</label>
+          <select class="setup-select" id="selQCount" onchange="quizConfig.qCount=this.value;checkSetupReady()">
+            <option value="">— เลือก —</option>
+            <option value="5">5 ข้อ</option>
+            <option value="10">10 ข้อ</option>
+            <option value="15">15 ข้อ</option>
+            <option value="20">20 ข้อ</option>
+            <option value="25">25 ข้อ</option>
+            <option value="30">30 ข้อ</option>
+          </select>
+        </div>
+        <div class="setup-field">
+          <label class="setup-label">ระดับความยาก</label>
+          <select class="setup-select" id="selDifficulty" onchange="quizConfig.difficulty=this.value;checkSetupReady()">
+            <option value="">— เลือก —</option>
+            <option value="1">⭐ ง่ายมาก</option>
+            <option value="2">⭐⭐ ง่าย</option>
+            <option value="3">⭐⭐⭐ ปานกลาง</option>
+            <option value="4">⭐⭐⭐⭐ ยาก</option>
+            <option value="5">⭐⭐⭐⭐⭐ ยากมาก</option>
+          </select>
+        </div>
+      </div>
+      <div class="setup-info" id="setupInfo" style="display:none"></div>
+      <button class="setup-start-btn" id="setupStartBtn" onclick="startQuiz()" disabled>เริ่มทำแบบทดสอบ →</button>
+    </div>
+  </div>
+
+  <!-- หน้าทำข้อสอบ -->
+  <div id="quizPlayer" style="display:none">
+    <div class="quiz-player-wrap">
+      <div class="player-topbar">
+        <button class="player-back" onclick="closeQuiz()">← ตั้งค่าใหม่</button>
+        <div class="player-title" id="quizPlayerTitle"></div>
+        <div class="player-progress" id="quizProgress">0/0</div>
+      </div>
+      <div class="player-score-bar"><div class="player-score-fill" id="quizScoreFill"></div></div>
+      <div id="quizBody"></div>
+    </div>
+  </div>
+
+  <!-- หน้าสรุปผล -->
+  <div id="quizResult" style="display:none">
+    <div class="quiz-player-wrap">
+      <div class="player-topbar">
+        <button class="player-back" onclick="closeQuiz()">← ตั้งค่าใหม่</button>
+        <div class="player-title">ผลการทดสอบ</div>
+      </div>
+      <div id="quizResultBody"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE: วิดีโอ
+══════════════════════════════ -->
+<div class="page" id="page-video">
+  <div class="video-main" id="videoMain">
+    <div class="placeholder">
+      <div class="placeholder-icon">🎬</div>
+      <h2>กำลังโหลด...</h2>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE: เอกสาร
+══════════════════════════════ -->
+<div class="page" id="page-docs">
+  <div class="docs-main" id="docsMain">
+    <div class="placeholder">
+      <div class="placeholder-icon">📄</div>
+      <h2>กำลังโหลด...</h2>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE: เกี่ยวกับ
+══════════════════════════════ -->
+<div class="page" id="page-about">
+  <div class="about-main">
+    <div class="profile-card">
+      <div class="avatar" id="avatar">HS</div>
+      <div class="profile-info">
+        <h1 id="profileName">กำลังโหลด...</h1>
+        <span class="profile-role" id="profileRole"></span>
+      </div>
+    </div>
+    <div class="info-card" id="bioCard" style="display:none">
+      <div class="card-label">เกี่ยวกับครู</div>
+      <div class="card-body" id="bioText"></div>
+    </div>
+    <div class="info-card" id="missionCard" style="display:none">
+      <div class="card-label">วัตถุประสงค์ของเว็บไซต์</div>
+      <div class="card-body" id="missionText"></div>
+    </div>
+    <div class="info-card" id="contactCard" style="display:none">
+      <div class="card-label">ช่องทางติดต่อ</div>
+      <div class="contact-grid" id="contactGrid"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ─────────────────────────────────────────────
+  //  CONFIG
+  // ─────────────────────────────────────────────
+  const SHEETS_ID = '1_E7EMj_5HKgJ7hzQAVDnJfpiPv8Bo98wJUbPDzpsEuE';
+  const SHEET_GID = {
+    config:    '0',
+    grades:    '257840249',
+    specials:  '1826613192',
+    about:     '291876820',
+    documents: '2115382289',
+    videos:    '1639206366',
+    exercise:  '2099448885',
+    quiz:      '523092849',
+    // ม.ต้น
+    junior_number:     '1818009118',
+    junior_algebra:    '1432123209',
+    junior_geometry:   '401166254',
+    junior_relation:   '30486538',
+    junior_statistics: '210741801',
+    // ม.ปลาย
+    senior_foundation: '125022782',
+    senior_algebra:    '2101440830',
+    senior_geometry:   '2042265125',
+    senior_calculus:   '112782715',
+    senior_counting:   '1379053178',
+    senior_statistics: '29981571',
+  };
+
+  // ─────────────────────────────────────────────
+  //  FALLBACK DATA
+  // ─────────────────────────────────────────────
+  const FALLBACK = {
+    config: {
+      hero_title:    'ฝึกคณิตศาสตร์ [ทุกระดับ] ทุกที่ ฟรี!',
+      hero_desc:     'คลังโจทย์คณิตศาสตร์ครบตั้งแต่ ม.1 ถึง ม.6 จนถึงโอลิมปิกและ A-level พร้อมเฉลยละเอียดทุกข้อ',
+      logo_sub:      'คลังโจทย์คณิตศาสตร์',
+      pill_1:        '📚 โจทย์ 500+ ข้อ',
+      pill_1_bg:     '#E6F1FB', pill_1_color: '#0C447C',
+      pill_2:        '✓ เฉลยทุกข้อ',
+      pill_2_bg:     '#EAF3DE', pill_2_color: '#27500A',
+      pill_3:        '⚡ ไม่ต้องสมัครสมาชิก',
+      pill_3_bg:     '#FAEEDA', pill_3_color: '#633806',
+    },
+    grades: [
+      { label:'ม.1', sublabel:'พื้นฐาน', color:'#1D9E75', bar:'#9FE1CB', visible:'TRUE' },
+      { label:'ม.2', sublabel:'พื้นฐาน', color:'#0F6E56', bar:'#5DCAA5', visible:'TRUE' },
+      { label:'ม.3', sublabel:'กลาง',    color:'#085041', bar:'#1D9E75', visible:'TRUE' },
+      { label:'ม.4', sublabel:'กลาง',    color:'#185FA5', bar:'#85B7EB', visible:'TRUE' },
+      { label:'ม.5', sublabel:'สูง',     color:'#0C447C', bar:'#378ADD', visible:'TRUE' },
+      { label:'ม.6', sublabel:'สูง',     color:'#042C53', bar:'#185FA5', visible:'TRUE' },
+    ],
+    specials: [
+      { icon:'🏆', title:'Olympiad',        desc:'โจทย์ระดับโอลิมปิกวิชาการ',   bg:'#EEEDFE', visible:'TRUE' },
+      { icon:'📐', title:'A-level',         desc:'เตรียมสอบ A-level คณิต',       bg:'#E6F1FB', visible:'TRUE' },
+      { icon:'🎯', title:'แข่งขัน ม.ต้น',  desc:'โจทย์สอบแข่งขันระดับ ม.ต้น',  bg:'#EAF3DE', visible:'TRUE' },
+      { icon:'📊', title:'แข่งขัน ม.ปลาย', desc:'โจทย์สอบแข่งขันระดับ ม.ปลาย', bg:'#FAEEDA', visible:'TRUE' },
+      { icon:'📚', title:'อื่นๆ',           desc:'หมวดหมู่เพิ่มเติม',            bg:'#FBEAF0', visible:'TRUE' },
+    ],
+    about: {
+      name: 'ครูไฮซัม แวอูมา',
+      role: 'ครูคณิตศาสตร์ โรงเรียนสาธิตวิทยาการอิสลาม มหาวิทยาลัยสงขลานครินทร์',
+      bio: 'เป็นครู เป็นพ่อลูกสาม',
+      mission: 'เผยแพร่ความรู้ฟรีๆ',
+      photo_url: '',
+      contact_facebook: '', contact_line: '',
+      contact_instagram: '', contact_email: 'zidnihuda@gmail.com',
+    },
+    documents: [],
+    videos: [],
+    exercise: [],
+    quiz: [],
+  };
+
+  // ─────────────────────────────────────────────
+  //  SHEETS HELPERS
+  // ─────────────────────────────────────────────
+  const cache = {};
+
+  async function fetchSheet(name) {
+    if (cache[name]) return cache[name];
+    const url = `https://docs.google.com/spreadsheets/d/${SHEETS_ID}/export?format=csv&gid=${SHEET_GID[name]}`;
+    const res = await fetch(url, { redirect: 'follow' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const rows = parseCsv(await res.text());
+    cache[name] = rows;
+    return rows;
+  }
+
+  function parseCsv(text) {
+    const lines = text.trim().split('\n');
+    const headers = splitLine(lines[0]);
+    return lines.slice(1).map(line => {
+      const vals = splitLine(line);
+      const obj = {};
+      headers.forEach((h, i) => { obj[h.trim()] = (vals[i] || '').trim(); });
+      return obj;
+    });
+  }
+
+  function splitLine(line) {
+    const r = []; let cur = '', inQ = false;
+    for (const c of line) {
+      if (c === '"') inQ = !inQ;
+      else if (c === ',' && !inQ) { r.push(cur); cur = ''; }
+      else cur += c;
+    }
+    r.push(cur);
+    return r.map(s => s.replace(/^"|"$/g, ''));
+  }
+
+  function toKV(rows) {
+    const obj = {};
+    rows.forEach(r => { if (r.key) obj[r.key] = r.value; });
+    return obj;
+  }
+
+  function isVisible(val) {
+    return (val || '').toUpperCase() !== 'FALSE';
+  }
+
+  function toggleSidebar() {
+    const sb = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const hb = document.getElementById('hamburger');
+    sb.classList.toggle('open');
+    overlay.classList.toggle('open');
+    hb.classList.toggle('open');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+  }
+
+  function navigateToExercise(grade) {
+    navigate('exercise');
+    // รอให้ loadExercise เสร็จก่อนแล้วค่อย toggle เปิด grade นั้น
+    const tryOpen = (attempts) => {
+      // หา grade header ที่ตรงกัน
+      const headers = document.querySelectorAll('.ex-grade-header');
+      let found = false;
+      headers.forEach(h => {
+        const h2 = h.querySelector('h2');
+        if (h2 && h2.textContent.trim() === grade) {
+          // เลื่อน scroll ไปที่การ์ด และ toggle เปิดถ้ายังปิดอยู่
+          const bodyId = h.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+          if (bodyId) {
+            const body = document.getElementById(bodyId);
+            if (body && body.style.display === 'none') toggleSection(bodyId, h);
+          }
+          h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          found = true;
+        }
+      });
+      if (!found && attempts > 0) setTimeout(() => tryOpen(attempts - 1), 200);
+    };
+    setTimeout(() => tryOpen(10), 100);
+  }
+
+  function navigateToQuiz(examType) {
+    navigate('quiz');
+    // รอให้ loadQuiz เสร็จก่อนแล้วค่อย preset dropdown
+    const trySet = (attempts) => {
+      const sel = document.getElementById('selExamType');
+      if (sel) {
+        // หา option ที่ value ตรงหรือใกล้เคียง
+        const match = Array.from(sel.options).find(o =>
+          o.value === examType || examType.includes(o.value) || o.value.includes(examType)
+        );
+        if (match) {
+          sel.value = match.value;
+          quizConfig.examType = match.value;
+          checkSetupReady();
+        }
+      } else if (attempts > 0) {
+        setTimeout(() => trySet(attempts - 1), 200);
+      }
+    };
+    setTimeout(() => trySet(10), 100);
+  }
+
+  // ─────────────────────────────────────────────
+  //  NAVIGATION
+  // ─────────────────────────────────────────────
+  const loaded = {};
+
+  function navigate(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-btn[data-page]').forEach(b => {
+      b.classList.toggle('active', b.dataset.page === page);
+    });
+    document.getElementById(`page-${page}`).classList.add('active');
+    window.scrollTo(0, 0);
+
+    if (!loaded[page]) {
+      loaded[page] = true;
+      loadPage(page);
+    }
+  }
+
+  async function loadPage(page) {
+    const bar = document.getElementById('loadingBar');
+    bar.className = 'loading-bar running';
+    try {
+      if (page === 'home')     await loadHome();
+      if (page === 'about')    await loadAbout();
+      if (page === 'docs')     await loadDocs();
+      if (page === 'video')    await loadVideo();
+      if (page === 'exercise') await loadExercise();
+      if (page === 'quiz')     await loadQuiz();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      bar.className = 'loading-bar';
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  //  PAGE: หน้าแรก
+  // ─────────────────────────────────────────────
+  async function loadHome() {
+    let cfg, grades, specials;
+    try {
+      const [cfgRows, gradeRows, specialRows] = await Promise.all([
+        fetchSheet('config'), fetchSheet('grades'), fetchSheet('specials'),
+      ]);
+      cfg      = toKV(cfgRows);
+      grades   = gradeRows;
+      specials = specialRows;
+    } catch {
+      cfg      = FALLBACK.config;
+      grades   = FALLBACK.grades;
+      specials = FALLBACK.specials;
+    }
+
+    // logo sub
+    document.getElementById('logoSub').textContent = cfg.logo_sub || 'คลังโจทย์คณิตศาสตร์';
+
+    // hero title
+    const titleHTML = (cfg.hero_title || '').replace(/\[(.+?)\]/g, '<span class="hl">$1</span>');
+    document.getElementById('heroTitle').innerHTML = titleHTML || 'Summation';
+    document.getElementById('heroDesc').textContent = cfg.hero_desc || '';
+
+    // pills
+    const pillRow = document.getElementById('pillRow');
+    pillRow.innerHTML = '';
+    [1,2,3].forEach(n => {
+      const text = cfg[`pill_${n}`];
+      if (!text) return;
+      const pill = document.createElement('div');
+      pill.className = 'pill';
+      pill.style.background = cfg[`pill_${n}_bg`] || '#f0f0ee';
+      pill.style.color = cfg[`pill_${n}_color`] || '#444';
+      pill.textContent = text;
+      pillRow.appendChild(pill);
+    });
+
+    // grades
+    const gradeGrid = document.getElementById('gradeGrid');
+    gradeGrid.innerHTML = '';
+    grades.filter(r => isVisible(r.visible)).forEach(r => {
+      const card = document.createElement('div');
+      card.className = 'grade-card';
+      card.innerHTML = `
+        <div class="grade-num" style="color:${r.color}">${r.label}</div>
+        <div class="grade-sub">${r.sublabel}</div>
+        <div class="grade-bar" style="background:${r.bar || r.color}"></div>`;
+      card.onclick = () => navigateToExercise(r.label);
+      gradeGrid.appendChild(card);
+    });
+
+    // specials
+    const specialGrid = document.getElementById('specialGrid');
+    specialGrid.innerHTML = '';
+    specials.filter(r => isVisible(r.visible)).forEach(r => {
+      const card = document.createElement('div');
+      card.className = 'special-card';
+      card.innerHTML = `
+        <div class="special-icon" style="background:${r.bg}">${r.icon}</div>
+        <div><h3>${r.title}</h3><p>${r.desc}</p></div>`;
+      card.onclick = () => navigateToQuiz(r.title);
+      specialGrid.appendChild(card);
+    });
+  }
+
+  // ─────────────────────────────────────────────
+  //  PAGE: เกี่ยวกับ
+  // ─────────────────────────────────────────────
+  async function loadAbout() {
+    let d;
+    try {
+      const rows = await fetchSheet('about');
+      d = toKV(rows);
+      if (!d.name) d = FALLBACK.about;
+    } catch {
+      d = FALLBACK.about;
+    }
+
+    // avatar
+    const avatar = document.getElementById('avatar');
+    if (d.photo_url) {
+      avatar.innerHTML = `<img src="${d.photo_url}" alt="${d.name}" />`;
+    } else {
+      avatar.textContent = (d.name || 'KH').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+    }
+
+    document.getElementById('profileName').textContent = d.name || '';
+    document.getElementById('profileRole').textContent = d.role || '';
+
+    if (d.bio) {
+      document.getElementById('bioText').textContent = d.bio;
+      document.getElementById('bioCard').style.display = 'block';
+    }
+    if (d.mission) {
+      document.getElementById('missionText').textContent = d.mission;
+      document.getElementById('missionCard').style.display = 'block';
+    }
+
+    function hasContact(val) {
+      return val && val.trim() !== '' && val.trim() !== 'ไม่มี' && val.trim().toLowerCase() !== 'none';
+    }
+    const contacts = [
+      { key:'contact_facebook',  label:'Facebook',  icon:'📘', bg:'#E6F1FB', href: d.contact_facebook },
+      { key:'contact_line',      label:'LINE',       icon:'💬', bg:'#EAF3DE', href: hasContact(d.contact_line) ? `https://line.me/ti/p/${d.contact_line}` : '' },
+      { key:'contact_instagram', label:'Instagram',  icon:'📷', bg:'#FBEAF0', href: d.contact_instagram },
+      { key:'contact_email',     label:'Email',      icon:'✉️', bg:'#FAEEDA', href: hasContact(d.contact_email) ? `mailto:${d.contact_email}` : '' },
+    ].filter(c => hasContact(d[c.key]));
+
+    if (contacts.length > 0) {
+      document.getElementById('contactGrid').innerHTML = contacts.map(c =>
+        `<a class="contact-item" href="${c.href}" target="_blank" rel="noopener">
+          <div class="contact-icon" style="background:${c.bg}">${c.icon}</div>
+          <div class="contact-text">
+            <div class="contact-label">${c.label}</div>
+            <div class="contact-value">${d[c.key]}</div>
+          </div>
+        </a>`).join('');
+      document.getElementById('contactCard').style.display = 'block';
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  //  PAGE: แบบทดสอบ
+  // ─────────────────────────────────────────────
+  let quizAllRows = [];
+  let quizConfig = { examType: null, qType: null, qCount: null, difficulty: null };
+  let quizSession = { questions: [], answers: [] };
+
+  async function loadQuiz() {
+    try { quizAllRows = await fetchSheet('quiz'); }
+    catch { quizAllRows = FALLBACK.quiz; }
+    checkSetupReady();
+  }
+
+  function checkSetupReady() {
+    const { examType, qType, qCount, difficulty } = quizConfig;
+    const ready = examType && qType && qCount && difficulty;
+    document.getElementById('setupStartBtn').disabled = !ready;
+    if (ready) {
+      const pool = buildPool();
+      const info = document.getElementById('setupInfo');
+      info.style.display = 'block';
+      info.textContent = `📦 พบข้อสอบในคลัง ${pool.length} ข้อ • จะสุ่มมา ${Math.min(pool.length, parseInt(qCount))} ข้อ`;
+    }
+  }
+
+  function buildPool() {
+    const { examType, qType } = quizConfig;
+    return quizAllRows.filter(r => {
+      if (!isVisible(r.visible)) return false;
+      if (examType !== 'ทั้งหมด' && r.exam_type !== examType) return false;
+      if (qType === 'mc' && (r.type||'').toLowerCase() !== 'mc') return false;
+      if (qType === 'sa' && (r.type||'').toLowerCase() !== 'sa') return false;
+      return true;
+    });
+  }
+
+  // สัดส่วนตามดาว easy:medium:hard
+  const DIFF_RATIO = {
+    '1': [4,1,1], '2': [3,2,1], '3': [2,2,1], '4': [1,2,1], '5': [1,2,2]
+  };
+
+  function pickWithRatio(pool, total, ratioKey) {
+    const ratio = DIFF_RATIO[ratioKey] || [1,1,1];
+    const sum = ratio.reduce((a,b) => a+b, 0);
+    const easy   = pool.filter(r => r.difficulty === 'easy').sort(() => Math.random()-.5);
+    const medium = pool.filter(r => r.difficulty === 'medium').sort(() => Math.random()-.5);
+    const hard   = pool.filter(r => r.difficulty === 'hard').sort(() => Math.random()-.5);
+
+    let [ne, nm, nh] = ratio.map((r,i) => Math.floor(total * r / sum));
+    let leftover = total - ne - nm - nh;
+    // แจกเศษให้ medium ก่อน แล้ว easy
+    if (leftover > 0 && nm < medium.length) { nm++; leftover--; }
+    if (leftover > 0 && ne < easy.length)   { ne++; leftover--; }
+    if (leftover > 0 && nh < hard.length)   { nh++; leftover--; }
+
+    return [
+      ...easy.slice(0, ne),
+      ...medium.slice(0, nm),
+      ...hard.slice(0, nh),
+    ].sort(() => Math.random()-.5);
+  }
+
+  function startQuiz() {
+    const { qCount, difficulty } = quizConfig;
+    const pool = buildPool();
+    const total = Math.min(pool.length, parseInt(qCount));
+    const questions = pickWithRatio(pool, total, difficulty);
+
+    if (questions.length === 0) {
+      alert('ไม่พบข้อสอบในคลังที่ตรงกับเงื่อนไขที่เลือกครับ'); return;
+    }
+
+    quizSession = { questions, answers: new Array(questions.length).fill(null) };
+    document.getElementById('quizSetup').style.display = 'none';
+    document.getElementById('quizResult').style.display = 'none';
+    document.getElementById('quizPlayer').style.display = 'block';
+    document.getElementById('quizPlayerTitle').textContent = `แบบทดสอบ ${questions.length} ข้อ`;
+    document.getElementById('quizProgress').textContent = `0/${questions.length}`;
+    document.getElementById('quizScoreFill').style.width = '0%';
+    renderQuizAll();
+  }
+
+  function renderQuizAll() {
+    const { questions } = quizSession;
+    const keys = ['a','b','c','d'];
+    const labels = ['ก','ข','ค','ง'];
+
+    document.getElementById('quizBody').innerHTML = questions.map((q, qi) => {
+      const isMC = (q.type||'mc').toLowerCase() === 'mc';
+      let inputHTML = '';
+      if (isMC) {
+        inputHTML = `<div class="quiz-choices">` + keys.map((k,i) => {
+          const val = q[`choice_${k}`];
+          if (!val) return '';
+          return `<div class="quiz-choice" data-qi="${qi}" data-key="${k}" onclick="quizSelectChoice(this,${qi},'${k}')">
+            <div class="quiz-choice-key">${labels[i]}</div><span>${val}</span>
+          </div>`;
+        }).join('') + `</div>`;
+      } else {
+        inputHTML = `<input class="quiz-sa-input" id="qsa-${qi}" type="text" placeholder="พิมพ์คำตอบ..." oninput="quizSaInput(${qi},this.value)" />`;
+      }
+      return `<div class="quiz-q-card" id="qcard-${qi}">
+        <div class="quiz-q-num">ข้อที่ ${qi+1} จาก ${questions.length} • ${isMC ? 'ปรนัย' : 'เติมคำตอบ'} • ${q.difficulty||''}</div>
+        <div class="quiz-q-text">${q.question}</div>
+        ${inputHTML}
+      </div>`;
+    }).join('') + `<button class="quiz-submit-all" onclick="submitQuizAll()">✅ ส่งคำตอบและดูผล</button>`;
+
+    // update progress as user answers
+    updateQuizProgress();
+  }
+
+  function quizSelectChoice(el, qi, key) {
+    document.querySelectorAll(`[data-qi="${qi}"]`).forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    quizSession.answers[qi] = key;
+    updateQuizProgress();
+  }
+
+  function quizSaInput(qi, val) {
+    quizSession.answers[qi] = val.trim() || null;
+    updateQuizProgress();
+  }
+
+  function updateQuizProgress() {
+    const answered = quizSession.answers.filter(a => a !== null && a !== '').length;
+    const total = quizSession.questions.length;
+    document.getElementById('quizProgress').textContent = `${answered}/${total}`;
+    document.getElementById('quizScoreFill').style.width = `${(answered/total)*100}%`;
+  }
+
+  function submitQuizAll() {
+    const { questions, answers } = quizSession;
+    const results = questions.map((q, qi) => {
+      const correct = (q.answer||'').trim().toLowerCase();
+      const userAns = (answers[qi]||'').trim().toLowerCase();
+      return { q, userAns: answers[qi]||'', correct: q.answer||'', isCorrect: userAns === correct };
+    });
+
+    // คำนวณคะแนนรวม
+    const score = results.filter(r => r.isCorrect).length;
+    const total = results.length;
+    const pct = Math.round((score/total)*100);
+
+    // คำนวณคะแนนแต่ละ chapter
+    const chapterMap = {};
+    results.forEach(r => {
+      const ch = r.q.chapter || 'อื่นๆ';
+      if (!chapterMap[ch]) chapterMap[ch] = { score: 0, total: 0 };
+      chapterMap[ch].total++;
+      if (r.isCorrect) chapterMap[ch].score++;
+    });
+
+    const msg = pct === 100 ? '🎉 เยี่ยมมาก! ทำได้สมบูรณ์แบบ!' :
+                pct >= 80  ? '👍 ดีมากเลย! เกือบสมบูรณ์แบบ' :
+                pct >= 60  ? '😊 ผ่านแล้ว! ยังมีจุดที่ปรับปรุงได้นะครับ' :
+                             '💪 ยังไม่ผ่าน ลองทบทวนแล้วทำใหม่นะครับ';
+
+    const chapterHTML = Object.entries(chapterMap).map(([ch, val]) => {
+      const cpct = Math.round((val.score/val.total)*100);
+      return `<div class="result-chapter-card">
+        <div class="result-chapter-name">${ch}</div>
+        <div class="result-chapter-score">${val.score}/${val.total} <span style="font-size:13px;color:#aaa;font-weight:400">(${cpct}%)</span></div>
+        <div class="result-chapter-bar"><div class="result-chapter-bar-fill" style="width:${cpct}%"></div></div>
+      </div>`;
+    }).join('');
+
+    const answerHTML = results.map((r, qi) => {
+      const isMC = (r.q.type||'mc').toLowerCase() === 'mc';
+      const keys = ['a','b','c','d'];
+      const labels = ['ก','ข','ค','ง'];
+      let userLabel = r.userAns;
+      let correctLabel = r.correct;
+      if (isMC) {
+        const idx = keys.indexOf(r.userAns.toLowerCase());
+        const cidx = keys.indexOf(r.correct.toLowerCase());
+        userLabel = idx >= 0 ? `${labels[idx]}. ${r.q[`choice_${r.userAns.toLowerCase()}`]||r.userAns}` : '(ไม่ได้ตอบ)';
+        correctLabel = cidx >= 0 ? `${labels[cidx]}. ${r.q[`choice_${r.correct.toLowerCase()}`]||r.correct}` : r.correct;
+      }
+      return `<div class="result-answer-item">
+        <div class="result-answer-header" onclick="toggleResultAnswer(this)">
+          <div class="result-answer-status ${r.isCorrect ? 'correct' : 'wrong'}">${r.isCorrect ? '✅' : '❌'}</div>
+          <div class="result-answer-q">ข้อ ${qi+1}: ${r.q.question}</div>
+          <span style="font-size:11px;color:#bbb;">▾</span>
+        </div>
+        <div class="result-answer-body">
+          <div class="result-answer-your">
+            คำตอบของคุณ: <span class="${r.isCorrect ? 'result-answer-correct-val' : 'result-answer-wrong-val'}">${userLabel||'(ไม่ได้ตอบ)'}</span>
+          </div>
+          ${!r.isCorrect ? `<div>เฉลย: <span class="result-answer-correct-val">${correctLabel}</span></div>` : ''}
+          ${r.q.explanation ? `<div style="margin-top:6px;padding-top:6px;border-top:0.5px solid #f0f0ee;color:#555">${r.q.explanation}</div>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+
+    document.getElementById('quizPlayer').style.display = 'none';
+    document.getElementById('quizResult').style.display = 'block';
+    document.getElementById('quizResultBody').innerHTML = `
+      <div class="result-summary">
+        <div class="result-score">${score}</div>
+        <div class="result-of">จาก ${total} ข้อ</div>
+        <div class="result-pct">${pct}%</div>
+        <div class="result-msg">${msg}</div>
+      </div>
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.06em;color:#999;text-transform:uppercase;margin-bottom:0.75rem;">คะแนนแต่ละบท</div>
+      <div class="result-chapter-grid">${chapterHTML}</div>
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.06em;color:#999;text-transform:uppercase;margin:1.25rem 0 0.75rem;">เฉลยทุกข้อ</div>
+      <div class="result-answers">${answerHTML}</div>
+      <div class="result-btns">
+        <button class="result-btn-retry" onclick="startQuiz()">🔄 ทำใหม่</button>
+        <button class="result-btn-back" onclick="closeQuiz()">← ตั้งค่าใหม่</button>
+      </div>`;
+  }
+
+  function toggleResultAnswer(el) {
+    const body = el.nextElementSibling;
+    body.classList.toggle('open');
+    el.querySelector('span:last-child').style.transform = body.classList.contains('open') ? 'rotate(180deg)' : '';
+  }
+
+  function closeQuiz() {
+    document.getElementById('quizPlayer').style.display = 'none';
+    document.getElementById('quizResult').style.display = 'none';
+    document.getElementById('quizSetup').style.display = 'block';
+  }
+
+  // ─────────────────────────────────────────────
+  //  PAGE: แบบฝึกหัด — browser
+  // ─────────────────────────────────────────────
+  let exAllRows = [];
+
+  async function loadExercise() {
+    const container = document.getElementById('exerciseMain');
+    try { exAllRows = await fetchSheet('exercise'); }
+    catch { exAllRows = FALLBACK.exercise; }
+
+    const visible = exAllRows.filter(r => isVisible(r.visible));
+    if (visible.length === 0) {
+      container.innerHTML = `<div class="placeholder"><div class="placeholder-icon">✏️</div><h2>ยังไม่มีแบบฝึกหัด</h2></div>`;
+      return;
+    }
+
+    // grade → chapter → unit → rows
+    const tree = {};
+    visible.forEach(r => {
+      const g = r.grade || 'อื่นๆ';
+      const c = r.chapter || 'ทั่วไป';
+      const u = r.unit || 'ทั่วไป';
+      if (!tree[g]) tree[g] = {};
+      if (!tree[g][c]) tree[g][c] = {};
+      if (!tree[g][c][u]) tree[g][c][u] = [];
+      tree[g][c][u].push(r);
+    });
+
+    const sortedGrades = Object.keys(tree).sort((a,b) => a.localeCompare(b,'th'));
+    container.innerHTML = sortedGrades.map((grade, gi) => {
+      const chapters = Object.keys(tree[grade]).sort((a,b) => a.localeCompare(b,'th'));
+      const totalQ = chapters.reduce((s,c) => s + Object.values(tree[grade][c]).reduce((s2,u) => s2+u.length, 0), 0);
+      const gradeBodyId = `exgrade-${gi}`;
+
+      const chapHTML = chapters.map((chap, ci) => {
+        const units = Object.keys(tree[grade][chap]).sort((a,b) => a.localeCompare(b,'th'));
+        const chapBodyId = `exchap-${gi}-${ci}`;
+        const unitHTML = units.map(unit => {
+          const rows = tree[grade][chap][unit];
+          const count = rows.length;
+          return `<div class="ex-unit-card" onclick="startExercise('${grade}','${chap}','${unit}')">
+            <div class="ex-unit-icon">📘</div>
+            <div class="ex-unit-name">${unit}</div>
+            <div class="ex-unit-count">${count} ข้อในคลัง</div>
+            <span class="ex-unit-badge">▶ เริ่มทำ 10 ข้อ</span>
+          </div>`;
+        }).join('');
+        return `<div class="ex-chapter">
+          <div class="ex-chapter-title toggle-topic" onclick="toggleSection('${chapBodyId}',this)">
+            <span class="toggle-arrow">▾</span>${chap}
+            <span class="topic-count">${units.length} หน่วย</span>
+          </div>
+          <div class="ex-unit-grid" id="${chapBodyId}">${unitHTML}</div>
+        </div>`;
+      }).join('');
+
+      return `<div class="ex-grade">
+        <div class="ex-grade-header toggle-grade" onclick="toggleSection('${gradeBodyId}',this)">
+          <span class="toggle-arrow">▾</span>
+          <h2>${grade}</h2>
+          <span>${totalQ} ข้อ</span>
+        </div>
+        <div id="${gradeBodyId}">${chapHTML}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // ─────────────────────────────────────────────
+  //  PAGE: แบบฝึกหัด — player
+  // ─────────────────────────────────────────────
+  let exSession = { questions:[], current:0, score:0, unit:'', answered:false };
+
+  function startExercise(grade, chap, unit) {
+    const pool = exAllRows.filter(r =>
+      isVisible(r.visible) && r.grade===grade && r.chapter===chap && r.unit===unit
+    );
+    const shuffled = pool.sort(() => Math.random()-0.5).slice(0, 10);
+    exSession = { questions: shuffled, current: 0, score: 0, unit, answered: false };
+
+    document.getElementById('exerciseBrowser').style.display = 'none';
+    document.getElementById('exercisePlayer').style.display = 'block';
+    document.getElementById('playerTitle').textContent = unit;
+    renderQuestion();
+  }
+
+  function closeExercise() {
+    document.getElementById('exercisePlayer').style.display = 'none';
+    document.getElementById('exerciseBrowser').style.display = 'block';
+  }
+
+  function renderQuestion() {
+    const { questions, current, score } = exSession;
+    const total = questions.length;
+    document.getElementById('playerProgress').textContent = `${current+1}/${total}`;
+    document.getElementById('playerScoreFill').style.width = `${(current/total)*100}%`;
+
+    const q = questions[current];
+    const isMC = (q.type||'mc').toLowerCase() === 'mc';
+    const keys = ['a','b','c','d'];
+    const labels = ['ก','ข','ค','ง'];
+
+    let choicesHTML = '';
+    if (isMC) {
+      choicesHTML = `<div class="q-choices">` + keys.map((k,i) => {
+        const val = q[`choice_${k}`];
+        if (!val) return '';
+        return `<div class="q-choice" data-key="${k}" onclick="selectChoice(this,'${k}')">
+          <div class="q-choice-key">${labels[i]}</div>
+          <span>${val}</span>
+        </div>`;
+      }).join('') + `</div>`;
+    } else {
+      choicesHTML = `<input class="q-sa-input" id="saInput" type="text" placeholder="พิมพ์คำตอบ..." />`;
+    }
+
+    document.getElementById('playerBody').innerHTML = `
+      <div class="q-card">
+        <div class="q-meta">ข้อที่ ${current+1} จาก ${total} • ${isMC ? 'ปรนัย' : 'เติมคำตอบ'}</div>
+        <div class="q-text">${q.question}</div>
+        ${choicesHTML}
+        <button class="q-submit-btn" id="submitBtn" onclick="submitAnswer()">ตรวจคำตอบ</button>
+        <div id="feedbackArea"></div>
+      </div>`;
+    exSession.answered = false;
+    if (!isMC) document.getElementById('saInput')?.addEventListener('keydown', e => { if (e.key==='Enter') submitAnswer(); });
+  }
+
+  function selectChoice(el, key) {
+    if (exSession.answered) return;
+    document.querySelectorAll('.q-choice').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    exSession.selectedKey = key;
+  }
+
+  function submitAnswer() {
+    if (exSession.answered) return;
+    const q = exSession.questions[exSession.current];
+    const isMC = (q.type||'mc').toLowerCase() === 'mc';
+    const correct = (q.answer||'').trim().toLowerCase();
+    let isCorrect = false;
+
+    if (isMC) {
+      const sel = exSession.selectedKey;
+      if (!sel) return;
+      isCorrect = sel === correct;
+      document.querySelectorAll('.q-choice').forEach(c => {
+        const k = c.dataset.key;
+        if (k === correct) c.classList.add('reveal');
+        else if (k === sel && !isCorrect) c.classList.add('wrong');
+        c.style.pointerEvents = 'none';
+      });
+    } else {
+      const input = document.getElementById('saInput');
+      const userVal = (input?.value||'').trim();
+      if (!userVal) return;
+      isCorrect = userVal === correct;
+      input.classList.add(isCorrect ? 'correct' : 'wrong');
+      input.disabled = true;
+    }
+
+    if (isCorrect) exSession.score++;
+    exSession.answered = true;
+
+    const fb = document.getElementById('feedbackArea');
+    fb.className = `q-feedback ${isCorrect ? 'correct' : 'wrong'}`;
+    fb.innerHTML = `<div class="q-feedback-title">${isCorrect ? '✅ ถูกต้อง!' : '❌ ผิด'}</div>
+      ${q.explanation ? `<div>${q.explanation}</div>` : ''}`;
+
+    document.getElementById('submitBtn').style.display = 'none';
+
+    const isLast = exSession.current >= exSession.questions.length - 1;
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'q-next-btn';
+    nextBtn.textContent = isLast ? '🏁 ดูผลสรุป' : 'ข้อถัดไป →';
+    nextBtn.onclick = isLast ? showSummary : nextQuestion;
+    fb.after(nextBtn);
+  }
+
+  function nextQuestion() {
+    exSession.current++;
+    renderQuestion();
+  }
+
+  function showSummary() {
+    const { score, questions, unit } = exSession;
+    const total = questions.length;
+    const pct = Math.round((score/total)*100);
+    const msg = pct === 100 ? '🎉 เยี่ยมมาก! ทำได้ถูกทุกข้อเลย!' :
+                pct >= 80  ? '👍 ดีมาก! เกือบสมบูรณ์แบบแล้ว' :
+                pct >= 60  ? '😊 ผ่านแล้ว! ลองทำอีกรอบนะครับ' :
+                             '💪 ยังไม่ผ่าน ลองทบทวนแล้วทำใหม่นะครับ';
+    document.getElementById('playerScoreFill').style.width = '100%';
+    document.getElementById('playerBody').innerHTML = `
+      <div class="summary-card">
+        <div class="summary-score">${score}</div>
+        <div class="summary-of">จาก ${total} ข้อ (${pct}%)</div>
+        <div class="summary-msg">${msg}</div>
+        <button class="summary-retry" onclick="retryExercise()">🔄 ทำใหม่</button>
+        <button class="summary-back" onclick="closeExercise()">← กลับเลือกหน่วย</button>
+      </div>`;
+  }
+
+  function retryExercise() {
+    const { questions } = exSession;
+    const unit = exSession.unit;
+    // re-shuffle same pool
+    const pool = exAllRows.filter(r => isVisible(r.visible) && r.unit === unit);
+    const shuffled = pool.sort(() => Math.random()-0.5).slice(0, 10);
+    exSession = { questions: shuffled, current: 0, score: 0, unit, answered: false };
+    document.getElementById('playerTitle').textContent = unit;
+    renderQuestion();
+  }
+
+  // ─────────────────────────────────────────────
+  //  PAGE: วิดีโอ
+  // ─────────────────────────────────────────────
+  async function loadVideo() {
+    const container = document.getElementById('videoMain');
+    let rows;
+    try {
+      rows = await fetchSheet('videos');
+    } catch {
+      rows = FALLBACK.videos;
+    }
+
+    const visible = rows.filter(r => isVisible(r.visible));
+
+    if (visible.length === 0) {
+      container.innerHTML = `
+        <div class="placeholder">
+          <div class="placeholder-icon">🎬</div>
+          <h2>ยังไม่มีวิดีโอ</h2>
+          <p>จะเพิ่มวิดีโอเร็วๆ นี้ครับ</p>
+        </div>`;
+      return;
+    }
+
+    // จัดกลุ่ม 2 ระดับ: grade → topic
+    const gradeMap = {};
+    visible.forEach(r => {
+      const g = r.grade || 'อื่นๆ';
+      const t = r.topic || 'ทั่วไป';
+      if (!gradeMap[g]) gradeMap[g] = {};
+      if (!gradeMap[g][t]) gradeMap[g][t] = [];
+      gradeMap[g][t].push(r);
+    });
+
+    const sortedGrades = Object.keys(gradeMap).sort((a, b) => a.localeCompare(b, 'th'));
+
+    container.innerHTML = sortedGrades.map((grade, gi) => {
+      const topicMap = gradeMap[grade];
+      const sortedTopics = Object.keys(topicMap).sort((a, b) => a.localeCompare(b, 'th'));
+      const totalCount = sortedTopics.reduce((s, t) => s + topicMap[t].length, 0);
+      const gradeId = `grade-${gi}`;
+
+      const topicsHTML = sortedTopics.map((topic, ti) => {
+        const topicId = `topic-${gi}-${ti}`;
+        const videos = topicMap[topic].sort((a, b) => (a.title||'').localeCompare(b.title||'', 'th'));
+        return `
+          <div class="video-topic">
+            <div class="video-topic-title toggle-topic" onclick="toggleSection('${topicId}', this)">
+              <span class="toggle-arrow">▾</span> ${topic}
+              <span class="topic-count">${videos.length} วิดีโอ</span>
+            </div>
+            <div class="video-grid" id="${topicId}">
+              ${videos.map(v => {
+                const src = (v.source || '').toLowerCase().trim();
+                const isYT = src === 'youtube';
+                return `
+                  <a class="video-card" href="${v.url}" target="_blank" rel="noopener">
+                    <div class="video-thumb ${isYT ? 'youtube' : 'drive'}">${isYT ? '▶️' : '📁'}</div>
+                    <div class="video-info">
+                      <div class="video-title">${v.title}</div>
+                      ${v.description ? `<div class="video-desc">${v.description}</div>` : ''}
+                      <span class="video-badge ${isYT ? 'youtube' : 'drive'}">${isYT ? '▶ YouTube' : '☁ Drive'}</span>
+                    </div>
+                  </a>`;
+              }).join('')}
+            </div>
+          </div>`;
+      }).join('');
+
+      return `
+        <div class="video-grade">
+          <div class="video-grade-header toggle-grade" onclick="toggleSection('${gradeId}', this)">
+            <span class="toggle-arrow">▾</span>
+            <h2>${grade}</h2>
+            <span>${totalCount} วิดีโอ</span>
+          </div>
+          <div class="video-grade-body" id="${gradeId}">
+            ${topicsHTML}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function toggleSection(id, el) {
+    const body = document.getElementById(id);
+    const arrow = el.querySelector('.toggle-arrow');
+    const isOpen = body.style.display !== 'none';
+    body.style.display = isOpen ? 'none' : '';
+    arrow.style.transform = isOpen ? 'rotate(-90deg)' : 'rotate(0deg)';
+  }
+
+  // ─────────────────────────────────────────────
+  //  PAGE: เอกสาร
+  // ─────────────────────────────────────────────
+  async function loadDocs() {
+    const container = document.getElementById('docsMain');
+    let rows;
+    try {
+      rows = await fetchSheet('documents');
+    } catch {
+      rows = FALLBACK.documents;
+    }
+
+    const visible = rows.filter(r => isVisible(r.visible));
+
+    if (visible.length === 0) {
+      container.innerHTML = `
+        <div class="placeholder">
+          <div class="placeholder-icon">📄</div>
+          <h2>ยังไม่มีเอกสาร</h2>
+          <p>จะเพิ่มเอกสารเร็วๆ นี้ครับ</p>
+        </div>`;
+      return;
+    }
+
+    // จัดกลุ่มตาม category
+    const groups = {};
+    visible.forEach(r => {
+      const cat = r.category || 'อื่นๆ';
+      if (!groups[cat]) groups[cat] = [];
+      groups[cat].push(r);
+    });
+
+    container.innerHTML = Object.entries(groups).map(([cat, items]) => `
+      <div class="docs-category">
+        <div class="docs-category-header">
+          <h2>${cat}</h2>
+          <span>${items.length} ไฟล์</span>
+        </div>
+        <div class="docs-grid">
+          ${items.map(item => `
+            <a class="doc-card" href="${item.drive_url}" target="_blank" rel="noopener">
+              <div class="doc-icon">${item.icon || '📄'}</div>
+              <div class="doc-info">
+                <div class="doc-title">${item.title}</div>
+                ${item.description ? `<div class="doc-desc">${item.description}</div>` : ''}
+                <div class="doc-badge">↗ เปิดใน Drive</div>
+              </div>
+            </a>`).join('')}
+        </div>
+      </div>`).join('');
+  }
+
+  // ─────────────────────────────────────────────
+  //  INIT
+  // ─────────────────────────────────────────────
+  loaded['home'] = true;
+  loadPage('home');
+</script>
+</body>
+</html>
