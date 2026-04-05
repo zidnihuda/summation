@@ -432,6 +432,16 @@
     .video-badge.youtube { color: #c0392b; background: #FFE8E8; }
     .video-badge.drive   { color: var(--blue-dk); background: #E6F1FB; }
 
+    /* ── SCAFFOLD SKILL ROW (Video & Docs skill view) ── */
+    .scaffold-skill-row { margin-bottom: 1.25rem; }
+    .scaffold-skill-label {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 0.6rem; padding: 0.4rem 0;
+      border-bottom: 1px dashed #e8e8e8;
+    }
+    .scaffold-skill-name { font-size: 13px; color: #444; flex: 1; line-height: 1.4; }
+    .scaffold-count { font-size: 11px; color: #bbb; white-space: nowrap; }
+
     /* ── VIDEO MODAL ── */
     .video-modal-overlay {
       display: none; position: fixed; inset: 0;
@@ -2317,36 +2327,72 @@
     }
 
     if (view === 'skill') {
-      // จัดตาม topic (กลุ่มสาระ) → subtopic
-      const topicMap = {};
+      // จัดตาม SKILL_DATA scaffold: กลุ่ม → บท → Skill → วิดีโอที่มี skill ตรงกัน
+      // index วิดีโอตาม skill id
+      const bySkill = {};
       filtered.forEach(r => {
-        const t = r.topic || 'ทั่วไป';
-        const st = r.subtopic || r.chapter || '';
-        if (!topicMap[t]) topicMap[t] = {};
-        if (!topicMap[t][st]) topicMap[t][st] = [];
-        topicMap[t][st].push(r);
+        const sk = (r.skill || '').trim();
+        if (!bySkill[sk]) bySkill[sk] = [];
+        bySkill[sk].push(r);
       });
+      // วิดีโอที่ไม่มี skill field
+      const noSkill = bySkill[''] || [];
 
-      const sectionsHTML = Object.entries(topicMap).map(([topic, subtopics], si) => {
-        const bodyId = `vsec-${si}`;
-        const totalCount = Object.values(subtopics).reduce((s, arr) => s + arr.length, 0);
-        const subHTML = Object.entries(subtopics).map(([sub, vids]) => {
-          const label = sub ? `<div class="ex-chapter-label">${sub}</div>` : '';
-          const cards = vids.map(v => buildVideoCard(v)).join('');
-          return `${label}<div class="video-grid">${cards}</div>`;
-        }).join('');
-        return `<div class="video-section">
-          <div class="video-section-header" onclick="toggleVideoSection('${bodyId}',this)">
-            <span class="video-section-icon">🎬</span>
-            <span class="video-section-title">${topic}</span>
-            <span class="video-section-count">${totalCount} วิดีโอ</span>
-            <span class="video-section-chev" id="vchev-${bodyId}">›</span>
+      const groups = SKILL_DATA[level];
+      const sectionsHTML = Object.entries(groups).map(([key, group], gi) => {
+        const bodyId = `vsec-${level}-${gi}`;
+
+        const chapHTML = group.chapters.map((chap, ci) => {
+          // skills ที่มีวิดีโอ
+          const skillRows = chap.skills.map(skill => {
+            const vids = bySkill[skill.id] || [];
+            if (vids.length === 0) return '';
+            const cards = vids.map(v => buildVideoCard(v)).join('');
+            return `<div class="scaffold-skill-row">
+              <div class="scaffold-skill-label">
+                <span class="ex-skill-num">${skill.id}</span>
+                <span class="scaffold-skill-name">${skill.name}</span>
+                <span class="scaffold-count">${vids.length} วิดีโอ</span>
+              </div>
+              <div class="video-grid">${cards}</div>
+            </div>`;
+          }).filter(Boolean).join('');
+
+          if (!skillRows) return ''; // ข้ามบทที่ไม่มีวิดีโอ
+          return `<div class="ex-chapter">
+            <div class="ex-chapter-label">${chap.title}</div>
+            ${skillRows}
+          </div>`;
+        }).filter(Boolean).join('');
+
+        if (!chapHTML) return ''; // ข้ามกลุ่มที่ไม่มีวิดีโอ
+        return `<div class="ex-group">
+          <div class="ex-group-header" onclick="toggleExGroup('${bodyId}',this)">
+            <div class="ex-group-icon" style="background:${group.colorLight};color:${group.color}">${group.icon}</div>
+            <div class="ex-group-title">${group.title}</div>
+            <div class="ex-group-chevron" id="chev-${bodyId}">›</div>
           </div>
-          <div class="video-section-body open" id="${bodyId}">${subHTML}</div>
+          <div class="ex-group-body open" id="${bodyId}">${chapHTML}</div>
         </div>`;
-      }).join('');
+      }).filter(Boolean).join('');
 
-      container.innerHTML = searchHTML + (sectionsHTML || `<div class="placeholder"><div class="placeholder-icon">🔍</div><h2>ไม่พบผลลัพธ์</h2></div>`);
+      // วิดีโอที่ไม่ระบุ skill
+      const noSkillHTML = noSkill.length ? `
+        <div class="ex-group">
+          <div class="ex-group-header" onclick="toggleExGroup('vsec-noskill-${level}',this)">
+            <div class="ex-group-icon" style="background:#f0f0ee">📌</div>
+            <div class="ex-group-title">อื่นๆ / ไม่ระบุหัวข้อ</div>
+            <div class="ex-group-chevron" id="chev-vsec-noskill-${level}">›</div>
+          </div>
+          <div class="ex-group-body open" id="vsec-noskill-${level}">
+            <div style="padding:0.75rem 1.25rem">
+              <div class="video-grid">${noSkill.map(v => buildVideoCard(v)).join('')}</div>
+            </div>
+          </div>
+        </div>` : '';
+
+      const allHTML = sectionsHTML + noSkillHTML;
+      container.innerHTML = searchHTML + (allHTML || `<div class="placeholder"><div class="placeholder-icon">🎬</div><h2>ยังไม่มีวิดีโอในหมวดนี้</h2><p>วิดีโอจะแสดงเมื่อมีการเพิ่มในช่อง skill ของ Sheet</p></div>`);
 
     } else {
       // มุมมองระดับชั้น
@@ -2523,34 +2569,68 @@
     }
 
     if (view === 'skill') {
-      // จัดตาม category → subcategory
-      const catMap = {};
+      // จัดตาม SKILL_DATA scaffold: กลุ่ม → บท → Skill → เอกสาร
+      const bySkill = {};
       filtered.forEach(r => {
-        const cat = r.category || 'อื่นๆ';
-        const sub = r.subcategory || r.topic || '';
-        if (!catMap[cat]) catMap[cat] = {};
-        if (!catMap[cat][sub]) catMap[cat][sub] = [];
-        catMap[cat][sub].push(r);
+        const sk = (r.skill || '').trim();
+        if (!bySkill[sk]) bySkill[sk] = [];
+        bySkill[sk].push(r);
       });
+      const noSkill = bySkill[''] || [];
 
-      const catsHTML = Object.entries(catMap).map(([cat, subs], ci) => {
-        const bodyId = `dcat-${ci}`;
-        const total = Object.values(subs).reduce((s,a) => s+a.length, 0);
-        const subHTML = Object.entries(subs).map(([sub, items]) => {
-          const label = sub ? `<div class="ex-chapter-label">${sub}</div>` : '';
-          return `${label}<div class="docs-grid">${items.map(buildDocCard).join('')}</div>`;
-        }).join('');
-        return `<div class="docs-category">
-          <div class="docs-category-header" onclick="toggleDocsCategory('${bodyId}',this)">
-            <h2>📁 ${cat}</h2>
-            <span>${total} ไฟล์</span>
-            <span class="docs-category-chev" id="dchev-${bodyId}">›</span>
+      const groups = SKILL_DATA[level];
+      const catsHTML = Object.entries(groups).map(([key, group], gi) => {
+        const bodyId = `dsec-${level}-${gi}`;
+
+        const chapHTML = group.chapters.map(chap => {
+          const skillRows = chap.skills.map(skill => {
+            const items = bySkill[skill.id] || [];
+            if (items.length === 0) return '';
+            const cards = items.map(buildDocCard).join('');
+            return `<div class="scaffold-skill-row">
+              <div class="scaffold-skill-label">
+                <span class="ex-skill-num">${skill.id}</span>
+                <span class="scaffold-skill-name">${skill.name}</span>
+                <span class="scaffold-count">${items.length} ไฟล์</span>
+              </div>
+              <div class="docs-grid">${cards}</div>
+            </div>`;
+          }).filter(Boolean).join('');
+
+          if (!skillRows) return '';
+          return `<div class="ex-chapter">
+            <div class="ex-chapter-label">${chap.title}</div>
+            ${skillRows}
+          </div>`;
+        }).filter(Boolean).join('');
+
+        if (!chapHTML) return '';
+        return `<div class="ex-group">
+          <div class="ex-group-header" onclick="toggleExGroup('${bodyId}',this)">
+            <div class="ex-group-icon" style="background:${group.colorLight};color:${group.color}">${group.icon}</div>
+            <div class="ex-group-title">${group.title}</div>
+            <div class="ex-group-chevron" id="chev-${bodyId}">›</div>
           </div>
-          <div class="docs-category-body open" id="${bodyId}">${subHTML}</div>
+          <div class="ex-group-body open" id="${bodyId}">${chapHTML}</div>
         </div>`;
-      }).join('');
+      }).filter(Boolean).join('');
 
-      container.innerHTML = searchHTML + (catsHTML || `<div class="placeholder"><div class="placeholder-icon">🔍</div><h2>ไม่พบผลลัพธ์</h2></div>`);
+      const noSkillHTML = noSkill.length ? `
+        <div class="ex-group">
+          <div class="ex-group-header" onclick="toggleExGroup('dsec-noskill-${level}',this)">
+            <div class="ex-group-icon" style="background:#f0f0ee">📌</div>
+            <div class="ex-group-title">อื่นๆ / ไม่ระบุหัวข้อ</div>
+            <div class="ex-group-chevron" id="chev-dsec-noskill-${level}">›</div>
+          </div>
+          <div class="ex-group-body open" id="dsec-noskill-${level}">
+            <div style="padding:0.75rem 1.25rem">
+              <div class="docs-grid">${noSkill.map(buildDocCard).join('')}</div>
+            </div>
+          </div>
+        </div>` : '';
+
+      const allHTML = catsHTML + noSkillHTML;
+      container.innerHTML = searchHTML + (allHTML || `<div class="placeholder"><div class="placeholder-icon">📄</div><h2>ยังไม่มีเอกสารในหมวดนี้</h2><p>เอกสารจะแสดงเมื่อมีการเพิ่มในช่อง skill ของ Sheet</p></div>`);
 
     } else {
       // มุมมองระดับชั้น
