@@ -432,25 +432,74 @@
     .video-badge.youtube { color: #c0392b; background: #FFE8E8; }
     .video-badge.drive   { color: var(--blue-dk); background: #E6F1FB; }
 
-    .toggle-grade { cursor: pointer; user-select: none; }
-    .toggle-grade:hover { background: #f5f5f3; }
-    .toggle-topic { cursor: pointer; user-select: none; display: flex; align-items: center; gap: 6px; }
-    .toggle-topic:hover { color: #1a1a1a; }
-    .toggle-arrow { display: inline-block; transition: transform 0.2s; font-style: normal; font-size: 13px; color: #aaa; }
-    .topic-count { margin-left: auto; font-size: 11px; color: #bbb; font-weight: 400; }
+    /* ── VIDEO PAGE ── */
+    .video-main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    .page-search-bar { margin-bottom: 1rem; position: relative; }
+    .page-search-input {
+      width: 100%; padding: 10px 14px 10px 38px; border: 1.5px solid rgba(0,0,0,0.1);
+      border-radius: var(--radius-md); font-size: 14px; font-family: 'Sarabun', sans-serif;
+      outline: none; background: #fff;
+    }
+    .page-search-input:focus { border-color: var(--blue); }
+    .page-search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 15px; color: #bbb; pointer-events: none; }
+    .page-filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .page-filter-btn {
+      padding: 5px 14px; border-radius: 999px; border: 1.5px solid rgba(0,0,0,0.08);
+      font-size: 12.5px; font-weight: 500; cursor: pointer; background: #fff;
+      color: #666; transition: all 0.15s; font-family: 'Sarabun', sans-serif;
+    }
+    .page-filter-btn.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .page-filter-btn:hover:not(.active) { border-color: var(--blue); color: var(--blue); }
+    .video-section { margin-bottom: 1.5rem; }
+    .video-section-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 0.75rem 1rem; border-radius: var(--radius-md);
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      cursor: pointer; user-select: none; margin-bottom: 0;
+      transition: background 0.12s;
+    }
+    .video-section-header:hover { background: #fafafa; }
+    .video-section-icon { font-size: 18px; }
+    .video-section-title { font-size: 14px; font-weight: 600; flex: 1; }
+    .video-section-count { font-size: 12px; color: #aaa; }
+    .video-section-chev { font-size: 16px; color: #ccc; transition: transform 0.2s; }
+    .video-section-body { display: none; padding: 10px 0 0; }
+    .video-section-body.open { display: block; }
+    .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px,1fr)); gap: 10px; }
+    .video-card {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-md); padding: 1rem 1.1rem;
+      display: flex; align-items: flex-start; gap: 12px;
+      text-decoration: none; color: #1a1a1a;
+      transition: transform 0.13s, box-shadow 0.13s, border-color 0.13s;
+    }
+    .video-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-color: rgba(0,0,0,0.15); }
+    .video-thumb { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .video-thumb.youtube { background: #FFE8E8; }
+    .video-thumb.drive   { background: #E6F1FB; }
+    .video-info { min-width: 0; }
+    .video-title { font-size: 13.5px; font-weight: 600; margin-bottom: 3px; line-height: 1.4; }
+    .video-desc  { font-size: 12px; color: #888; line-height: 1.5; margin-bottom: 6px; }
+    .video-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 999px; }
+    .video-badge.youtube { color: #c0392b; background: #FFE8E8; }
+    .video-badge.drive   { color: var(--blue-dk); background: #E6F1FB; }
 
-    /* ══════════════════════════════
-       PAGE: เอกสาร
-    ══════════════════════════════ */
+    /* ── DOCS PAGE ── */
     .docs-main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
-    .docs-category { margin-bottom: 2.25rem; }
+    .docs-category { margin-bottom: 1.5rem; }
     .docs-category-header {
       display: flex; align-items: center; gap: 10px;
-      margin-bottom: 1rem; padding-bottom: 0.6rem;
-      border-bottom: 2px solid #f0f0ee;
+      padding: 0.75rem 1rem; border-radius: var(--radius-md);
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      cursor: pointer; user-select: none; margin-bottom: 0;
+      transition: background 0.12s;
     }
-    .docs-category-header h2 { font-size: 16px; font-weight: 600; color: #1a1a1a; }
+    .docs-category-header:hover { background: #fafafa; }
+    .docs-category-header h2 { font-size: 14px; font-weight: 600; color: #1a1a1a; flex: 1; }
     .docs-category-header span { font-size: 12px; color: #999; }
+    .docs-category-chev { font-size: 16px; color: #ccc; transition: transform 0.2s; }
+    .docs-category-body { display: none; padding: 10px 0 0; }
+    .docs-category-body.open { display: block; }
     .docs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
     .doc-card {
       background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
@@ -460,7 +509,7 @@
       transition: transform 0.13s, box-shadow 0.13s, border-color 0.13s;
     }
     .doc-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-color: rgba(0,0,0,0.15); }
-    .doc-icon { width: 38px; height: 38px; border-radius: 10px; background: #E6F1FB; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .doc-icon { width: 42px; height: 42px; border-radius: 10px; background: #E6F1FB; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
     .doc-info { min-width: 0; }
     .doc-title { font-size: 13.5px; font-weight: 600; margin-bottom: 3px; line-height: 1.4; }
     .doc-desc { font-size: 12px; color: #888; line-height: 1.5; }
@@ -481,7 +530,101 @@
       font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 999px;
     }
 
+    /* ── SKILL GROUP CARDS (Home) ── */
+    .skill-group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 10px; margin-bottom: 0.5rem; }
+    .skill-group-card {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-md); padding: 1rem 1.1rem;
+      display: flex; align-items: center; gap: 12px;
+      cursor: pointer; transition: transform 0.13s, box-shadow 0.13s, border-color 0.13s;
+      border-left: 3px solid var(--gc);
+    }
+    .skill-group-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-color: var(--gc); }
+    .sg-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--gcl); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; color: var(--gc); font-weight: 700; }
+    .sg-body { flex: 1; min-width: 0; }
+    .sg-title { font-size: 13.5px; font-weight: 600; color: #1a1a1a; margin-bottom: 2px; }
+    .sg-count { font-size: 11.5px; color: #999; }
+    .sg-arrow { font-size: 20px; color: #ccc; font-weight: 300; flex-shrink: 0; }
+
+    /* ── EXERCISE TABS ── */
+    .ex-tabs-bar {
+      display: flex; align-items: center; gap: 0; border-bottom: 2px solid #f0f0ee;
+      background: #fff; padding: 0 1.5rem; position: sticky; top: 56px; z-index: 100;
+    }
+    .ex-tab {
+      padding: 0.85rem 1.25rem; border: none; background: none;
+      font-size: 14px; font-weight: 500; font-family: 'Sarabun', sans-serif;
+      color: #999; cursor: pointer; border-bottom: 2px solid transparent;
+      margin-bottom: -2px; transition: color 0.15s, border-color 0.15s;
+    }
+    .ex-tab.active { color: var(--blue); border-bottom-color: var(--blue); font-weight: 600; }
+    .ex-tab:hover:not(.active) { color: #555; }
+
+    /* ── EXERCISE VIEW TOGGLE ── */
+    .ex-view-toggle { margin-left: auto; display: flex; gap: 4px; align-items: center; }
+    .ex-view-btn {
+      display: flex; align-items: center; gap: 5px;
+      padding: 5px 11px; border: 1.5px solid rgba(0,0,0,0.1);
+      border-radius: var(--radius-sm); background: #fff;
+      font-size: 12px; font-family: 'Sarabun', sans-serif;
+      color: #888; cursor: pointer; transition: all 0.15s; white-space: nowrap;
+    }
+    .ex-view-btn.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .ex-view-btn:hover:not(.active) { border-color: var(--blue); color: var(--blue); }
+
+    /* ── LEVEL VIEW pills ── */
+    .ex-level-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+    .ex-level-pill {
+      padding: 5px 14px; border-radius: 999px; border: 1.5px solid rgba(0,0,0,0.08);
+      font-size: 13px; font-weight: 500; cursor: pointer; background: #fff;
+      color: #666; transition: all 0.15s; font-family: 'Sarabun', sans-serif;
+    }
+    .ex-level-pill.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .ex-level-pill:hover:not(.active) { border-color: var(--blue); color: var(--blue); }
+    .ex-level-pane { display: none; }
+    .ex-level-pane.active { display: block; }
+
+    /* ── EXERCISE BROWSER ── */
+    .exercise-main { max-width: 900px; margin: 0 auto; padding: 1.75rem 1.5rem 4rem; }
+    .ex-level-section { margin-bottom: 2.5rem; }
+    .ex-group {
+      background: #fff; border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-lg); margin-bottom: 1rem; overflow: hidden;
+    }
+    .ex-group-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 1rem 1.25rem; cursor: pointer;
+      transition: background 0.12s; user-select: none;
+    }
+    .ex-group-header:hover { background: #fafafa; }
+    .ex-group-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .ex-group-title { font-size: 15px; font-weight: 600; flex: 1; }
+    .ex-group-count { font-size: 12px; color: #aaa; }
+    .ex-group-chevron { font-size: 16px; color: #ccc; transition: transform 0.2s; }
+    .ex-group-chevron.open { transform: rotate(90deg); }
+    .ex-group-body { display: none; border-top: 0.5px solid #f0f0ee; }
+    .ex-group-body.open { display: block; }
+
+    .ex-chapter { padding: 0.75rem 1.25rem; border-bottom: 0.5px solid #f5f5f3; }
+    .ex-chapter:last-child { border-bottom: none; }
+    .ex-chapter-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.06em; color: #bbb;
+      text-transform: uppercase; margin-bottom: 0.6rem; padding-left: 2px;
+    }
+    .ex-skill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 8px; }
+    .ex-skill-card {
+      display: flex; align-items: center; gap: 10px;
+      padding: 0.7rem 0.9rem; border: 1px solid rgba(0,0,0,0.07);
+      border-radius: var(--radius-md); cursor: pointer; background: #fafafa;
+      transition: background 0.12s, border-color 0.12s, transform 0.12s;
+    }
+    .ex-skill-card:hover { background: #fff; border-color: var(--blue); transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .ex-skill-num { font-size: 11px; font-weight: 700; color: #bbb; min-width: 28px; flex-shrink: 0; }
+    .ex-skill-name { font-size: 13px; color: #333; line-height: 1.4; flex: 1; }
+    .ex-skill-badge { font-size: 10px; color: #fff; background: var(--blue); padding: 2px 7px; border-radius: 999px; white-space: nowrap; flex-shrink: 0; }
+
     /* ── RESPONSIVE ── */
+    .skill-group-grid-2col { grid-template-columns: repeat(2, 1fr); }
     @media (max-width: 768px) {
       .topnav { display: none; }
       .hamburger { display: flex; }
@@ -492,25 +635,28 @@
       .about-main { padding: 1.5rem 1rem 3rem; }
       .docs-main { padding: 1.5rem 1rem 3rem; }
       .video-main { padding: 1.5rem 1rem 3rem; }
-      .exercise-main { padding: 1.5rem 1rem 3rem; }
+      .exercise-main { padding: 1.25rem 1rem 3rem; }
       .quiz-setup-wrap { padding: 1.5rem 1rem 3rem; }
       .quiz-player-wrap { padding: 1rem 1rem 3rem; }
       .player-wrap { padding: 1rem 1rem 3rem; }
       .special-grid { grid-template-columns: 1fr 1fr; }
       .docs-grid { grid-template-columns: 1fr; }
       .video-grid { grid-template-columns: 1fr; }
-      .ex-unit-grid { grid-template-columns: 1fr 1fr; }
+      .ex-skill-grid { grid-template-columns: 1fr; }
+      .skill-group-grid { grid-template-columns: 1fr 1fr; }
       .result-chapter-grid { grid-template-columns: 1fr 1fr; }
       .contact-grid { grid-template-columns: 1fr; }
       .setup-grid { grid-template-columns: 1fr 1fr; }
       .quiz-q-card { padding: 1.25rem; }
       .summary-card { padding: 1.5rem; }
       .result-summary { padding: 1.5rem; }
+      .ex-tabs-bar { padding: 0 1rem; }
     }
     @media (max-width: 420px) {
       .grade-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .special-grid { grid-template-columns: 1fr; }
-      .ex-unit-grid { grid-template-columns: 1fr; }
+      .skill-group-grid { grid-template-columns: 1fr; }
+      .ex-skill-grid { grid-template-columns: 1fr; }
       .result-chapter-grid { grid-template-columns: 1fr; }
       .result-btns { flex-direction: column; }
       .hero { padding: 2rem 1rem 1.75rem; }
@@ -580,6 +726,69 @@
     <div class="sec-label">เลือกระดับชั้น</div>
     <div class="grade-grid" id="gradeGrid"></div>
     <div class="divider"></div>
+    <div class="sec-label">กลุ่มสาระ — มัธยมต้น</div>
+    <div class="skill-group-grid" id="juniorGroupGrid">
+      <div class="skill-group-card" onclick="navigateToExerciseGroup('junior','number')" style="--gc:#1D9E75;--gcl:#EAF3DE">
+        <div class="sg-icon">🔢</div>
+        <div class="sg-body"><div class="sg-title">จำนวนและการดำเนินการ</div><div class="sg-count">17 Skills</div></div>
+        <div class="sg-arrow">›</div>
+      </div>
+      <div class="skill-group-card" onclick="navigateToExerciseGroup('junior','algebra')" style="--gc:#378ADD;--gcl:#E6F1FB">
+        <div class="sg-icon">📐</div>
+        <div class="sg-body"><div class="sg-title">พีชคณิต</div><div class="sg-count">20 Skills</div></div>
+        <div class="sg-arrow">›</div>
+      </div>
+      <div class="skill-group-card" onclick="navigateToExerciseGroup('junior','geometry')" style="--gc:#EF9F27;--gcl:#FAEEDA">
+        <div class="sg-icon">📏</div>
+        <div class="sg-body"><div class="sg-title">เรขาคณิตและการวัด</div><div class="sg-count">24 Skills</div></div>
+        <div class="sg-arrow">›</div>
+      </div>
+      <div class="skill-group-card" onclick="navigateToExerciseGroup('junior','relation')" style="--gc:#D4537E;--gcl:#FBEAF0">
+        <div class="sg-icon">📈</div>
+        <div class="sg-body"><div class="sg-title">ความสัมพันธ์และฟังก์ชัน</div><div class="sg-count">15 Skills</div></div>
+        <div class="sg-arrow">›</div>
+      </div>
+      <div class="skill-group-card" onclick="navigateToExerciseGroup('junior','statistics')" style="--gc:#7C3AED;--gcl:#EEE8FD">
+        <div class="sg-icon">📊</div>
+        <div class="sg-body"><div class="sg-title">สถิติและความน่าจะเป็น</div><div class="sg-count">16 Skills</div></div>
+        <div class="sg-arrow">›</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="sec-label">กลุ่มสาระ — มัธยมปลาย</div>
+    <div class="skill-group-grid" id="seniorGroupGrid">
+      <div class="skill-group-card" onclick="navigateToExerciseGroup('senior','foundation')" style="--gc:#185FA5;--gcl:#E6F1FB">
+        <div class="sg-icon">🧩</div>
+        <div class="sg-body"><div class="sg-title">พื้นฐาน & ตรรกศาสตร์</div><div class="sg-count">18 Skills</div></div>
+        <div class="sg-arrow">›</div>
+      </div>
+      <div class="skill-group-card" onclick="navigateToExerciseGroup('senior','algebra')" style="--gc:#0C447C;--gcl:#E6F1FB">
+        <div class="sg-icon">📐</div>
+        <div class="sg-body"><div class="sg-title">พีชคณิต & ฟังก์ชัน</div><div class="sg-count">20 Skills</div></div>
+        <div class="sg-arrow">›</div>
+      </div>
+      <div class="skill-group-card" onclick="navigateToExerciseGroup('senior','geometry')" style="--gc:#EF9F27;--gcl:#FAEEDA">
+        <div class="sg-icon">📏</div>
+        <div class="sg-body"><div class="sg-title">เรขาคณิต & เวกเตอร์</div><div class="sg-count">14 Skills</div></div>
+        <div class="sg-arrow">›</div>
+      </div>
+      <div class="skill-group-card" onclick="navigateToExerciseGroup('senior','calculus')" style="--gc:#0F6E56;--gcl:#EAF3DE">
+        <div class="sg-icon">∫</div>
+        <div class="sg-body"><div class="sg-title">แคลคูลัส</div><div class="sg-count">15 Skills</div></div>
+        <div class="sg-arrow">›</div>
+      </div>
+      <div class="skill-group-card" onclick="navigateToExerciseGroup('senior','counting')" style="--gc:#D4537E;--gcl:#FBEAF0">
+        <div class="sg-icon">🎲</div>
+        <div class="sg-body"><div class="sg-title">การนับ & ความน่าจะเป็น</div><div class="sg-count">14 Skills</div></div>
+        <div class="sg-arrow">›</div>
+      </div>
+      <div class="skill-group-card" onclick="navigateToExerciseGroup('senior','statistics')" style="--gc:#7C3AED;--gcl:#EEE8FD">
+        <div class="sg-icon">📊</div>
+        <div class="sg-body"><div class="sg-title">สถิติ</div><div class="sg-count">10 Skills</div></div>
+        <div class="sg-arrow">›</div>
+      </div>
+    </div>
+    <div class="divider"></div>
     <div class="sec-label">หมวดพิเศษ</div>
     <div class="special-grid" id="specialGrid"></div>
   </div>
@@ -589,11 +798,21 @@
      PAGE: แบบฝึกหัด
 ══════════════════════════════ -->
 <div class="page" id="page-exercise">
-  <!-- หน้าเลือกหน่วย -->
+  <!-- หน้าเลือก skill -->
   <div id="exerciseBrowser">
-    <div class="exercise-main" id="exerciseMain">
-      <div class="placeholder"><div class="placeholder-icon">✏️</div><h2>กำลังโหลด...</h2></div>
+    <div class="ex-tabs-bar">
+      <button class="ex-tab active" id="tabJunior" onclick="switchExTab('junior')">📘 มัธยมต้น</button>
+      <button class="ex-tab" id="tabSenior" onclick="switchExTab('senior')">📙 มัธยมปลาย</button>
+      <div class="ex-view-toggle">
+        <button class="ex-view-btn active" id="viewSkill" onclick="switchExView('skill')" title="ตามลำดับความรู้">
+          <span>📚</span> ลำดับความรู้
+        </button>
+        <button class="ex-view-btn" id="viewLevel" onclick="switchExView('level')" title="ตามระดับชั้น">
+          <span>🏫</span> ระดับชั้น
+        </button>
+      </div>
     </div>
+    <div class="exercise-main" id="exerciseMain"></div>
   </div>
   <!-- หน้าทำโจทย์ -->
   <div id="exercisePlayer" style="display:none">
@@ -882,27 +1101,10 @@
 
   function navigateToExercise(grade) {
     navigate('exercise');
-    // รอให้ loadExercise เสร็จก่อนแล้วค่อย toggle เปิด grade นั้น
-    const tryOpen = (attempts) => {
-      // หา grade header ที่ตรงกัน
-      const headers = document.querySelectorAll('.ex-grade-header');
-      let found = false;
-      headers.forEach(h => {
-        const h2 = h.querySelector('h2');
-        if (h2 && h2.textContent.trim() === grade) {
-          // เลื่อน scroll ไปที่การ์ด และ toggle เปิดถ้ายังปิดอยู่
-          const bodyId = h.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
-          if (bodyId) {
-            const body = document.getElementById(bodyId);
-            if (body && body.style.display === 'none') toggleSection(bodyId, h);
-          }
-          h.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          found = true;
-        }
-      });
-      if (!found && attempts > 0) setTimeout(() => tryOpen(attempts - 1), 200);
-    };
-    setTimeout(() => tryOpen(10), 100);
+    // กดจากหน้าแรก → ไปแท็บที่เหมาะสม
+    const juniorGrades = ['ม.1','ม.2','ม.3'];
+    const tab = juniorGrades.includes(grade) ? 'junior' : 'senior';
+    setTimeout(() => switchExTab(tab), 150);
   }
 
   function navigateToQuiz(examType) {
@@ -1314,70 +1516,492 @@
   }
 
   // ─────────────────────────────────────────────
-  //  PAGE: แบบฝึกหัด — browser
+  //  SKILL SCAFFOLDING DATA
   // ─────────────────────────────────────────────
+  const SKILL_DATA = {
+    junior: {
+      number: {
+        icon: '🔢', title: 'จำนวนและการดำเนินการ', color: '#1D9E75', colorLight: '#EAF3DE',
+        sheetKey: 'junior_number',
+        chapters: [
+          { title: 'ระบบจำนวนเต็ม', skills: [
+            { id:'1.1', name:'การเปรียบเทียบจำนวนเต็มและค่าสัมบูรณ์บนเส้นจำนวน' },
+            { id:'1.2', name:'การบวกและลบจำนวนเต็ม (จัดการเครื่องหมายซ้ำซ้อน)' },
+            { id:'1.3', name:'การคูณและหารจำนวนเต็ม (กฎของเครื่องหมาย)' },
+            { id:'1.4', name:'การลำดับการดำเนินการทางคณิตศาสตร์ (PEMDAS/BODMAS)' },
+          ]},
+          { title: 'เศษส่วนและทศนิยม', skills: [
+            { id:'1.5', name:'การแปลงเศษส่วนเป็นทศนิยมและทศนิยมเป็นเศษส่วน' },
+            { id:'1.6', name:'การเปรียบเทียบและเรียงลำดับเศษส่วน/ทศนิยม' },
+            { id:'1.7', name:'การบวกและลบเศษส่วนและจำนวนคละ' },
+            { id:'1.8', name:'การคูณและหารเศษส่วนและจำนวนคละ' },
+            { id:'1.9', name:'โจทย์ปัญหาประยุกต์ทศนิยมและเศษส่วน' },
+          ]},
+          { title: 'เลขยกกำลังและราก', skills: [
+            { id:'1.10', name:'นิยามและระบุฐาน/เลขชี้กำลังของเลขยกกำลัง' },
+            { id:'1.11', name:'การใช้สมบัติการคูณและการหารเลขยกกำลังฐานเดียวกัน' },
+            { id:'1.12', name:'การเขียนและการคำนวณในรูปสัญกรณ์วิทยาศาสตร์' },
+            { id:'1.13', name:'การหารากที่สองและรากที่สาม (กรณีถอดรากลงตัว)' },
+            { id:'1.14', name:'การประมาณค่ารากที่สองของจำนวนที่ไม่ลงตัว' },
+            { id:'1.15', name:'การจัดรูปรากให้อยู่ในรูปอย่างง่าย (Simplification)' },
+          ]},
+          { title: 'สมบัติของจำนวนจริง', skills: [
+            { id:'1.16', name:'การจำแนกประเภทจำนวนจริง (ตรรกยะ vs อตรรกยะ)' },
+            { id:'1.17', name:'การใช้สมบัติของจำนวนจริง (สลับที่, เปลี่ยนหมู่, แจกแจง)' },
+          ]},
+        ]
+      },
+      algebra: {
+        icon: '📐', title: 'พีชคณิต', color: '#378ADD', colorLight: '#E6F1FB',
+        sheetKey: 'junior_algebra',
+        chapters: [
+          { title: 'พื้นฐานพหุนาม', skills: [
+            { id:'2.1', name:'การระบุพจน์ เอกนาม พหุนาม สัมประสิทธิ์ และดีกรี' },
+            { id:'2.2', name:'การบวกและการลบพหุนาม (การรวมพจน์ที่คล้ายกัน)' },
+            { id:'2.3', name:'การคูณพหุนาม (เอกนาม × พหุนาม และ พหุนาม × พหุนาม)' },
+            { id:'2.4', name:'การหารพหุนามด้วยเอกนาม' },
+          ]},
+          { title: 'การแยกตัวประกอบพหุนาม', skills: [
+            { id:'2.5', name:'การแยกตัวประกอบโดยการดึงตัวร่วม (GCF)' },
+            { id:'2.6', name:'การแยกตัวประกอบโดยการจัดกลุ่มพจน์ (Grouping)' },
+            { id:'2.7', name:'การแยกตัวประกอบพหุนามดีกรีสองในรูป x² + bx + c' },
+            { id:'2.8', name:'การแยกตัวประกอบพหุนามดีกรีสองในรูป ax² + bx + c' },
+            { id:'2.9', name:'การใช้สูตรผลต่างกำลังสอง (a² - b²)' },
+            { id:'2.10', name:'การใช้สูตรกำลังสองสมบูรณ์ (a² ± 2ab + b²)' },
+            { id:'2.11', name:'การใช้สูตรผลบวกและผลต่างกำลังสาม (a³ ± b³)' },
+          ]},
+          { title: 'สมการและอสมการเชิงเส้น', skills: [
+            { id:'2.12', name:'การแก้สมการเชิงเส้นตัวแปรเดียว (ขั้นตอนเดียว)' },
+            { id:'2.13', name:'การแก้สมการเชิงเส้นตัวแปรเดียวที่มีวงเล็บหรือตัวแปรสองข้าง' },
+            { id:'2.14', name:'การแก้อสมการเชิงเส้นตัวแปรเดียวและการเขียนกราฟคำตอบ' },
+            { id:'2.15', name:'การสร้างโมเดลสมการ/อสมการจากโจทย์ปัญหาภาษา' },
+          ]},
+          { title: 'สมการกำลังสองและระบบสมการ', skills: [
+            { id:'2.16', name:'การแก้สมการกำลังสองโดยวิธีแยกตัวประกอบ' },
+            { id:'2.17', name:'การแก้สมการกำลังสองโดยใช้สูตร Quadratic' },
+            { id:'2.18', name:'การใช้ Discriminant ตรวจสอบจำนวนคำตอบของสมการกำลังสอง' },
+            { id:'2.19', name:'การแก้ระบบสมการเชิงเส้นโดยวิธีแทนค่า (Substitution)' },
+            { id:'2.20', name:'การแก้ระบบสมการเชิงเส้นโดยวิธีกำจัดตัวแปร (Elimination)' },
+          ]},
+        ]
+      },
+      geometry: {
+        icon: '📏', title: 'เรขาคณิตและการวัด', color: '#EF9F27', colorLight: '#FAEEDA',
+        sheetKey: 'junior_geometry',
+        chapters: [
+          { title: 'การสร้างและการมองภาพ', skills: [
+            { id:'3.1', name:'การสร้างพื้นฐานทางเรขาคณิตด้วยวงเวียนและสันตรง' },
+            { id:'3.2', name:'การแบ่งครึ่งมุมและแบ่งครึ่งส่วนของเส้นตรง' },
+            { id:'3.3', name:'การสร้างเส้นตั้งฉากและเส้นขนาน' },
+            { id:'3.4', name:'การสร้างรูปสามเหลี่ยมและสี่เหลี่ยมตามเงื่อนไข' },
+            { id:'3.5', name:'การระบุภาพด้านหน้า ด้านข้าง และด้านบนของรูปทรง 3 มิติ' },
+            { id:'3.6', name:'การระบุรูปคลี่ (Nets) ของรูปทรงเรขาคณิต' },
+            { id:'3.7', name:'การวิเคราะห์หน้าตัด (Cross-sections) ของรูปทรง' },
+          ]},
+          { title: 'ทฤษฎีบทพีทาโกรัสและเส้นขนาน', skills: [
+            { id:'3.8', name:'การหาด้านตรงข้ามมุมฉากด้วยทฤษฎีบทพีทาโกรัส' },
+            { id:'3.9', name:'การหาด้านประกอบมุมฉากด้วยทฤษฎีบทพีทาโกรัส' },
+            { id:'3.10', name:'การตรวจสอบชนิดของสามเหลี่ยมด้วยบทกลับพีทาโกรัส' },
+            { id:'3.11', name:'การหาระยะห่างระหว่างสองจุดบนพิกัดฉาก' },
+            { id:'3.12', name:'การหาขนาดมุมจากสมบัติเส้นขนานและเส้นตัด' },
+          ]},
+          { title: 'ความเท่ากันทุกประการและความคล้าย', skills: [
+            { id:'3.13', name:'การตรวจสอบความเท่ากันทุกประการ (ด.ม.ด., ม.ด.ม., ด.ด.ด.)' },
+            { id:'3.14', name:'การตรวจสอบความเท่ากันทุกประการ (ม.ม.ด., ฉาก.ด.ด.)' },
+            { id:'3.15', name:'การใช้สมบัติความเท่ากันทุกประการในการพิสูจน์' },
+            { id:'3.16', name:'การหาอัตราส่วนของด้านที่สมนัยกันในรูปสามเหลี่ยมคล้าย' },
+            { id:'3.17', name:'การใช้ความคล้ายในการหาความสูงหรือระยะทาง' },
+          ]},
+          { title: 'วงกลมและรูปทรง 3 มิติ', skills: [
+            { id:'3.18', name:'ทฤษฎีบทเกี่ยวกับมุมที่จุดศูนย์กลางและมุมในส่วนโค้งวงกลม' },
+            { id:'3.19', name:'ทฤษฎีบทเกี่ยวกับคอร์ดและเส้นสัมผัสวงกลม' },
+            { id:'3.20', name:'พื้นที่ผิวและปริมาตรของปริซึมและทรงกระบอก' },
+            { id:'3.21', name:'พื้นที่ผิวและปริมาตรของพีระมิดและกรวย' },
+            { id:'3.22', name:'พื้นที่ผิวและปริมาตรของทรงกลม' },
+            { id:'3.23', name:'โจทย์ปัญหาประยุกต์รูปทรงประกอบ (Composite Shapes)' },
+            { id:'3.24', name:'การเปรียบเทียบการเปลี่ยนแปลงขนาด ปริมาตร และพื้นที่ผิว' },
+          ]},
+        ]
+      },
+      relation: {
+        icon: '📈', title: 'ความสัมพันธ์และฟังก์ชัน', color: '#D4537E', colorLight: '#FBEAF0',
+        sheetKey: 'junior_relation',
+        chapters: [
+          { title: 'คู่อันดับและกราฟเส้นตรง', skills: [
+            { id:'4.1', name:'การระบุตำแหน่งคู่อันดับและการอ่านกราฟพิกัดฉาก' },
+            { id:'4.2', name:'การหาความชันของเส้นตรงจากจุดสองจุด' },
+            { id:'4.3', name:'การสร้างสมการเส้นตรง y = mx + c' },
+            { id:'4.4', name:'การระบุเส้นขนานและเส้นตั้งฉากจากความชัน' },
+          ]},
+          { title: 'ฟังก์ชันกำลังสอง (พาราโบลา)', skills: [
+            { id:'4.5', name:'การวิเคราะห์ลักษณะกราฟพาราโบลา (หงาย/คว่ำ) จากสมการ' },
+            { id:'4.6', name:'การหาจุดยอดและแกนสมมาตรของพาราโบลา' },
+            { id:'4.7', name:'การหาค่าสูงสุดและค่าต่ำสุดของฟังก์ชันกำลังสอง' },
+            { id:'4.8', name:'การพล็อตและอ่านค่ากราฟพาราโบลา' },
+            { id:'4.9', name:'การเลื่อนขนานกราฟพาราโบลา (Transformations)' },
+          ]},
+          { title: 'ตรีโกณมิติพื้นฐาน', skills: [
+            { id:'4.10', name:'นิยามและอัตราส่วนตรีโกณมิติเบื้องต้น (Sin, Cos, Tan)' },
+            { id:'4.11', name:'ค่าตรีโกณมิติมุมมาตรฐาน (30°, 45°, 60°)' },
+            { id:'4.12', name:'การใช้ตรีโกณมิติหาความยาวด้านที่เหลือ' },
+            { id:'4.13', name:'โจทย์ปัญหาประยุกต์มุมก้มและมุมเงย' },
+          ]},
+          { title: 'การประยุกต์ใช้ความสัมพันธ์', skills: [
+            { id:'4.14', name:'การประยุกต์ใช้ความสัมพันธ์เชิงเส้นในชีวิตจริง' },
+            { id:'4.15', name:'การเชื่อมโยงระหว่างสมการและกราฟในสถานการณ์จริง' },
+          ]},
+        ]
+      },
+      statistics: {
+        icon: '📊', title: 'สถิติและความน่าจะเป็น', color: '#7C3AED', colorLight: '#EEE8FD',
+        sheetKey: 'junior_statistics',
+        chapters: [
+          { title: 'การนำเสนอและการวิเคราะห์ข้อมูล', skills: [
+            { id:'5.1', name:'การจำแนกประเภทข้อมูลและการตั้งคำถามทางสถิติ' },
+            { id:'5.2', name:'การสร้างและอ่านแผนภูมิแท่ง แผนภูมิรูปวงกลม และกราฟเส้น' },
+            { id:'5.3', name:'การหาค่าเฉลี่ยเลขคณิต (Mean)' },
+            { id:'5.4', name:'การหาค่ามัธยฐาน (Median)' },
+            { id:'5.5', name:'การหาค่าฐานนิยม (Mode)' },
+            { id:'5.6', name:'การเลือกใช้ค่ากลางที่เหมาะสมกับข้อมูล' },
+          ]},
+          { title: 'การกระจายข้อมูลและตำแหน่ง', skills: [
+            { id:'5.7', name:'การสร้างและอ่านแผนภาพจุด (Dot Plot)' },
+            { id:'5.8', name:'การสร้างและอ่านแผนภาพต้น-ใบ (Stem-and-Leaf Plot)' },
+            { id:'5.9', name:'การหาควอไทล์และเปอร์เซ็นไทล์พื้นฐาน' },
+            { id:'5.10', name:'การสร้างและวิเคราะห์แผนภาพกล่อง (Box Plot)' },
+          ]},
+          { title: 'สัดส่วนและความน่าจะเป็น', skills: [
+            { id:'5.11', name:'การคำนวณอัตราส่วน สัดส่วน และสัดส่วนผกผัน' },
+            { id:'5.12', name:'การคำนวณร้อยละ กำไร ขาดทุน และดอกเบี้ย' },
+            { id:'5.13', name:'การหา Sample Space และเหตุการณ์ที่สนใจ' },
+            { id:'5.14', name:'การคำนวณความน่าจะเป็นเบื้องต้น P(E) = n(E)/n(S)' },
+            { id:'5.15', name:'การตีความและคาดการณ์ผลลัพธ์จากค่าความน่าจะเป็น' },
+            { id:'5.16', name:'โจทย์ปัญหาประยุกต์สถิติและความน่าจะเป็นในชีวิตจริง' },
+          ]},
+        ]
+      },
+    },
+    senior: {
+      foundation: {
+        icon: '🧩', title: 'พื้นฐาน & ตรรกศาสตร์', color: '#185FA5', colorLight: '#E6F1FB',
+        sheetKey: 'senior_foundation',
+        chapters: [
+          { title: 'เซตและการดำเนินการ', skills: [
+            { id:'1.1', name:'การเขียนเซตแจกแจงสมาชิกและแบบบอกเงื่อนไข' },
+            { id:'1.2', name:'การดำเนินการของเซต (Union, Intersect, Complement, Difference)' },
+            { id:'1.3', name:'การแก้ปัญหาโดยใช้แผนภาพเวนน์-ออยเลอร์ (2 และ 3 วง)' },
+            { id:'1.4', name:'การหาจำนวนสมาชิกของเซตจำกัดและพาวเวอร์เซต' },
+          ]},
+          { title: 'ตรรกศาสตร์และการให้เหตุผล', skills: [
+            { id:'1.5', name:'การหาค่าความจริงของประพจน์ที่มีตัวเชื่อมทางตรรกศาสตร์' },
+            { id:'1.6', name:'การสร้างตารางค่าความจริงและการตรวจสอบรูปแบบประพจน์' },
+            { id:'1.7', name:'การตรวจสอบสัจนิรันดร์และประพจน์ที่สมมูลกัน' },
+            { id:'1.8', name:'ตัวบ่งปริมาณ (∀, ∃) และการหาค่าความจริงของประโยคเปิด' },
+            { id:'1.9', name:'การตรวจสอบความสมเหตุสมผลของการอ้างเหตุผล' },
+          ]},
+          { title: 'ระบบจำนวนจริงและเมทริกซ์', skills: [
+            { id:'1.10', name:'สมบัติของระบบจำนวนจริง (อินเวอร์ส, เอกลักษณ์, การเท่ากัน)' },
+            { id:'1.11', name:'การแยกตัวประกอบพหุนามดีกรีสูงโดยการหารสังเคราะห์' },
+            { id:'1.12', name:'การแก้อสมการพหุนามและอสมการเศษส่วน' },
+            { id:'1.13', name:'สมการและอสมการค่าสัมบูรณ์' },
+            { id:'1.14', name:'การบวก ลบ และคูณเมทริกซ์' },
+            { id:'1.15', name:'การหาค่าดีเทอร์มิแนนต์ (det) ของเมทริกซ์ 2×2 และ 3×3' },
+            { id:'1.16', name:'การหาเมทริกซ์ผกผัน (Inverse Matrix) ขนาด 2×2' },
+            { id:'1.17', name:'การแก้ระบบสมการโดยใช้กฎของคราเมอร์ (Cramer\'s Rule)' },
+            { id:'1.18', name:'การดำเนินการตามแถว (Row Operation) เบื้องต้น' },
+          ]},
+        ]
+      },
+      algebra: {
+        icon: '📐', title: 'พีชคณิต & ฟังก์ชัน', color: '#0C447C', colorLight: '#E6F1FB',
+        sheetKey: 'senior_algebra',
+        chapters: [
+          { title: 'ฟังก์ชันและฟังก์ชันผกผัน', skills: [
+            { id:'2.1', name:'การหาโดเมนและเรนจ์ของฟังก์ชันในรูปแบบต่างๆ' },
+            { id:'2.2', name:'การดำเนินการของฟังก์ชัน และฟังก์ชันคอมโพสิท (f∘g)' },
+            { id:'2.3', name:'การตรวจสอบฟังก์ชัน 1-1 และการหาฟังก์ชันผกผัน (f⁻¹)' },
+          ]},
+          { title: 'เลขยกกำลังและลอการิทึม', skills: [
+            { id:'2.4', name:'สมบัติของเลขยกกำลังที่มีเลขชี้กำลังเป็นจำนวนจริง' },
+            { id:'2.5', name:'ฟังก์ชันเอกซ์โพเนนเชียลและการแก้สมการ Exp' },
+            { id:'2.6', name:'นิยามและสมบัติของลอการิทึม' },
+            { id:'2.7', name:'การแก้สมการและอสมการลอการิทึม' },
+            { id:'2.8', name:'การประยุกต์ใช้ฟังก์ชัน Exp และ Log ในโจทย์ปัญหา' },
+          ]},
+          { title: 'ฟังก์ชันตรีโกณมิติ', skills: [
+            { id:'2.9', name:'วงกลมหนึ่งหน่วยและการหาค่า Sin, Cos, Tan ในทุกจตุภาค' },
+            { id:'2.10', name:'กราฟของฟังก์ชันตรีโกณมิติ (คาบ, แอมพลิจูด, การเลื่อนเฟส)' },
+            { id:'2.11', name:'เอกลักษณ์ตรีโกณมิติ (มุม 2 เท่า, ผลบวก/ผลต่างมุม)' },
+            { id:'2.12', name:'ฟังก์ชันตรีโกณมิติผกผัน (ArcSin, ArcCos, ArcTan)' },
+            { id:'2.13', name:'การแก้สมการตรีโกณมิติ' },
+            { id:'2.14', name:'กฎของไซน์ (Sine) และโคไซน์ (Cosine) ในการแก้ปัญหาสามเหลี่ยม' },
+          ]},
+          { title: 'จำนวนเชิงซ้อน', skills: [
+            { id:'2.15', name:'การบวก ลบ คูณ หาร และการหาสังยุคในรูป a+bi' },
+            { id:'2.16', name:'ค่าสัมบูรณ์ของจำนวนเชิงซ้อนและรูปเชิงขั้ว (Polar Form)' },
+            { id:'2.17', name:'ทฤษฎีบทของเดอมัวร์ (De Moivre\'s Theorem)' },
+            { id:'2.18', name:'การหารากที่ n ของจำนวนเชิงซ้อน' },
+            { id:'2.19', name:'การแก้สมการพหุนามที่มีคำตอบเป็นจำนวนเชิงซ้อน' },
+            { id:'2.20', name:'กราฟของจำนวนเชิงซ้อนในระนาบเชิงซ้อน' },
+          ]},
+        ]
+      },
+      geometry: {
+        icon: '📏', title: 'เรขาคณิต & เวกเตอร์', color: '#EF9F27', colorLight: '#FAEEDA',
+        sheetKey: 'senior_geometry',
+        chapters: [
+          { title: 'เรขาคณิตวิเคราะห์', skills: [
+            { id:'3.1', name:'ระยะห่างระหว่างจุด และระยะห่างระหว่างจุดกับเส้นตรง' },
+            { id:'3.2', name:'การสร้างสมการเส้นตรงในรูปแบบต่างๆ' },
+            { id:'3.3', name:'เส้นขนานและเส้นตั้งฉากในระนาบพิกัดฉาก' },
+          ]},
+          { title: 'ภาคตัดกรวย', skills: [
+            { id:'3.4', name:'สมการวงกลม (จุดศูนย์กลางและรัศมี)' },
+            { id:'3.5', name:'สมการพาราโบลา (จุดยอด, โฟกัส, ไดเรกตริกซ์)' },
+            { id:'3.6', name:'สมการวงรี (จุดศูนย์กลาง, แกนเอก, แกนโท, โฟกัส)' },
+            { id:'3.7', name:'สมการไฮเพอร์โบลา (จุดโฟกัสและเส้นอาซิมโทต)' },
+            { id:'3.8', name:'การจัดรูปสมการทั่วไปสู่รูปมาตรฐานโดยการกำลังสองสมบูรณ์' },
+          ]},
+          { title: 'เวกเตอร์ในสามมิติ', skills: [
+            { id:'3.9', name:'พีชคณิตของเวกเตอร์ ขนาด และเวกเตอร์หนึ่งหน่วย' },
+            { id:'3.10', name:'ผลคูณเชิงสเกลาร์ (Dot Product) และมุมระหว่างเวกเตอร์' },
+            { id:'3.11', name:'ผลคูณเชิงเวกเตอร์ (Cross Product) และพื้นที่รูปสี่เหลี่ยม' },
+            { id:'3.12', name:'ภาพฉายของเวกเตอร์ (Vector Projection)' },
+            { id:'3.13', name:'ระบบพิกัดฉากสามมิติและระยะทางระหว่างจุด' },
+            { id:'3.14', name:'การประยุกต์เวกเตอร์ในการแก้ปัญหาเชิงเรขาคณิต' },
+          ]},
+        ]
+      },
+      calculus: {
+        icon: '∫', title: 'แคลคูลัส', color: '#0F6E56', colorLight: '#EAF3DE',
+        sheetKey: 'senior_calculus',
+        chapters: [
+          { title: 'ลำดับและอนุกรม', skills: [
+            { id:'4.1', name:'ลำดับเลขคณิตและลำดับเรขาคณิต (พจน์ที่ n)' },
+            { id:'4.2', name:'ลำดับอนันต์และการลู่เข้า/ลู่ออก' },
+            { id:'4.3', name:'อนุกรมเลขคณิตและอนุกรมเรขาคณิต' },
+            { id:'4.4', name:'อนุกรมเรขาคณิตอนันต์ และการใช้สัญลักษณ์ซิกมา (Σ)' },
+          ]},
+          { title: 'ลิมิตและความต่อเนื่อง', skills: [
+            { id:'4.5', name:'การหาลิมิตของฟังก์ชันที่จุดใดๆ (รวมถึงรูปแบบ 0/0)' },
+            { id:'4.6', name:'ลิมิตซ้าย-ขวา และการตรวจสอบความต่อเนื่องของฟังก์ชัน' },
+          ]},
+          { title: 'อนุพันธ์และการอินทิเกรต', skills: [
+            { id:'4.7', name:'การหาอนุพันธ์โดยใช้สูตรพื้นฐาน (Power Rule)' },
+            { id:'4.8', name:'อนุพันธ์ของฟังก์ชันคูณและหาร' },
+            { id:'4.9', name:'กฎลูกโซ่ (Chain Rule) สำหรับอนุพันธ์ฟังก์ชันคอมโพสิท' },
+            { id:'4.10', name:'ความชันของเส้นสัมผัสเส้นโค้ง และเส้นตั้งฉาก' },
+            { id:'4.11', name:'การหาจุดสูงสุดและต่ำสุดสัมพัทธ์ (Optimization)' },
+            { id:'4.12', name:'การอินทิเกรตแบบไม่จำกัดเขต' },
+            { id:'4.13', name:'การอินทิเกรตแบบจำกัดเขต' },
+            { id:'4.14', name:'การหาพื้นที่ที่ปิดล้อมด้วยเส้นโค้งและแกน X' },
+            { id:'4.15', name:'การประยุกต์แคลคูลัสในการเคลื่อนที่ (ระยะทาง, ความเร็ว, ความเร่ง)' },
+          ]},
+        ]
+      },
+      counting: {
+        icon: '🎲', title: 'การนับ & ความน่าจะเป็น', color: '#D4537E', colorLight: '#FBEAF0',
+        sheetKey: 'senior_counting',
+        chapters: [
+          { title: 'วิธีเรียงสับเปลี่ยนและการจัดหมู่', skills: [
+            { id:'5.1', name:'กฎการคูณและกฎการบวกพื้นฐาน' },
+            { id:'5.2', name:'การใช้แฟกทอเรียล (n!) ในการคำนวณ' },
+            { id:'5.3', name:'การเรียงสับเปลี่ยนเชิงเส้น (สิ่งของต่างกันหมด)' },
+            { id:'5.4', name:'การเรียงสับเปลี่ยนสิ่งของที่บางส่วนซ้ำกัน' },
+            { id:'5.5', name:'การเรียงสับเปลี่ยนเชิงวงกลม' },
+            { id:'5.6', name:'การเรียงสับเปลี่ยนแบบมีเงื่อนไขพิเศษ' },
+            { id:'5.7', name:'การจัดหมู่ (C(n,r)) หรือการเลือกกลุ่ม' },
+          ]},
+          { title: 'ทฤษฎีบททวินามและความน่าจะเป็น', skills: [
+            { id:'5.8', name:'การกระจายทวินามและการหาพจน์ทั่วไป' },
+            { id:'5.9', name:'การหา Sample Space และเหตุการณ์ในสถานการณ์ซับซ้อน' },
+            { id:'5.10', name:'การคำนวณความน่าจะเป็น P(E) = n(E)/n(S) ขั้นสูง' },
+            { id:'5.11', name:'กฎของความน่าจะเป็น (P(A∪B) และ P(A\'))' },
+            { id:'5.12', name:'ความน่าจะเป็นแบบมีเงื่อนไข (Conditional Probability)' },
+            { id:'5.13', name:'เหตุการณ์ที่เป็นอิสระต่อกัน (Independent Events)' },
+            { id:'5.14', name:'โจทย์ปัญหาประยุกต์การนับและความน่าจะเป็น' },
+          ]},
+        ]
+      },
+      statistics: {
+        icon: '📊', title: 'สถิติ', color: '#7C3AED', colorLight: '#EEE8FD',
+        sheetKey: 'senior_statistics',
+        chapters: [
+          { title: 'การวิเคราะห์ข้อมูลเชิงลึก', skills: [
+            { id:'6.1', name:'ค่าเฉลี่ย มัธยฐาน และฐานนิยม ของข้อมูลแบบแจกแจงความถี่' },
+            { id:'6.2', name:'เปอร์เซ็นไทล์ของข้อมูลแบบแจกแจงความถี่' },
+            { id:'6.3', name:'ส่วนเบี่ยงเบนมาตรฐานและความแปรปรวน (SD & S²)' },
+            { id:'6.4', name:'การวิเคราะห์และเปรียบเทียบข้อมูลด้วยแผนภาพกล่อง (Box Plot)' },
+          ]},
+          { title: 'การแจกแจงปกติและค่ามาตรฐาน', skills: [
+            { id:'6.5', name:'ตัวแปรสุ่มและการแจกแจงความน่าจะเป็น (ทวินาม)' },
+            { id:'6.6', name:'คุณสมบัติของการแจกแจงปกติ (Normal Distribution)' },
+            { id:'6.7', name:'การคำนวณค่ามาตรฐาน (z)' },
+            { id:'6.8', name:'การหาพื้นที่ใต้เส้นโค้งปกติจากตาราง z' },
+            { id:'6.9', name:'การหาค่าข้อมูลเดิม (x) จากพื้นที่ใต้กราฟหรือเปอร์เซ็นไทล์' },
+            { id:'6.10', name:'การประยุกต์ใช้สถิติในการแก้ปัญหาจริง' },
+          ]},
+        ]
+      },
+    }
+  };
+
+  // ─────────────────────────────────────────────
+  //  PAGE: แบบฝึกหัด
+  // ─────────────────────────────────────────────
+  let currentExTab = 'junior';
   let exAllRows = [];
 
-  async function loadExercise() {
+  let currentExView = 'skill'; // 'skill' | 'level'
+
+  function switchExView(view) {
+    currentExView = view;
+    document.getElementById('viewSkill').classList.toggle('active', view === 'skill');
+    document.getElementById('viewLevel').classList.toggle('active', view === 'level');
+    renderExerciseBrowser(currentExTab);
+  }
+
+  function switchExTab(tab) {
+    currentExTab = tab;
+    document.getElementById('tabJunior').classList.toggle('active', tab === 'junior');
+    document.getElementById('tabSenior').classList.toggle('active', tab === 'senior');
+    renderExerciseBrowser(tab);
+  }
+
+  function renderExerciseBrowser(level) {
     const container = document.getElementById('exerciseMain');
-    try { exAllRows = await fetchSheet('exercise'); }
-    catch { exAllRows = FALLBACK.exercise; }
-
-    const visible = exAllRows.filter(r => isVisible(r.visible));
-    if (visible.length === 0) {
-      container.innerHTML = `<div class="placeholder"><div class="placeholder-icon">✏️</div><h2>ยังไม่มีแบบฝึกหัด</h2></div>`;
-      return;
+    if (currentExView === 'skill') {
+      renderSkillView(level, container);
+    } else {
+      renderLevelView(level, container);
     }
+  }
 
-    // grade → chapter → unit → rows
-    const tree = {};
-    visible.forEach(r => {
-      const g = r.grade || 'อื่นๆ';
-      const c = r.chapter || 'ทั่วไป';
-      const u = r.unit || 'ทั่วไป';
-      if (!tree[g]) tree[g] = {};
-      if (!tree[g][c]) tree[g][c] = {};
-      if (!tree[g][c][u]) tree[g][c][u] = [];
-      tree[g][c][u].push(r);
-    });
-
-    const sortedGrades = Object.keys(tree).sort((a,b) => a.localeCompare(b,'th'));
-    container.innerHTML = sortedGrades.map((grade, gi) => {
-      const chapters = Object.keys(tree[grade]).sort((a,b) => a.localeCompare(b,'th'));
-      const totalQ = chapters.reduce((s,c) => s + Object.values(tree[grade][c]).reduce((s2,u) => s2+u.length, 0), 0);
-      const gradeBodyId = `exgrade-${gi}`;
-
-      const chapHTML = chapters.map((chap, ci) => {
-        const units = Object.keys(tree[grade][chap]).sort((a,b) => a.localeCompare(b,'th'));
-        const chapBodyId = `exchap-${gi}-${ci}`;
-        const unitHTML = units.map(unit => {
-          const rows = tree[grade][chap][unit];
-          const count = rows.length;
-          return `<div class="ex-unit-card" onclick="startExercise('${grade}','${chap}','${unit}')">
-            <div class="ex-unit-icon">📘</div>
-            <div class="ex-unit-name">${unit}</div>
-            <div class="ex-unit-count">${count} ข้อในคลัง</div>
-            <span class="ex-unit-badge">▶ เริ่มทำ 10 ข้อ</span>
-          </div>`;
-        }).join('');
+  function renderSkillView(level, container) {
+    const groups = SKILL_DATA[level];
+    container.innerHTML = Object.entries(groups).map(([key, group], gi) => {
+      const totalSkills = group.chapters.reduce((s, c) => s + c.skills.length, 0);
+      const bodyId = `exgroup-${level}-${gi}`;
+      const chapHTML = group.chapters.map(chap => {
+        const skillHTML = chap.skills.map(skill => `
+          <div class="ex-skill-card" onclick="startExerciseBySkill('${level}','${key}','${skill.id}','${skill.name.replace(/'/g,"\\'")}')">
+            <div class="ex-skill-num">${skill.id}</div>
+            <div class="ex-skill-name">${skill.name}</div>
+            <div class="ex-skill-badge">▶ ทำ</div>
+          </div>`).join('');
         return `<div class="ex-chapter">
-          <div class="ex-chapter-title toggle-topic" onclick="toggleSection('${chapBodyId}',this)">
-            <span class="toggle-arrow">▾</span>${chap}
-            <span class="topic-count">${units.length} หน่วย</span>
-          </div>
-          <div class="ex-unit-grid" id="${chapBodyId}">${unitHTML}</div>
+          <div class="ex-chapter-label">${chap.title}</div>
+          <div class="ex-skill-grid">${skillHTML}</div>
         </div>`;
       }).join('');
-
-      return `<div class="ex-grade">
-        <div class="ex-grade-header toggle-grade" onclick="toggleSection('${gradeBodyId}',this)">
-          <span class="toggle-arrow">▾</span>
-          <h2>${grade}</h2>
-          <span>${totalQ} ข้อ</span>
+      return `<div class="ex-group">
+        <div class="ex-group-header" onclick="toggleExGroup('${bodyId}',this)">
+          <div class="ex-group-icon" style="background:${group.colorLight};color:${group.color}">${group.icon}</div>
+          <div class="ex-group-title">${group.title}</div>
+          <div class="ex-group-count">${totalSkills} Skills</div>
+          <div class="ex-group-chevron" id="chev-${bodyId}">›</div>
         </div>
-        <div id="${gradeBodyId}">${chapHTML}</div>
+        <div class="ex-group-body" id="${bodyId}">${chapHTML}</div>
       </div>`;
     }).join('');
+  }
+
+  function renderLevelView(level, container) {
+    // รวบรวม skill ทั้งหมดแล้วจัดตาม level (ม.1–ม.3 หรือ ม.4–ม.6)
+    const levels = level === 'junior'
+      ? ['ม.1', 'ม.2', 'ม.3']
+      : ['ม.4', 'ม.5', 'ม.6'];
+
+    // map: level → [{groupKey, group, skill}]
+    const byLevel = {};
+    levels.forEach(lv => byLevel[lv] = []);
+
+    // skill แต่ละตัวมี level จาก sample data → ใช้ pattern จาก difficulty
+    // เนื่องจากยังไม่มีข้อมูล level จริง ใช้การแบ่งตามลำดับ skill แทน
+    // ม.1/ม.4 = บทแรกๆ, ม.2/ม.5 = บทกลาง, ม.3/ม.6 = บทหลัง
+    Object.entries(SKILL_DATA[level]).forEach(([key, group]) => {
+      const allSkills = group.chapters.flatMap(c => c.skills.map(s => ({ ...s, groupKey: key, group, chapterTitle: c.title })));
+      const third = Math.ceil(allSkills.length / 3);
+      allSkills.forEach((skill, i) => {
+        const lv = levels[Math.min(Math.floor(i / third), 2)];
+        byLevel[lv].push(skill);
+      });
+    });
+
+    // สร้าง pill + pane
+    const pillsHTML = levels.map((lv, i) =>
+      `<button class="ex-level-pill ${i===0?'active':''}" id="pill-${lv.replace('.','-')}" onclick="switchLevelPill('${lv}','${level}')">${lv}</button>`
+    ).join('');
+
+    const panesHTML = levels.map((lv, i) => {
+      const skills = byLevel[lv];
+      // จัดกลุ่มตาม group
+      const grouped = {};
+      skills.forEach(s => {
+        const t = s.group.title;
+        if (!grouped[t]) grouped[t] = { group: s.group, groupKey: s.groupKey, skills: [] };
+        grouped[t].skills.push(s);
+      });
+      const groupsHTML = Object.entries(grouped).map(([title, data]) => {
+        const skillHTML = data.skills.map(skill => `
+          <div class="ex-skill-card" onclick="startExerciseBySkill('${level}','${data.groupKey}','${skill.id}','${skill.name.replace(/'/g,"\\'")}')">
+            <div class="ex-skill-num">${skill.id}</div>
+            <div class="ex-skill-name">${skill.name}</div>
+            <div class="ex-skill-badge">▶ ทำ</div>
+          </div>`).join('');
+        return `<div class="ex-chapter" style="margin-bottom:1rem">
+          <div class="ex-chapter-label" style="display:flex;align-items:center;gap:6px">
+            <span style="font-size:14px">${data.group.icon}</span> ${title}
+          </div>
+          <div class="ex-skill-grid">${skillHTML}</div>
+        </div>`;
+      }).join('');
+      return `<div class="ex-level-pane ${i===0?'active':''}" id="pane-${lv.replace('.','-')}">${groupsHTML}</div>`;
+    }).join('');
+
+    container.innerHTML = `
+      <div class="ex-level-pills">${pillsHTML}</div>
+      ${panesHTML}`;
+  }
+
+  function switchLevelPill(lv, level) {
+    const levels = level === 'junior' ? ['ม.1','ม.2','ม.3'] : ['ม.4','ม.5','ม.6'];
+    levels.forEach(l => {
+      const key = l.replace('.','-');
+      document.getElementById(`pill-${key}`)?.classList.toggle('active', l === lv);
+      document.getElementById(`pane-${key}`)?.classList.toggle('active', l === lv);
+    });
+  }
+
+  function toggleExGroup(bodyId, header) {
+    const body = document.getElementById(bodyId);
+    const chev = document.getElementById('chev-' + bodyId);
+    const isOpen = body.classList.toggle('open');
+    if (chev) chev.style.transform = isOpen ? 'rotate(90deg)' : '';
+  }
+
+  async function loadExercise() {
+    renderExerciseBrowser('junior');
+  }
+
+  function navigateToExerciseGroup(level, groupKey) {
+    navigate('exercise');
+    setTimeout(() => {
+      switchExTab(level);
+      // เปิด group นั้นอัตโนมัติ
+      const groups = Object.keys(SKILL_DATA[level]);
+      const gi = groups.indexOf(groupKey);
+      if (gi >= 0) {
+        const bodyId = `exgroup-${level}-${gi}`;
+        const body = document.getElementById(bodyId);
+        const chev = document.getElementById('chev-' + bodyId);
+        if (body && !body.classList.contains('open')) {
+          body.classList.add('open');
+          if (chev) chev.style.transform = 'rotate(90deg)';
+          body.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }, 150);
   }
 
   // ─────────────────────────────────────────────
@@ -1385,16 +2009,37 @@
   // ─────────────────────────────────────────────
   let exSession = { questions:[], current:0, score:0, unit:'', answered:false };
 
-  function startExercise(grade, chap, unit) {
-    const pool = exAllRows.filter(r =>
-      isVisible(r.visible) && r.grade===grade && r.chapter===chap && r.unit===unit
-    );
-    const shuffled = pool.sort(() => Math.random()-0.5).slice(0, 10);
-    exSession = { questions: shuffled, current: 0, score: 0, unit, answered: false };
+  async function startExerciseBySkill(level, groupKey, skillId, skillName) {
+    const group = SKILL_DATA[level][groupKey];
+    const sheetKey = group.sheetKey;
 
     document.getElementById('exerciseBrowser').style.display = 'none';
     document.getElementById('exercisePlayer').style.display = 'block';
-    document.getElementById('playerTitle').textContent = unit;
+    document.getElementById('playerTitle').textContent = `Skill ${skillId}: ${skillName}`;
+    document.getElementById('playerBody').innerHTML = `<div class="placeholder"><div class="placeholder-icon">⏳</div><h2>กำลังโหลดโจทย์...</h2></div>`;
+
+    let rows = [];
+    try {
+      const allRows = await fetchSheet(sheetKey);
+      rows = allRows.filter(r => (r.skill || '').trim() === skillId);
+    } catch(e) {
+      document.getElementById('playerBody').innerHTML = `<div class="placeholder"><div class="placeholder-icon">⚠️</div><h2>โหลดโจทย์ไม่ได้</h2><p>กรุณาลองใหม่อีกครั้ง</p></div>`;
+      return;
+    }
+
+    if (rows.length === 0) {
+      document.getElementById('playerBody').innerHTML = `<div class="placeholder"><div class="placeholder-icon">📭</div><h2>ยังไม่มีโจทย์</h2><p>Skill ${skillId} ยังไม่มีโจทย์ในคลังครับ</p></div>`;
+      return;
+    }
+
+    // สุ่ม 10 ข้อ สัดส่วน easy:medium:hard = 4:4:2
+    const easy   = rows.filter(r => r.difficulty === 'easy').sort(() => Math.random()-0.5).slice(0,4);
+    const medium = rows.filter(r => r.difficulty === 'medium').sort(() => Math.random()-0.5).slice(0,4);
+    const hard   = rows.filter(r => r.difficulty === 'hard').sort(() => Math.random()-0.5).slice(0,2);
+    let selected = [...easy, ...medium, ...hard].sort(() => Math.random()-0.5);
+    if (selected.length === 0) selected = rows.sort(() => Math.random()-0.5).slice(0,10);
+
+    exSession = { questions: selected, current: 0, score: 0, unit: `Skill ${skillId}`, answered: false, groupKey, skillId, level };
     renderQuestion();
   }
 
@@ -1516,157 +2161,196 @@
   }
 
   function retryExercise() {
-    const { questions } = exSession;
-    const unit = exSession.unit;
-    // re-shuffle same pool
-    const pool = exAllRows.filter(r => isVisible(r.visible) && r.unit === unit);
-    const shuffled = pool.sort(() => Math.random()-0.5).slice(0, 10);
-    exSession = { questions: shuffled, current: 0, score: 0, unit, answered: false };
-    document.getElementById('playerTitle').textContent = unit;
-    renderQuestion();
+    const { level, groupKey, skillId, unit } = exSession;
+    if (level && groupKey && skillId) {
+      startExerciseBySkill(level, groupKey, skillId, unit.replace(`Skill ${skillId}: `, ''));
+    } else {
+      closeExercise();
+    }
   }
 
   // ─────────────────────────────────────────────
   //  PAGE: วิดีโอ
   // ─────────────────────────────────────────────
+  let videoAllRows = [];
+
   async function loadVideo() {
     const container = document.getElementById('videoMain');
-    let rows;
-    try {
-      rows = await fetchSheet('videos');
-    } catch {
-      rows = FALLBACK.videos;
+    try { videoAllRows = await fetchSheet('videos'); }
+    catch { videoAllRows = FALLBACK.videos; }
+
+    renderVideo('ทั้งหมด', '');
+  }
+
+  function renderVideo(filterGrade, searchText) {
+    const container = document.getElementById('videoMain');
+    const visible = videoAllRows.filter(r => isVisible(r.visible));
+
+    // สร้าง filter pills จาก grade ที่มี
+    const grades = ['ทั้งหมด', ...new Set(visible.map(r => r.grade || 'อื่นๆ'))];
+    const pillsHTML = grades.map(g =>
+      `<button class="page-filter-btn ${g===filterGrade?'active':''}" onclick="renderVideo('${g}', document.getElementById('videoSearchInput').value)">${g}</button>`
+    ).join('');
+
+    // กรองข้อมูล
+    let filtered = visible;
+    if (filterGrade !== 'ทั้งหมด') filtered = filtered.filter(r => (r.grade||'อื่นๆ') === filterGrade);
+    if (searchText) {
+      const q = searchText.toLowerCase();
+      filtered = filtered.filter(r => (r.title||'').toLowerCase().includes(q) || (r.description||'').toLowerCase().includes(q));
     }
 
-    const visible = rows.filter(r => isVisible(r.visible));
-
-    if (visible.length === 0) {
+    if (filtered.length === 0 && visible.length === 0) {
       container.innerHTML = `
-        <div class="placeholder">
-          <div class="placeholder-icon">🎬</div>
-          <h2>ยังไม่มีวิดีโอ</h2>
-          <p>จะเพิ่มวิดีโอเร็วๆ นี้ครับ</p>
-        </div>`;
+        <div class="page-search-bar"><span class="page-search-icon">🔍</span><input class="page-search-input" id="videoSearchInput" placeholder="ค้นหาวิดีโอ..." /></div>
+        <div class="placeholder"><div class="placeholder-icon">🎬</div><h2>ยังไม่มีวิดีโอ</h2><p>จะเพิ่มวิดีโอเร็วๆ นี้ครับ</p></div>`;
       return;
     }
 
-    // จัดกลุ่ม 2 ระดับ: grade → topic
-    const gradeMap = {};
-    visible.forEach(r => {
-      const g = r.grade || 'อื่นๆ';
+    // จัดกลุ่มตาม topic
+    const topicMap = {};
+    filtered.forEach(r => {
       const t = r.topic || 'ทั่วไป';
-      if (!gradeMap[g]) gradeMap[g] = {};
-      if (!gradeMap[g][t]) gradeMap[g][t] = [];
-      gradeMap[g][t].push(r);
+      if (!topicMap[t]) topicMap[t] = [];
+      topicMap[t].push(r);
     });
 
-    const sortedGrades = Object.keys(gradeMap).sort((a, b) => a.localeCompare(b, 'th'));
-
-    container.innerHTML = sortedGrades.map((grade, gi) => {
-      const topicMap = gradeMap[grade];
-      const sortedTopics = Object.keys(topicMap).sort((a, b) => a.localeCompare(b, 'th'));
-      const totalCount = sortedTopics.reduce((s, t) => s + topicMap[t].length, 0);
-      const gradeId = `grade-${gi}`;
-
-      const topicsHTML = sortedTopics.map((topic, ti) => {
-        const topicId = `topic-${gi}-${ti}`;
-        const videos = topicMap[topic].sort((a, b) => (a.title||'').localeCompare(b.title||'', 'th'));
-        return `
-          <div class="video-topic">
-            <div class="video-topic-title toggle-topic" onclick="toggleSection('${topicId}', this)">
-              <span class="toggle-arrow">▾</span> ${topic}
-              <span class="topic-count">${videos.length} วิดีโอ</span>
-            </div>
-            <div class="video-grid" id="${topicId}">
-              ${videos.map(v => {
-                const src = (v.source || '').toLowerCase().trim();
-                const isYT = src === 'youtube';
-                return `
-                  <a class="video-card" href="${v.url}" target="_blank" rel="noopener">
-                    <div class="video-thumb ${isYT ? 'youtube' : 'drive'}">${isYT ? '▶️' : '📁'}</div>
-                    <div class="video-info">
-                      <div class="video-title">${v.title}</div>
-                      ${v.description ? `<div class="video-desc">${v.description}</div>` : ''}
-                      <span class="video-badge ${isYT ? 'youtube' : 'drive'}">${isYT ? '▶ YouTube' : '☁ Drive'}</span>
-                    </div>
-                  </a>`;
-              }).join('')}
-            </div>
-          </div>`;
+    const sectionsHTML = Object.entries(topicMap).map(([topic, vids], si) => {
+      const bodyId = `vsec-${si}`;
+      const cardsHTML = vids.map(v => {
+        const src = (v.source||'').toLowerCase().trim();
+        const isYT = src === 'youtube';
+        return `<a class="video-card" href="${v.url}" target="_blank" rel="noopener">
+          <div class="video-thumb ${isYT?'youtube':'drive'}">${isYT?'▶️':'📁'}</div>
+          <div class="video-info">
+            <div class="video-title">${v.title||''}</div>
+            ${v.description ? `<div class="video-desc">${v.description}</div>` : ''}
+            <span class="video-badge ${isYT?'youtube':'drive'}">${isYT?'▶ YouTube':'☁ Drive'}</span>
+          </div>
+        </a>`;
       }).join('');
-
-      return `
-        <div class="video-grade">
-          <div class="video-grade-header toggle-grade" onclick="toggleSection('${gradeId}', this)">
-            <span class="toggle-arrow">▾</span>
-            <h2>${grade}</h2>
-            <span>${totalCount} วิดีโอ</span>
-          </div>
-          <div class="video-grade-body" id="${gradeId}">
-            ${topicsHTML}
-          </div>
-        </div>`;
+      return `<div class="video-section">
+        <div class="video-section-header" onclick="toggleVideoSection('${bodyId}',this)">
+          <span class="video-section-icon">🎬</span>
+          <span class="video-section-title">${topic}</span>
+          <span class="video-section-count">${vids.length} วิดีโอ</span>
+          <span class="video-section-chev" id="vchev-${bodyId}">›</span>
+        </div>
+        <div class="video-section-body open" id="${bodyId}">
+          <div class="video-grid">${cardsHTML}</div>
+        </div>
+      </div>`;
     }).join('');
+
+    container.innerHTML = `
+      <div class="page-search-bar">
+        <span class="page-search-icon">🔍</span>
+        <input class="page-search-input" id="videoSearchInput" placeholder="ค้นหาวิดีโอ..." value="${searchText}"
+          oninput="renderVideo('${filterGrade}',this.value)" />
+      </div>
+      <div class="page-filter-row">${pillsHTML}</div>
+      ${sectionsHTML || '<div class="placeholder"><div class="placeholder-icon">🔍</div><h2>ไม่พบผลลัพธ์</h2></div>'}`;
   }
 
-  function toggleSection(id, el) {
+  function toggleVideoSection(id, header) {
     const body = document.getElementById(id);
-    const arrow = el.querySelector('.toggle-arrow');
-    const isOpen = body.style.display !== 'none';
-    body.style.display = isOpen ? 'none' : '';
-    arrow.style.transform = isOpen ? 'rotate(-90deg)' : 'rotate(0deg)';
+    const chev = document.getElementById('vchev-' + id);
+    const isOpen = body.classList.toggle('open');
+    if (chev) chev.style.transform = isOpen ? 'rotate(90deg)' : '';
   }
 
   // ─────────────────────────────────────────────
   //  PAGE: เอกสาร
   // ─────────────────────────────────────────────
+  let docsAllRows = [];
+
   async function loadDocs() {
     const container = document.getElementById('docsMain');
-    let rows;
-    try {
-      rows = await fetchSheet('documents');
-    } catch {
-      rows = FALLBACK.documents;
+    try { docsAllRows = await fetchSheet('documents'); }
+    catch { docsAllRows = FALLBACK.documents; }
+
+    renderDocs('ทั้งหมด', '');
+  }
+
+  function renderDocs(filterCat, searchText) {
+    const container = document.getElementById('docsMain');
+    const visible = docsAllRows.filter(r => isVisible(r.visible));
+
+    const cats = ['ทั้งหมด', ...new Set(visible.map(r => r.category || 'อื่นๆ'))];
+    const pillsHTML = cats.map(c =>
+      `<button class="page-filter-btn ${c===filterCat?'active':''}" onclick="renderDocs('${c}',document.getElementById('docsSearchInput').value)">${c}</button>`
+    ).join('');
+
+    let filtered = visible;
+    if (filterCat !== 'ทั้งหมด') filtered = filtered.filter(r => (r.category||'อื่นๆ') === filterCat);
+    if (searchText) {
+      const q = searchText.toLowerCase();
+      filtered = filtered.filter(r => (r.title||'').toLowerCase().includes(q) || (r.description||'').toLowerCase().includes(q));
     }
 
-    const visible = rows.filter(r => isVisible(r.visible));
-
-    if (visible.length === 0) {
+    if (filtered.length === 0 && visible.length === 0) {
       container.innerHTML = `
-        <div class="placeholder">
-          <div class="placeholder-icon">📄</div>
-          <h2>ยังไม่มีเอกสาร</h2>
-          <p>จะเพิ่มเอกสารเร็วๆ นี้ครับ</p>
-        </div>`;
+        <div class="page-search-bar"><span class="page-search-icon">🔍</span><input class="page-search-input" id="docsSearchInput" placeholder="ค้นหาเอกสาร..." /></div>
+        <div class="placeholder"><div class="placeholder-icon">📄</div><h2>ยังไม่มีเอกสาร</h2><p>จะเพิ่มเอกสารเร็วๆ นี้ครับ</p></div>`;
       return;
+    }
+
+    // icon ตามประเภทไฟล์
+    function getDocIcon(item) {
+      const t = (item.type||item.icon||'📄').toLowerCase();
+      if (t.includes('pdf') || t === '📕') return '📕';
+      if (t.includes('ppt') || t.includes('slide')) return '📊';
+      if (t.includes('doc') || t.includes('word')) return '📝';
+      if (t.includes('sheet') || t.includes('xls')) return '📗';
+      return item.icon || '📄';
     }
 
     // จัดกลุ่มตาม category
     const groups = {};
-    visible.forEach(r => {
+    filtered.forEach(r => {
       const cat = r.category || 'อื่นๆ';
       if (!groups[cat]) groups[cat] = [];
       groups[cat].push(r);
     });
 
-    container.innerHTML = Object.entries(groups).map(([cat, items]) => `
-      <div class="docs-category">
-        <div class="docs-category-header">
-          <h2>${cat}</h2>
+    const catsHTML = Object.entries(groups).map(([cat, items], ci) => {
+      const bodyId = `dcat-${ci}`;
+      const cardsHTML = items.map(item => `
+        <a class="doc-card" href="${item.drive_url||item.url||'#'}" target="_blank" rel="noopener">
+          <div class="doc-icon">${getDocIcon(item)}</div>
+          <div class="doc-info">
+            <div class="doc-title">${item.title||''}</div>
+            ${item.description ? `<div class="doc-desc">${item.description}</div>` : ''}
+            <div class="doc-badge">↗ เปิดไฟล์</div>
+          </div>
+        </a>`).join('');
+      return `<div class="docs-category">
+        <div class="docs-category-header" onclick="toggleDocsCategory('${bodyId}',this)">
+          <h2>📁 ${cat}</h2>
           <span>${items.length} ไฟล์</span>
+          <span class="docs-category-chev" id="dchev-${bodyId}">›</span>
         </div>
-        <div class="docs-grid">
-          ${items.map(item => `
-            <a class="doc-card" href="${item.drive_url}" target="_blank" rel="noopener">
-              <div class="doc-icon">${item.icon || '📄'}</div>
-              <div class="doc-info">
-                <div class="doc-title">${item.title}</div>
-                ${item.description ? `<div class="doc-desc">${item.description}</div>` : ''}
-                <div class="doc-badge">↗ เปิดใน Drive</div>
-              </div>
-            </a>`).join('')}
+        <div class="docs-category-body open" id="${bodyId}">
+          <div class="docs-grid">${cardsHTML}</div>
         </div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
+
+    container.innerHTML = `
+      <div class="page-search-bar">
+        <span class="page-search-icon">🔍</span>
+        <input class="page-search-input" id="docsSearchInput" placeholder="ค้นหาเอกสาร..." value="${searchText}"
+          oninput="renderDocs('${filterCat}',this.value)" />
+      </div>
+      <div class="page-filter-row">${pillsHTML}</div>
+      ${catsHTML || '<div class="placeholder"><div class="placeholder-icon">🔍</div><h2>ไม่พบผลลัพธ์</h2></div>'}`;
+  }
+
+  function toggleDocsCategory(id, header) {
+    const body = document.getElementById(id);
+    const chev = document.getElementById('dchev-' + id);
+    const isOpen = body.classList.toggle('open');
+    if (chev) chev.style.transform = isOpen ? 'rotate(90deg)' : '';
   }
 
   // ─────────────────────────────────────────────
