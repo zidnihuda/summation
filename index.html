@@ -496,6 +496,13 @@
       transition: background 0.12s;
     }
     .video-modal-ext:hover { background: #c8dff5; }
+    .video-modal-download {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; background: var(--green); color: #fff;
+      padding: 6px 14px; border-radius: 999px; text-decoration: none;
+      font-weight: 600; white-space: nowrap; transition: background 0.12s;
+    }
+    .video-modal-download:hover { background: var(--green-dk); }
 
     /* Aspect ratio wrapper */
     .video-aspect { position: relative; width: 100%; padding-top: 56.25%; }
@@ -906,17 +913,21 @@
     <div class="quiz-setup-wrap">
       <h1 class="setup-heading">⚙️ ตั้งค่าแบบทดสอบ</h1>
       <div class="setup-grid">
+
         <div class="setup-field">
           <label class="setup-label">ประเภทข้อสอบ</label>
-          <select class="setup-select" id="selExamType" onchange="quizConfig.examType=this.value;checkSetupReady()">
-            <option value="">— เลือก —</option>
-            <option value="ทั้งหมด">ทั้งหมด</option>
-            <option value="สอวน.">🏆 สอวน.</option>
-            <option value="เตรียมสอบเข้า ม.4">📚 เตรียมสอบเข้า ม.4</option>
-            <option value="A-level">📐 A-level</option>
-            <option value="เตรียมสอบชิงทุน">🎯 เตรียมสอบชิงทุน</option>
+          <select class="setup-select" id="selExamType" onchange="onExamTypeChange(this.value)">
+            <option value="">— กำลังโหลด... —</option>
           </select>
         </div>
+
+        <div class="setup-field">
+          <label class="setup-label">เนื้อหา</label>
+          <select class="setup-select" id="selTopic" onchange="quizConfig.topic=this.value;checkSetupReady()" disabled>
+            <option value="">— เลือกประเภทก่อน —</option>
+          </select>
+        </div>
+
         <div class="setup-field">
           <label class="setup-label">รูปแบบข้อ</label>
           <select class="setup-select" id="selQType" onchange="quizConfig.qType=this.value;checkSetupReady()">
@@ -926,6 +937,7 @@
             <option value="mixed">🔀 ผสม</option>
           </select>
         </div>
+
         <div class="setup-field">
           <label class="setup-label">จำนวนข้อ</label>
           <select class="setup-select" id="selQCount" onchange="quizConfig.qCount=this.value;checkSetupReady()">
@@ -938,6 +950,7 @@
             <option value="30">30 ข้อ</option>
           </select>
         </div>
+
         <div class="setup-field">
           <label class="setup-label">ระดับความยาก</label>
           <select class="setup-select" id="selDifficulty" onchange="quizConfig.difficulty=this.value;checkSetupReady()">
@@ -949,6 +962,7 @@
             <option value="5">⭐⭐⭐⭐⭐ ยากมาก</option>
           </select>
         </div>
+
       </div>
       <div class="setup-info" id="setupInfo" style="display:none"></div>
       <button class="setup-start-btn" id="setupStartBtn" onclick="startQuiz()" disabled>เริ่มทำแบบทดสอบ →</button>
@@ -1023,6 +1037,16 @@
   </div>
   <div class="docs-main" id="docsMain">
     <div class="placeholder"><div class="placeholder-icon">📄</div><h2>กำลังโหลด...</h2></div>
+  </div>
+  <!-- Docs Modal Viewer -->
+  <div class="video-modal-overlay" id="docsModalOverlay" onclick="closeDocsModal()"></div>
+  <div class="video-modal" id="docsModal">
+    <div class="video-modal-header">
+      <div class="video-modal-title" id="docsModalTitle"></div>
+      <button class="video-modal-close" onclick="closeDocsModal()">✕</button>
+    </div>
+    <div class="video-modal-body" id="docsModalBody"></div>
+    <div class="video-modal-footer" id="docsModalFooter"></div>
   </div>
 </div>
 
@@ -1190,26 +1214,32 @@
 
   function navigateToExercise(grade) {
     navigate('exercise');
-    // กดจากหน้าแรก → ไปแท็บที่เหมาะสม
     const juniorGrades = ['ม.1','ม.2','ม.3'];
     const tab = juniorGrades.includes(grade) ? 'junior' : 'senior';
-    setTimeout(() => switchExTab(tab), 150);
+    setTimeout(() => {
+      // สลับแท็บ
+      switchExTab(tab);
+      // สลับไปมุมมองระดับชั้น
+      currentExView = 'level';
+      document.getElementById('viewSkill').classList.remove('active');
+      document.getElementById('viewLevel').classList.add('active');
+      renderExerciseBrowser(tab);
+      // รอให้ render เสร็จแล้วกด pill ชั้นที่ถูกต้อง
+      setTimeout(() => switchLevelPill(grade, tab), 50);
+    }, 150);
   }
 
   function navigateToQuiz(examType) {
     navigate('quiz');
-    // รอให้ loadQuiz เสร็จก่อนแล้วค่อย preset dropdown
     const trySet = (attempts) => {
       const sel = document.getElementById('selExamType');
-      if (sel) {
-        // หา option ที่ value ตรงหรือใกล้เคียง
+      if (sel && sel.options.length > 1) {
         const match = Array.from(sel.options).find(o =>
           o.value === examType || examType.includes(o.value) || o.value.includes(examType)
         );
         if (match) {
           sel.value = match.value;
-          quizConfig.examType = match.value;
-          checkSetupReady();
+          onExamTypeChange(match.value);
         }
       } else if (attempts > 0) {
         setTimeout(() => trySet(attempts - 1), 200);
@@ -1382,32 +1412,96 @@
   //  PAGE: แบบทดสอบ
   // ─────────────────────────────────────────────
   let quizAllRows = [];
-  let quizConfig = { examType: null, qType: null, qCount: null, difficulty: null };
+  let quizConfig = { examType: null, topic: null, qType: null, qCount: null, difficulty: null };
   let quizSession = { questions: [], answers: [] };
 
   async function loadQuiz() {
     try { quizAllRows = await fetchSheet('quiz'); }
     catch { quizAllRows = FALLBACK.quiz; }
+    populateExamTypes();
+  }
+
+  // สร้าง dropdown exam_type จากข้อมูลใน Sheet
+  function populateExamTypes() {
+    const visible = quizAllRows.filter(r => isVisible(r.visible));
+    const types = ['ทั้งหมด', ...new Set(
+      visible.map(r => (r.exam_type || '').trim()).filter(Boolean)
+    )];
+
+    const sel = document.getElementById('selExamType');
+    sel.innerHTML = `<option value="">— เลือก —</option>` +
+      types.map(t => `<option value="${t}">${t}</option>`).join('');
+  }
+
+  // เมื่อเลือก exam_type → populate topic
+  function onExamTypeChange(val) {
+    quizConfig.examType = val;
+    quizConfig.topic = null;
+
+    const selTopic = document.getElementById('selTopic');
+
+    if (!val) {
+      selTopic.innerHTML = `<option value="">— เลือกประเภทก่อน —</option>`;
+      selTopic.disabled = true;
+      checkSetupReady();
+      return;
+    }
+
+    // กรองโจทย์ตาม exam_type แล้วดึง topic ที่มี
+    const filtered = quizAllRows.filter(r =>
+      isVisible(r.visible) &&
+      (val === 'ทั้งหมด' || (r.exam_type || '').trim() === val)
+    );
+
+    // จัดกลุ่ม topic ตาม group เพื่อแสดงเป็น optgroup
+    const groupMap = {};
+    filtered.forEach(r => {
+      const g = (r.group || 'อื่นๆ').trim();
+      const t = (r.topic || '').trim();
+      if (!t) return;
+      if (!groupMap[g]) groupMap[g] = new Set();
+      groupMap[g].add(t);
+    });
+
+    let optionsHTML = `<option value="ทั้งหมด">ทั้งหมด</option>`;
+    Object.entries(groupMap).forEach(([group, topics]) => {
+      optionsHTML += `<optgroup label="${group}">`;
+      topics.forEach(t => {
+        optionsHTML += `<option value="${t}">${t}</option>`;
+      });
+      optionsHTML += `</optgroup>`;
+    });
+
+    selTopic.innerHTML = optionsHTML;
+    selTopic.disabled = false;
+    // reset topic selection
+    selTopic.value = 'ทั้งหมด';
+    quizConfig.topic = 'ทั้งหมด';
+
     checkSetupReady();
   }
 
   function checkSetupReady() {
-    const { examType, qType, qCount, difficulty } = quizConfig;
-    const ready = examType && qType && qCount && difficulty;
+    const { examType, topic, qType, qCount, difficulty } = quizConfig;
+    const ready = examType && topic && qType && qCount && difficulty;
     document.getElementById('setupStartBtn').disabled = !ready;
+
+    const info = document.getElementById('setupInfo');
     if (ready) {
       const pool = buildPool();
-      const info = document.getElementById('setupInfo');
       info.style.display = 'block';
       info.textContent = `📦 พบข้อสอบในคลัง ${pool.length} ข้อ • จะสุ่มมา ${Math.min(pool.length, parseInt(qCount))} ข้อ`;
+    } else {
+      info.style.display = 'none';
     }
   }
 
   function buildPool() {
-    const { examType, qType } = quizConfig;
+    const { examType, topic, qType } = quizConfig;
     return quizAllRows.filter(r => {
       if (!isVisible(r.visible)) return false;
-      if (examType !== 'ทั้งหมด' && r.exam_type !== examType) return false;
+      if (examType !== 'ทั้งหมด' && (r.exam_type||'').trim() !== examType) return false;
+      if (topic && topic !== 'ทั้งหมด' && (r.topic||'').trim() !== topic) return false;
       if (qType === 'mc' && (r.type||'').toLowerCase() !== 'mc') return false;
       if (qType === 'sa' && (r.type||'').toLowerCase() !== 'sa') return false;
       return true;
@@ -2076,20 +2170,32 @@
   function navigateToExerciseGroup(level, groupKey) {
     navigate('exercise');
     setTimeout(() => {
+      // สลับแท็บ
       switchExTab(level);
-      // เปิด group นั้นอัตโนมัติ
-      const groups = Object.keys(SKILL_DATA[level]);
-      const gi = groups.indexOf(groupKey);
-      if (gi >= 0) {
-        const bodyId = `exgroup-${level}-${gi}`;
-        const body = document.getElementById(bodyId);
-        const chev = document.getElementById('chev-' + bodyId);
-        if (body && !body.classList.contains('open')) {
-          body.classList.add('open');
-          if (chev) chev.style.transform = 'rotate(90deg)';
-          body.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }
+      // สลับไปมุมมองลำดับความรู้
+      currentExView = 'skill';
+      document.getElementById('viewSkill').classList.add('active');
+      document.getElementById('viewLevel').classList.remove('active');
+      renderExerciseBrowser(level);
+      // รอให้ render เสร็จแล้วจัดการ toggle
+      setTimeout(() => {
+        const groups = Object.keys(SKILL_DATA[level]);
+        // ปิดทุกกลุ่มก่อน แล้วเปิดเฉพาะกลุ่มที่ต้องการ
+        groups.forEach((key, gi) => {
+          const bodyId = `exgroup-${level}-${gi}`;
+          const body = document.getElementById(bodyId);
+          const chev = document.getElementById('chev-' + bodyId);
+          if (!body) return;
+          if (key === groupKey) {
+            body.classList.add('open');
+            if (chev) chev.style.transform = 'rotate(90deg)';
+            setTimeout(() => body.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+          } else {
+            body.classList.remove('open');
+            if (chev) chev.style.transform = '';
+          }
+        });
+      }, 50);
     }, 150);
   }
 
@@ -2591,14 +2697,15 @@
     }
 
     function buildDocCard(item) {
-      return `<a class="doc-card" href="${item.url||'#'}" target="_blank" rel="noopener">
+      const safeItem = JSON.stringify(item).replace(/"/g, '&quot;');
+      return `<div class="doc-card" onclick="openDocsModal(${safeItem})" style="cursor:pointer">
         <div class="doc-icon">${getDocIcon(item)}</div>
         <div class="doc-info">
           <div class="doc-title">${item.title||''}</div>
           ${item.description ? `<div class="doc-desc">${item.description}</div>` : ''}
-          <div class="doc-badge">↗ เปิดไฟล์</div>
+          <div class="doc-badge">👁 ดูเอกสาร</div>
         </div>
-      </a>`;
+      </div>`;
     }
 
     if (view === 'skill') {
@@ -2754,6 +2861,61 @@
     if (chev) chev.style.transform = isOpen ? 'rotate(90deg)' : '';
   }
 
+  function openDocsModal(item) {
+    const url = item.url || '';
+    const type = (item.type || '').toLowerCase();
+
+    // สร้าง embed URL ตามประเภทไฟล์
+    let embedHTML = '';
+
+    // Google Drive embed
+    const driveMatch = url.match(/\/d\/([A-Za-z0-9_-]+)/);
+    const driveId = driveMatch ? driveMatch[1] : '';
+
+    if (driveId) {
+      // Drive file → ใช้ preview embed
+      const embedUrl = `https://drive.google.com/file/d/${driveId}/preview`;
+      embedHTML = `<div class="video-aspect"><iframe src="${embedUrl}" allow="autoplay"></iframe></div>`;
+    } else if (url.includes('docs.google.com')) {
+      // Google Docs/Sheets/Slides → ใช้ /pub?embedded=true
+      const pubUrl = url.replace('/edit', '/pub?embedded=true').replace('/view', '/pub?embedded=true');
+      embedHTML = `<div class="video-aspect"><iframe src="${pubUrl}"></iframe></div>`;
+    } else {
+      // URL อื่น → ลอง embed ตรงๆ
+      embedHTML = `<div class="video-aspect"><iframe src="${url}"></iframe></div>`;
+    }
+
+    // สร้าง download URL สำหรับ Google Drive
+    let downloadUrl = url;
+    if (driveId) {
+      downloadUrl = `https://drive.google.com/uc?export=download&id=${driveId}`;
+    }
+
+    // icon ตามประเภท
+    const iconMap = { pdf:'📕', ppt:'📊', word:'📝', sheet:'📗' };
+    const icon = Object.entries(iconMap).find(([k]) => type.includes(k))?.[1] || '📄';
+
+    document.getElementById('docsModalTitle').innerHTML = `${icon} ${item.title || 'เอกสาร'}`;
+    document.getElementById('docsModalBody').innerHTML = embedHTML;
+    document.getElementById('docsModalFooter').innerHTML = `
+      ${item.description ? `<div class="video-modal-desc">${item.description}</div>` : ''}
+      <div style="display:flex;gap:8px;flex-shrink:0">
+        <a class="video-modal-download" href="${downloadUrl}" download target="_blank" rel="noopener">⬇ ดาวน์โหลด</a>
+        <a class="video-modal-ext" href="${url}" target="_blank" rel="noopener">↗ เปิดใน Drive</a>
+      </div>`;
+
+    document.getElementById('docsModalOverlay').classList.add('open');
+    document.getElementById('docsModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDocsModal() {
+    document.getElementById('docsModalOverlay').classList.remove('open');
+    document.getElementById('docsModal').classList.remove('open');
+    document.getElementById('docsModalBody').innerHTML = '';
+    document.body.style.overflow = '';
+  }
+
   // ─────────────────────────────────────────────
   //  INIT
   // ─────────────────────────────────────────────
@@ -2762,7 +2924,10 @@
 
   // ปิด modal ด้วย Escape
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeVideoModal();
+    if (e.key === 'Escape') {
+      closeVideoModal();
+      closeDocsModal();
+    }
   });
 </script>
 </body>
